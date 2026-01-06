@@ -1,0 +1,17 @@
+.radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 20px;
+  color: #7A5A4A; // neutral (marron)
+}
+
+.radio.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
