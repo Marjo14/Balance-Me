@@ -1,0 +1,24 @@
+.result-card {
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: var(--space-md);
+}
+
+.result-card__title {
+  margin: 0;
+  font-size: var(--font-size-h3);
+}
+
+.result-card__status {
+  display: flex;
+  align-items: center;
+}
+
+.result-card__message {
+  margin: 0;
+  font-size: var(--font-size-body-m);
+  line-height: 1.5;
+}

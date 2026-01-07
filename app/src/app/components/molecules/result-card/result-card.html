@@ -1,0 +1,11 @@
+<section class="result-card" aria-labelledby="resultTitle">
+  <h2 id="resultTitle" class="result-card__title">{{ title }}</h2>
+
+  <div class="result-card__status" role="status" aria-live="polite">
+    <app-tag [variant]="status" [label]="label"></app-tag>
+  </div>
+
+  <p class="result-card__message">
+    {{ message }}
+  </p>
+</section>
