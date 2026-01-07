@@ -15,11 +15,12 @@
   width: 100%;
 }
 
-/* Focus accessible */
-.input-field:focus {
+/* Accessible focus (keyboard first) */
+.input-field:focus-visible {
   outline: 3px solid var(--color-insight);
   outline-offset: 2px;
 }
+
 
 /* Disabled */
 .input-field:disabled {

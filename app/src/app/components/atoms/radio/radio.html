@@ -1,6 +1,15 @@
-<label class="radio" [class]="variant" [class.disabled]="disabled">
-  <span class="icon">
+<button
+  type="button"
+  class="radio u-focus"
+  [class]="variant"
+  [class.disabled]="disabled"
+  role="radio"
+  [attr.aria-checked]="checked"
+  [disabled]="disabled"
+  (click)="select()"
+>
+  <span class="icon" aria-hidden="true">
     {{ checked ? '◉' : '○' }}
   </span>
   <span class="label">{{ label }}</span>
-</label>
+</button>

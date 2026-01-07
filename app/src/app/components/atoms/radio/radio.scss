@@ -1,17 +1,53 @@
 .radio {
-  display: flex;
+  /* Reset native button styles */
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  /* Layout */
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+
+  /* Typography */
+  font: inherit;
   font-size: 16px;
+  font-weight: 600;
+  color: var(--color-black);
+
+  /* Interaction */
   cursor: pointer;
 }
 
-.icon {
+.radio .icon {
   font-size: 20px;
-  color: #7A5A4A; // neutral (marron)
+  line-height: 1;
+  color: var(--color-neutral);
 }
 
-.radio.disabled {
+.radio.neutral .icon {
+  color: var(--color-neutral);
+}
+
+.radio.emotional .icon {
+  color: var(--color-emotional);
+}
+
+/* Selected state (more visible) */
+.radio[aria-checked="true"] .icon {
+  color: var(--color-primary);
+}
+
+/* Disabled */
+.radio.disabled,
+.radio:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Optional: subtle hover (keeps moodboard calm) */
+.radio:hover:not(:disabled) {
+  opacity: 0.9;
 }

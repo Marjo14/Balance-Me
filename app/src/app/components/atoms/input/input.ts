@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-input',
@@ -7,9 +7,17 @@ import { Component, Input } from '@angular/core';
   styleUrl: './input.scss',
 })
 export class InputComponent{
+  @Input() id = '';
+  @Input() name = '';
+
   @Input() label = '';
   @Input() type: 'text' | 'number' = 'text';
   @Input() placeholder = '';
   @Input() disabled = false;
+
+  /** Controlled value (string to keep typing flexible) */
+  @Input() value = '';
+  /** Emits value on each input event */
+  @Output() valueChange = new EventEmitter<string>();
 
 }
