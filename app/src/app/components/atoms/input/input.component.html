@@ -4,17 +4,20 @@
   </label>
 
   <div class="ui-input__field" [class.ui-input__field--error]="!!error" [class.ui-input__field--disabled]="disabled">
-    <input
-      class="ui-input__control"
-      [attr.id]="id"
-      [attr.type]="type"
-      [attr.placeholder]="placeholder"
-      [attr.required]="required ? true : null"
-      [disabled]="disabled"
-      [attr.aria-invalid]="error ? 'true' : 'false'"
-      [attr.aria-describedby]="describedById"
-      [value]="value ?? ''"
-    />
+   <input
+  class="ui-input__control"
+  [attr.id]="id"
+  [attr.type]="type"
+  [attr.placeholder]="placeholder"
+  [attr.required]="required ? true : null"
+  [disabled]="disabled"
+  [attr.aria-invalid]="error ? 'true' : 'false'"
+  [attr.aria-describedby]="describedById"
+  [attr.inputmode]="inputMode"
+  [attr.autocomplete]="autocomplete"
+  [value]="value ?? ''"
+/>
+
 
     <span *ngIf="suffix" class="ui-input__suffix">{{ suffix }}</span>
   </div>

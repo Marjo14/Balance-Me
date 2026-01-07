@@ -1,0 +1,52 @@
+<div [class]="rootClasses.join(' ')">
+  <label
+    *ngIf="label"
+    class="ui-select__label"
+    [attr.for]="selectId"
+  >
+    {{ label }}
+  </label>
+
+  <div class="ui-select__control">
+    <select
+      class="ui-select__native"
+      [id]="selectId"
+      [name]="name"
+      [disabled]="disabled"
+      [required]="required"
+      [value]="value ?? ''"
+      (change)="onChange($event)"
+      [attr.aria-invalid]="error ? 'true' : null"
+      [attr.aria-describedby]="describedBy"
+    >
+      <option value="" disabled hidden>{{ placeholder }}</option>
+
+      <option
+        *ngFor="let opt of options"
+        [value]="opt.value"
+      >
+        {{ opt.label }}
+      </option>
+    </select>
+
+    <!-- Chevron (not the default ugly arrows) -->
+    <svg class="ui-select__chevron" viewBox="0 0 20 20" aria-hidden="true">
+      <path
+        d="M5.5 7.5L10 12l4.5-4.5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </div>
+
+  <div *ngIf="hint && !error" class="ui-select__hint" [id]="selectId + '-hint'">
+    {{ hint }}
+  </div>
+
+  <div *ngIf="error" class="ui-select__error" [id]="selectId + '-error'">
+    {{ error }}
+  </div>
+</div>

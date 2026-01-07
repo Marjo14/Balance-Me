@@ -1,3 +1,21 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+/* =========================================
+   Storybook scale guard (prevents XXL UI)
+   ========================================= */
+
+html, body {
+  font-size: 16px !important;
+  -webkit-text-size-adjust: 100%;
+}
+
+.sb-show-main {
+  font-size: 16px !important;
+  zoom: 1 !important;
+  transform: none !important;
+}
+
+.sbdocs, .sbdocs-content, .docs-story {
+  font-size: 16px !important;
+}
