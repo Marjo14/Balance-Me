@@ -1,14 +1,27 @@
+/* =====================================================
+   DESIGN SYSTEM – GLOBAL TOKENS & UTILITIES
+   Project: BalanceMe
+   Purpose: Centralized design tokens, layout helpers,
+   accessibility utilities and responsive helpers
+   ===================================================== */
+
+
+/* =====================================================
+   1. DESIGN TOKENS (CSS VARIABLES)
+   Source of truth for colors, typography, spacing, radius
+   ===================================================== */
+
 :root {
-  /* Colors */
-  --color-primary: #3E7F5A;
-  --color-secondary: #4FA6A6;
-  --color-emotional: #E7B6C2;
-  --color-insight: #F2D07C;
-  --color-neutral: #7A5A4A;
+  /* ---------- Color Palette ---------- */
+  --color-primary: #3E7F5A;        /* Main brand color */
+  --color-secondary: #4FA6A6;      /* Secondary / accent */
+  --color-emotional: #E7B6C2;      /* Emotional expense highlight */
+  --color-insight: #F2D07C;        /* Warnings / insights */
+  --color-neutral: #7A5A4A;        /* Neutral / supportive UI */
   --color-black: #1C1C1C;
   --color-white: #FFFFFF;
 
-  /* Typography */
+  /* ---------- Typography ---------- */
   --font-family-base: 'Inter', system-ui, sans-serif;
 
   --font-size-h1: 48px;
@@ -16,14 +29,26 @@
   --font-size-h3: 32px;
   --font-size-body-m: 16px;
 
-  /* Spacing */
+  /* ---------- Spacing Scale ---------- */
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
 
-  /* Radius */
+  /* ---------- Border Radius ---------- */
   --radius-md: 12px;
   --radius-lg: 20px;
+
+  /* ---------- Accessibility ---------- */
+  color-scheme: light;
+}
+
+
+/* =====================================================
+   2. GLOBAL RESET & BASE STYLES
+   ===================================================== */
+
+* {
+  box-sizing: border-box;
 }
 
 body {
@@ -32,38 +57,158 @@ body {
   margin: 0;
 }
 
-h1 { font-size: var(--font-size-h1); }
-h2 { font-size: var(--font-size-h2); }
-h3 { font-size: var(--font-size-h3); }
 
-/* Text */
-.u-text-center { text-align: center; }
+/* =====================================================
+   3. TYPOGRAPHY STYLES
+   Responsive typography using clamp()
+   ===================================================== */
 
-/* Backgrounds */
-.u-bg-primary { background-color: var(--color-primary); }
-.u-bg-secondary { background-color: var(--color-secondary); }
-.u-bg-emotional { background-color: var(--color-emotional); }
-.u-bg-insight { background-color: var(--color-insight); }
-.u-bg-neutral { background-color: var(--color-neutral); }
+h1 {
+  font-size: clamp(28px, 4vw, var(--font-size-h1));
+}
 
-/* Colors */
-.u-text-white { color: var(--color-white); }
-.u-text-black { color: var(--color-black); }
+h2 {
+  font-size: clamp(22px, 3vw, var(--font-size-h2));
+}
 
-/* Spacing */
-.u-p-md { padding: var(--space-md); }
-.u-mb-md { margin-bottom: var(--space-md); }
+h3 {
+  font-size: clamp(18px, 2.5vw, var(--font-size-h3));
+}
 
-/* Radius */
-.u-radius-lg { border-radius: var(--radius-lg); }
 
-/* Accessibility */
-.u-focus:focus {
+/* =====================================================
+   4. UTILITY CLASSES – TEXT & COLORS
+   ===================================================== */
+
+/* Text alignment */
+.u-text-center {
+  text-align: center;
+}
+
+/* Text colors */
+.u-text-white {
+  color: var(--color-white);
+}
+
+.u-text-black {
+  color: var(--color-black);
+}
+
+/* Background helpers */
+.u-bg-primary {
+  background-color: var(--color-primary);
+}
+
+.u-bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.u-bg-emotional {
+  background-color: var(--color-emotional);
+}
+
+.u-bg-insight {
+  background-color: var(--color-insight);
+}
+
+.u-bg-neutral {
+  background-color: var(--color-neutral);
+}
+
+
+/* =====================================================
+   5. SPACING & SHAPE UTILITIES
+   ===================================================== */
+
+.u-p-md {
+  padding: var(--space-md);
+}
+
+.u-mb-md {
+  margin-bottom: var(--space-md);
+}
+
+.u-radius-lg {
+  border-radius: var(--radius-lg);
+}
+
+
+/* =====================================================
+   6. LAYOUT HELPERS
+   Mobile-first layout utilities
+   ===================================================== */
+
+/* Page container (centered content on desktop) */
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding: var(--space-md);
+}
+
+/* Vertical stack layout */
+.stack {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.stack-lg {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+/* Two-column layout for desktop */
+@media (min-width: 768px) {
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+    align-items: start;
+  }
+}
+
+
+/* =====================================================
+   7. ACCESSIBILITY UTILITIES
+   Focus, keyboard navigation, forms
+   ===================================================== */
+
+/* Accessible focus style (keyboard only) */
+.u-focus:focus-visible {
   outline: 3px solid var(--color-insight);
   outline-offset: 2px;
 }
 
+/* Ensure form controls inherit typography */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Skip link (keyboard navigation) */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-insight);
+  color: var(--color-black);
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 1000;
+}
+
+.skip-link:focus-visible {
+  top: 8px;
+  left: 8px;
+}
+
+/* =====================================================
+   8. STORYBOOK / MOBILE PREVIEW HELPER
+   ===================================================== */
+
 .sb-mobile {
   max-width: 375px;
-  padding: 16px;
+  padding: var(--space-md);
 }
