@@ -1,1 +1,151 @@
-<p>home works!</p>
+<a class="skip-link u-focus" href="#main">Aller au contenu</a>
+
+<header class="container stack">
+  <div class="stack">
+    <h1 class="u-text-center">BalanceMe</h1>
+    <p class="u-text-center">
+      Une app pour prendre conscience d’une dépense émotionnelle avant d’acheter.
+    </p>
+  </div>
+</header>
+
+<main id="main" class="container stack-lg" tabindex="-1">
+  <!-- layout desktop 2 colonnes / mobile 1 colonne -->
+  <div class="grid-2 stack-lg">
+    <!-- Colonne gauche : Solde -->
+    <section class="stack" aria-labelledby="balance-title">
+      <h2 id="balance-title">Il vous reste</h2>
+
+      <div class="remaining-card u-bg-primary u-text-white u-radius-lg u-p-md">
+        <p class="remaining-label">Solde restant :</p>
+        <p class="remaining-amount">{{ remainingAmount }} €</p>
+      </div>
+
+      <p class="hint">
+        Astuce : si vous ressentez une émotion forte, respirez 10 secondes avant de valider.
+      </p>
+    </section>
+
+    <!-- Colonne droite : Form -->
+    <section class="stack" aria-labelledby="expense-title">
+      <h2 id="expense-title">Ajouter une dépense</h2>
+
+      <form class="stack" (submit)="$event.preventDefault(); onAnalyze()">
+        <!-- CTA add expense (UX) -->
+        <div class="add-expense">
+          <app-plus-icon aria-hidden="true"></app-plus-icon>
+          <span>Ajouter une dépense</span>
+        </div>
+
+        <!-- Amount -->
+        <div class="stack">
+          <app-input
+            id="amount"
+            name="amount"
+            label="Montant de la dépense"
+            type="number"
+            placeholder="Ex : 50"
+            [value]="amount"
+            (valueChange)="onAmountChange($event)"
+          ></app-input>
+
+          <small class="hint">Le symbole € est ajouté à l’affichage, pas dans le champ.</small>
+
+          <p *ngIf="amountError" class="error" role="alert">
+            {{ amountError }}
+          </p>
+        </div>
+
+        <!-- Type -->
+        <fieldset class="stack">
+          <legend class="legend">Type de dépense</legend>
+
+          <div class="stack-sm" role="radiogroup" aria-label="Type de dépense">
+            <app-radio
+              label="Nécessaire"
+              variant="neutral"
+              [checked]="type === 'necessary'"
+              (checkedChange)="onTypeChange('necessary')"
+            ></app-radio>
+
+            <app-radio
+              label="Émotionnelle"
+              variant="emotional"
+              [checked]="type === 'emotional'"
+              (checkedChange)="onTypeChange('emotional')"
+            ></app-radio>
+          </div>
+        </fieldset>
+
+        <!-- Emotion (conditional) -->
+        <fieldset *ngIf="isEmotional" class="stack">
+          <legend class="legend">Quelle émotion ressentez-vous ?</legend>
+
+          <div class="emotion-grid" role="radiogroup" aria-label="Émotions">
+            <label class="emotion-option u-focus">
+              <input type="radio" name="emotion" [(ngModel)]="emotion" [value]="'stress'" />
+              <span>Stress</span>
+            </label>
+
+            <label class="emotion-option u-focus">
+              <input type="radio" name="emotion" [(ngModel)]="emotion" [value]="'ennui'" />
+              <span>Ennui</span>
+            </label>
+
+            <label class="emotion-option u-focus">
+              <input type="radio" name="emotion" [(ngModel)]="emotion" [value]="'plaisir'" />
+              <span>Plaisir</span>
+            </label>
+
+            <label class="emotion-option u-focus">
+              <input type="radio" name="emotion" [(ngModel)]="emotion" [value]="'reconfort'" />
+              <span>Réconfort</span>
+            </label>
+          </div>
+
+          <p *ngIf="emotionError" class="error" role="alert">
+            {{ emotionError }}
+          </p>
+        </fieldset>
+
+        <!-- Submit -->
+        <div class="actions">
+          <app-button
+            label="Analyser la dépense"
+            variant="primary"
+            type="submit"
+            [disabled]="!canAnalyze"
+            (pressed)="onAnalyze()"
+          ></app-button>
+
+          <app-button
+            label="Réinitialiser"
+            variant="neutral"
+            type="button"
+            (pressed)="onReset()"
+          ></app-button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Result area (inline = meilleur pour Lighthouse que modal) -->
+  <section *ngIf="result" class="stack result-section" aria-labelledby="result-title">
+    <h2 id="result-title">Résultat</h2>
+
+    <div class="result-card u-radius-lg u-p-md" [attr.data-variant]="result.variant">
+      <div class="result-tag">
+        <app-tag [label]="result.title" [variant]="resultTagVariant"></app-tag>
+      </div>
+
+      <p class="result-message">{{ result.message }}</p>
+
+      <p class="result-balance">
+        Nouveau solde : <strong>{{ result.newRemaining }} €</strong>
+      </p>
+    </div>
+  </section>
+
+  <!-- Screen reader feedback -->
+  <div class="sr-only" aria-live="polite">{{ liveMessage }}</div>
+</main>
