@@ -1,11 +1,12 @@
-<section class="result-card" aria-labelledby="resultTitle">
-  <h2 id="resultTitle" class="result-card__title">{{ title }}</h2>
-
-  <div class="result-card__status" role="status" aria-live="polite">
-    <app-tag [variant]="status" [label]="label"></app-tag>
+<div class="result-card" [ngClass]="status">
+  <!-- Statut principal -->
+  <div class="result-status">
+    <span class="result-icon">{{ statusIcon }}</span>
+    <span class="result-label">{{ label }}</span>
   </div>
 
-  <p class="result-card__message">
+  <!-- Message -->
+  <p class="result-message">
     {{ message }}
   </p>
-</section>
+</div>

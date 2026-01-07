@@ -16,4 +16,19 @@ export class ResultCard {
   @Input() label = 'Info';
   @Input() message = 'Message…';
 
+  
+  get statusIcon(): string {
+    switch (this.status) {
+      case 'positive':
+        return '✅';
+      case 'warning':
+        return '⚠️';
+      case 'negative':
+        return '❌';
+      case 'neutral':
+      default:
+        return 'ℹ️';
+    }
+  }
+
 }
