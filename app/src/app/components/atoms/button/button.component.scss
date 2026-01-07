@@ -1,0 +1,171 @@
+/* =====================================================
+   UI BUTTON – Atom
+   Variants: primary | secondary | emotional | insight | brown | ghost
+   Sizes: sm | md | lg
+   A11y: focus-visible, disabled, loading, reduced motion
+   ===================================================== */
+
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  max-width: 100%; 
+
+  border-radius: 999px;
+  border: 1px solid transparent;
+
+  font-family: var(--font-family-base);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+
+  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, border-color 140ms ease, color 140ms ease;
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  /* A11y focus */
+  &:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 3px;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  &--full {
+    width: 100%;
+  }
+
+  /* Sizes (balanced like your captures) */
+  &--sm {
+    height: 42px;
+    padding: 0 18px;
+    font-size: 11px;
+  }
+
+  &--md {
+    height: 52px;
+    padding: 0 24px;
+    font-size: 12px;
+  }
+
+  &--lg {
+    height: 60px;
+    padding: 0 20px;
+    font-size: 13px;
+    letter-spacing: 0.28em;
+  }
+
+  /* -------- Solid variants from tokens -------- */
+  &--primary {
+    background: var(--color-primary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+
+    &:hover:not(:disabled) {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--secondary {
+    background: var(--color-secondary);
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+
+    &:hover:not(:disabled) {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--emotional {
+    background: var(--color-emotional);
+    color: rgba(16, 24, 40, 0.82); /* keeps contrast on light pink */
+    box-shadow: var(--shadow-md);
+
+    &:hover:not(:disabled) {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--insight {
+    background: var(--color-insight);
+    color: rgba(16, 24, 40, 0.86); /* readable on warm yellow */
+    box-shadow: var(--shadow-md);
+
+    &:hover:not(:disabled) {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+  }
+
+  &--brown {
+    background: var(--color-brown);
+    color: var(--color-white);
+    box-shadow: var(--shadow-md);
+
+    &:hover:not(:disabled) {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-1px);
+    }
+  }
+
+  /* -------- Ghost (inactive choice) --------
+     Softer text + light border like the mockups
+  */
+  &--ghost {
+    background: rgba(255, 255, 255, 0.86);
+    color: var(--color-ink-soft);
+    border-color: var(--color-border-soft);
+    box-shadow: none;
+
+    &:hover:not(:disabled) {
+      border-color: rgba(16, 24, 40, 0.16);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+
+  /* Loading */
+  &--loading {
+    pointer-events: none;
+    .ui-btn__label { opacity: 0.9; }
+  }
+
+  /* Spinner */
+  &__spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: rgba(255, 255, 255, 0.95);
+    animation: uiSpin 800ms linear infinite;
+  }
+
+  /* Spinner contrast on light variants */
+  &--ghost .ui-btn__spinner,
+  &--emotional .ui-btn__spinner,
+  &--insight .ui-btn__spinner {
+    border-color: rgba(16, 24, 40, 0.18);
+    border-top-color: rgba(16, 24, 40, 0.62);
+  }
+}
+
+@keyframes uiSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-btn { transition: none; }
+  .ui-btn__spinner { animation: none; }
+}

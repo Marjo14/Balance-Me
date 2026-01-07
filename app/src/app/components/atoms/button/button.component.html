@@ -1,0 +1,10 @@
+<button
+  type="button"
+  [disabled]="isDisabled"
+  [class]="hostClasses.join(' ')"
+>
+  <span class="ui-btn__spinner" *ngIf="loading" aria-hidden="true"></span>
+  <span class="ui-btn__label">
+    <ng-content></ng-content>
+  </span>
+</button>
