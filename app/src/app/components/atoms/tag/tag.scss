@@ -1,0 +1,31 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+/* Variants */
+.tag.positive {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.tag.warning {
+  background: var(--color-insight);
+  color: var(--color-black);
+}
+
+.tag.negative {
+  background: var(--color-emotional);
+  color: var(--color-black);
+}
+
+.tag.neutral {
+  background: var(--color-neutral);
+  color: var(--color-white);
+}

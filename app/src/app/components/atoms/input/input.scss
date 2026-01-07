@@ -1,0 +1,48 @@
+.input-label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  font-size: var(--font-size-body-m);
+  color: var(--color-black);
+}
+
+.input-field {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-neutral);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-m);
+  width: 100%;
+}
+
+/* Focus accessible */
+.input-field:focus {
+  outline: 3px solid var(--color-insight);
+  outline-offset: 2px;
+}
+
+/* Disabled */
+.input-field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* Delete arrows input number */
+
+/* Standard  */
+input[type='number'] {
+  appearance: textfield;
+}
+
+/* Chrome, Safari, Edge */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox (fallback) */
+input[type='number'] {
+  -moz-appearance: textfield;
+}

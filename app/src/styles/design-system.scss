@@ -62,3 +62,8 @@ h3 { font-size: var(--font-size-h3); }
   outline: 3px solid var(--color-insight);
   outline-offset: 2px;
 }
+
+.sb-mobile {
+  max-width: 375px;
+  padding: 16px;
+}
