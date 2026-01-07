@@ -1,0 +1,57 @@
+/* =====================================================
+   UI CARD – Atom
+   Variants: neutral | positive | danger | info | soft
+   ===================================================== */
+
+.ui-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  display: block;
+
+  transition: transform 160ms ease, box-shadow 160ms ease;
+
+  /* Padding */
+  &--pad-md { padding: var(--space-lg); }
+  &--pad-lg { padding: calc(var(--space-xl) + 4px); }
+
+  /* Elevation */
+  &--elev-sm { box-shadow: var(--shadow-sm); }
+  &--elev-md { box-shadow: var(--shadow-md); }
+  &--elev-lg { box-shadow: var(--shadow-lg); }
+
+  /* Layout */
+  &--full { height: 100%; }
+
+  /* Variants */
+  &--neutral {
+    background: var(--color-surface);
+    color: var(--color-black);
+  }
+
+  /* ✅ POSITIVE = gradient (like your screenshot) */
+  &--positive {
+    background: var(--gradient-positive);
+    color: var(--color-white);
+    border: none;
+    box-shadow: var(--shadow-positive);
+  }
+
+  &--danger {
+    background: var(--color-danger);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: var(--color-white);
+  }
+
+  &--info {
+    background: var(--color-info);
+    border-color: rgba(255, 255, 255, 0.14);
+    color: var(--color-white);
+  }
+
+  &--soft {
+    background: var(--color-soft);
+    border-color: rgba(231, 182, 194, 0.26);
+    color: var(--color-black);
+  }
+}

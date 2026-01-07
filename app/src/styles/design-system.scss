@@ -5,46 +5,88 @@
    accessibility utilities and responsive helpers
    ===================================================== */
 
-
 /* =====================================================
    1. DESIGN TOKENS (CSS VARIABLES)
    Source of truth for colors, typography, spacing, radius
    ===================================================== */
 
 :root {
-  /* ---------- Color Palette ---------- */
-  --color-primary: #3E7F5A;        /* Main brand color */
-  --color-secondary: #4FA6A6;      /* Secondary / accent */
-  --color-emotional: #E7B6C2;      /* Emotional expense highlight */
-  --color-insight: #F2D07C;        /* Warnings / insights */
-  --color-neutral: #7A5A4A;        /* Neutral / supportive UI */
-  --color-black: #1C1C1C;
+  /* ---------- Brand Palette ---------- */
+  --color-primary: #3E7F5A;        /* Green brand */
+  --color-secondary: #4FA6A6;      /* Teal accent */
+  --color-emotional: #E7B6C2;      /* Soft pink */
+  --color-insight: #F2D07C;        /* Warm yellow */
+
+  /* ---------- Neutrals / Surfaces ---------- */
+  --color-black: #101828;
   --color-white: #FFFFFF;
 
-    /* ---------- Backgrounds ---------- */
-  --color-background: #FDF9F5; /* Soft cream background (main app background) */
+  --color-bg: #FBF6EE;             /* Cream page background */
+  --color-surface: #FFFFFF;        /* Card surface */
+  --color-border: rgba(16, 24, 40, 0.08);
+
+  /* ---------- Semantic (Card variants) ---------- */
+  --color-positive: #3E7F5A;        /* positive (green) */
+  --color-danger: #C05872;          /* danger (stronger pink/rose) */
+  --color-info: #2F7EA6;            /* info (blue/teal) */
+  --color-soft: rgba(231, 182, 194, 0.14); /* soft background */
+
+  /* Positive / Energy surface */
+--color-positive-900: #4f755d;
+--color-positive-800: #577f66;
+--color-positive-700: #5f876d;
+
+/* === DANGER === */
+--color-danger-900: #a85a6a;
+--color-danger-800: #b06474;
+--color-danger-700: #bc7282;
+
+--gradient-danger: linear-gradient(
+  145deg,
+  var(--color-danger-800) 0%,
+  var(--color-danger-700) 100%
+);
+
+--shadow-danger: 0 24px 48px rgba(168, 90, 106, 0.3);
+
+
+--gradient-positive: linear-gradient(
+  135deg,
+  var(--color-positive-800) 0%,
+  var(--color-positive-700) 100%
+);
+
+--shadow-positive: 0 20px 40px rgba(79, 117, 93, 0.25);
 
   /* ---------- Typography ---------- */
-  /* Base font for the whole app (matches the mockups) */
-  --font-family-base: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-family-base: 'Plus Jakarta Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 
   --font-size-h1: 48px;
   --font-size-h2: 36px;
-  --font-size-h3: 32px;
+  --font-size-h3: 28px;
   --font-size-body-m: 16px;
 
   /* ---------- Spacing Scale ---------- */
+  --space-xs: 6px;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
+  --space-xl: 32px;
 
-  /* ---------- Border Radius ---------- */
+  /* ---------- Radius ---------- */
   --radius-md: 12px;
   --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* ---------- Shadow ---------- */
+  --shadow-sm: 0 6px 16px rgba(16, 24, 40, 0.08);
+  --shadow-md: 0 12px 28px rgba(16, 24, 40, 0.10);
+  --shadow-lg: 0 18px 42px rgba(16, 24, 40, 0.14);
 
   /* ---------- Accessibility ---------- */
   color-scheme: light;
 }
+
 
 /* =====================================================
    2. GLOBAL RESET & BASE STYLES
@@ -58,6 +100,7 @@ body {
   font-family: var(--font-family-base);
   color: var(--color-black);
   margin: 0;
+  background: var(--color-bg);
 }
 
 
@@ -68,14 +111,17 @@ body {
 
 h1 {
   font-size: clamp(28px, 4vw, var(--font-size-h1));
+  margin: 0;
 }
 
 h2 {
   font-size: clamp(22px, 3vw, var(--font-size-h2));
+  margin: 0;
 }
 
 h3 {
   font-size: clamp(18px, 2.5vw, var(--font-size-h3));
+  margin: 0;
 }
 
 
@@ -83,57 +129,23 @@ h3 {
    4. UTILITY CLASSES – TEXT & COLORS
    ===================================================== */
 
-/* Text alignment */
-.u-text-center {
-  text-align: center;
-}
+.u-text-center { text-align: center; }
+.u-text-white { color: var(--color-white); }
+.u-text-black { color: var(--color-black); }
 
-/* Text colors */
-.u-text-white {
-  color: var(--color-white);
-}
-
-.u-text-black {
-  color: var(--color-black);
-}
-
-/* Background helpers */
-.u-bg-primary {
-  background-color: var(--color-primary);
-}
-
-.u-bg-secondary {
-  background-color: var(--color-secondary);
-}
-
-.u-bg-emotional {
-  background-color: var(--color-emotional);
-}
-
-.u-bg-insight {
-  background-color: var(--color-insight);
-}
-
-.u-bg-neutral {
-  background-color: var(--color-neutral);
-}
+.u-bg-primary { background-color: var(--color-primary); }
+.u-bg-secondary { background-color: var(--color-secondary); }
+.u-bg-emotional { background-color: var(--color-emotional); }
+.u-bg-insight { background-color: var(--color-insight); }
 
 
 /* =====================================================
    5. SPACING & SHAPE UTILITIES
    ===================================================== */
 
-.u-p-md {
-  padding: var(--space-md);
-}
-
-.u-mb-md {
-  margin-bottom: var(--space-md);
-}
-
-.u-radius-lg {
-  border-radius: var(--radius-lg);
-}
+.u-p-md { padding: var(--space-md); }
+.u-mb-md { margin-bottom: var(--space-md); }
+.u-radius-lg { border-radius: var(--radius-lg); }
 
 
 /* =====================================================
@@ -141,26 +153,16 @@ h3 {
    Mobile-first layout utilities
    ===================================================== */
 
-/* Page container (centered content on desktop) */
 .container {
   width: 100%;
-  max-width: 960px;
+  max-width: 1040px;
   margin-inline: auto;
-  padding: var(--space-md);
+  padding: var(--space-lg);
 }
 
-/* Vertical stack layout */
-.stack {
-  display: grid;
-  gap: var(--space-md);
-}
+.stack { display: grid; gap: var(--space-md); }
+.stack-lg { display: grid; gap: var(--space-lg); }
 
-.stack-lg {
-  display: grid;
-  gap: var(--space-lg);
-}
-
-/* Two-column layout for desktop */
 @media (min-width: 768px) {
   .grid-2 {
     display: grid;
@@ -176,13 +178,11 @@ h3 {
    Focus, keyboard navigation, forms
    ===================================================== */
 
-/* Accessible focus style (keyboard only) */
 .u-focus:focus-visible {
   outline: 3px solid var(--color-insight);
   outline-offset: 2px;
 }
 
-/* Ensure form controls inherit typography */
 button,
 input,
 select,
@@ -190,7 +190,6 @@ textarea {
   font: inherit;
 }
 
-/* Skip link (keyboard navigation) */
 .skip-link {
   position: absolute;
   top: -40px;
@@ -206,6 +205,7 @@ textarea {
   top: 8px;
   left: 8px;
 }
+
 
 /* =====================================================
    8. STORYBOOK / MOBILE PREVIEW HELPER
