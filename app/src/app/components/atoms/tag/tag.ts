@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-tag',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './tag.html',
   styleUrl: './tag.scss',
 })
@@ -10,7 +12,7 @@ export class Tag {
   @Input() label = 'Tag';
   @Input() variant: 'positive' | 'warning' | 'negative' | 'neutral' = 'neutral';
 
-    get icon(): string {
+  get icon(): string {
     switch (this.variant) {
       case 'positive':
         return '✅';
@@ -22,5 +24,4 @@ export class Tag {
         return 'ℹ️';
     }
   }
-  
 }

@@ -1,17 +1,4 @@
-<div class="result-card" [ngClass]="status">
-  <!-- Titre discret -->
-  <p class="result-title">Résultat :</p>
-
-  <!-- Tag centré et mis en avant -->
-  <div class="result-tag-wrapper">
-    <app-tag
-      class="result-tag"
-      [variant]="tagVariant"
-      [label]="label"
-      [icon]="statusIcon"
-    ></app-tag>
-  </div>
-
-  <!-- Message -->
-  <p class="result-message">{{ message }}</p>
-</div>
+<span class="tag" [ngClass]="variant">
+  <span class="tag-icon" aria-hidden="true">{{ icon }}</span>
+  <span class="tag-label">{{ label }}</span>
+</span>

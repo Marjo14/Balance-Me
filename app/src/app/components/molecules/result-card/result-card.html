@@ -1,12 +1,12 @@
 <div class="result-card" [ngClass]="status">
-  <!-- Statut principal -->
-  <div class="result-status">
-    <span class="result-icon">{{ statusIcon }}</span>
-    <span class="result-label">{{ label }}</span>
+
+  <div class="result-tag-wrapper">
+    <app-tag
+      class="result-tag"
+      [variant]="status"
+      [label]="label"
+    ></app-tag>
   </div>
 
-  <!-- Message -->
-  <p class="result-message">
-    {{ message }}
-  </p>
+  <p class="result-message">{{ message }}</p>
 </div>
