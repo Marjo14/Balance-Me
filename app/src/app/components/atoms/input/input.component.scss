@@ -1,115 +1,135 @@
-/* =====================================================
-   UI INPUT – Atom
-   Matches BalanceMe rounded fields + soft border
-   ===================================================== */
-
+/* * ROOT CONTAINER
+ * Stacks label, input field, and helper text vertically.
+ * Handles the global disabled state opacity.
+ */
 .ui-input {
-  display: grid;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Consistent spacing with UiSelect */
+  width: 100%;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+
+  /* State: Disabled */
+  &.is-disabled {
+    opacity: 0.6;
+    pointer-events: none; /* Prevents user interaction */
+    
+    .ui-input__field {
+      background-color: #F2F4F7; /* Neutral Grey */
+      border-color: #EAECF0;
+    }
+  }
 }
 
+/* * LABEL
+ * Uppercase & Bold, consistent with BalanceMe typography.
+ * Uses a subtle grey to avoid visual clutter.
+ */
 .ui-input__label {
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-family: var(--font-family-base, sans-serif);
+  font-size: 11px;
   font-weight: 800;
-  color: rgba(16, 24, 40, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9CA3AF; /* Cool Grey */
+  margin-left: 12px; /* Aligned with the field padding */
 }
 
+/* * FIELD WRAPPER
+ * The rounded container (Pill shape).
+ * Height: 48px (Matches UiSelect for consistency).
+ */
 .ui-input__field {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  
+  width: 100%;
+  height: 48px; /* Standardized height */
+  padding: 0 20px;
+  
+  border-radius: 999px; /* Full Pill Shape */
+  border: 1px solid transparent; /* Prevents layout shift on focus */
+  
+  /* --- DEFAULT COLORS --- */
+  background-color: #F9FAFB; /* Very light grey */
+  border-color: #E5E7EB;     /* Subtle border */
+  
+  transition: all 0.2s ease;
 
-  background: rgba(255, 255, 255, 0.7);
-  border: 2px solid rgba(16, 24, 40, 0.08);
-  border-radius: 999px;
-
-  padding: 14px 18px;
-  min-height: 56px; /* comfy like your screenshot */
-  box-sizing: border-box;
-
-  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
-
+  /* Focus State */
   &:focus-within {
-    border-color: rgba(79, 166, 166, 0.55);
-    box-shadow: 0 0 0 4px rgba(79, 166, 166, 0.15);
-    background: rgba(255, 255, 255, 0.9);
+    background-color: #FFFFFF;
+    border-color: var(--color-primary, #4FA6A6); 
+    box-shadow: 0 0 0 4px rgba(79, 166, 166, 0.15); /* Soft teal halo */
+  }
+
+  /* Error State (Powder Pink style) */
+  &.ui-input__field--error {
+    background-color: #FFF1F2; /* Powder Pink */
+    border-color: #FDA4AF;     /* Soft Rose */
+    
+    &:focus-within {
+      border-color: var(--color-emotional, #F43F5E);
+      box-shadow: 0 0 0 4px rgba(253, 164, 175, 0.25);
+    }
   }
 }
 
-.ui-input__field--error {
-  border-color: rgba(192, 88, 114, 0.65);
-  box-shadow: 0 0 0 4px rgba(192, 88, 114, 0.14);
-}
-
-.ui-input__field--disabled {
-  opacity: 0.6;
-}
-
+/* * NATIVE INPUT CONTROL
+ * Invisible styling to blend perfectly into the wrapper.
+ */
 .ui-input__control {
   width: 100%;
+  height: 100%;
   border: none;
   outline: none;
   background: transparent;
-
-  font-family: var(--font-family-base);
-  font-size: 20px;
+  
+  font-family: var(--font-family-base, sans-serif);
+  font-size: 15px; /* Legible standard size */
   font-weight: 600;
-  color: rgba(16, 24, 40, 0.55);
+  color: #374151; /* Dark Grey text */
 
+  /* Placeholder Style */
   &::placeholder {
-    color: rgba(16, 24, 40, 0.35);
-    font-weight: 600;
+    color: #D1D5DB; 
+    font-weight: 500;
   }
 }
 
-.ui-input__suffix {
-  font-size: 16px;
-  font-weight: 700;
-  color: rgba(16, 24, 40, 0.35);
-  padding-left: 6px;
-  white-space: nowrap;
-}
-
-.ui-input__hint {
-  margin: 0;
-  font-size: 13px;
-  color: rgba(16, 24, 40, 0.45);
-}
-
+/* * ERROR MESSAGE
+ * Displayed below the field using the emotional color.
+ */
 .ui-input__error {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 700;
-  color: rgba(192, 88, 114, 0.9);
+  font-size: 12px;
+  color: var(--color-emotional, #9F1239); /* Deep Rose */
+  margin-left: 16px;
+  margin-top: 4px;
+  font-weight: 500;
 }
 
-/* Small screens */
-@media (max-width: 360px) {
-  .ui-input__control {
-    font-size: 18px;
-  }
-  .ui-input__field {
-    min-height: 52px;
-    padding: 12px 16px;
-  }
-}
-/* =====================================================
-   Number input: hide native spinner arrows
-   - Keeps numeric keyboard on mobile
-   - Avoids ugly stepper controls
-   ===================================================== */
-
-/* Chrome / Safari / Edge (WebKit) */
-.ui-input__control[type='number']::-webkit-outer-spin-button,
-.ui-input__control[type='number']::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+/* * HINT TEXT
+ * Helper text below the field.
+ */
+.ui-input__hint {
+  font-size: 12px;
+  color: #6B7280;
+  margin-left: 16px;
+  margin-top: 4px;
 }
 
-/* Firefox */
+/* * UTILITY: REMOVE SPINNERS
+ * Hides the up/down arrows on number inputs for a cleaner UI.
+ */
 .ui-input__control[type='number'] {
-  -moz-appearance: textfield;
+  -moz-appearance: textfield; /* Firefox */
   appearance: textfield;
+  
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none; /* Webkit */
+    margin: 0;
+  }
 }
