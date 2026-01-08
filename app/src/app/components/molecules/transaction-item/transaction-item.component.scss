@@ -1,0 +1,121 @@
+/* * ROOT CONTAINER
+ * Horizontal layout (Row).
+ * Uses a fixed 'gap' to separate columns, keeping them close together.
+ */
+.transaction-item {
+  display: flex;
+  align-items: center; /* Vertically center items */
+  gap: 16px; /* Space between Icon, Details, and Amount */
+  padding: 16px 0;
+  border-bottom: 1px solid #F2F4F7; /* Divider line */
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+/* * ICON WRAPPER
+ * Circular container for the currency symbol.
+ */
+.transaction-item__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0; /* Prevents squashing */
+
+  span {
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  /* --- DYNAMIC VARIANTS --- */
+  
+  /* Variant: Emotional (Pink) */
+  &.icon--emotional {
+    background-color: #FFF5F7; 
+    color: #D48C9D;            
+  }
+
+  /* Variant: Vital Need (Teal/Primary) */
+  &.icon--primary {
+    background-color: #F0F9F9; 
+    color: #4FA6A6;            
+  }
+
+  /* Variant: Neutral (Grey) */
+  &.icon--neutral {
+    background-color: #F2F4F7; 
+    color: #667085;            
+  }
+}
+
+/* * DETAILS COLUMN
+ * Contains Title + Tag/Emotion.
+ * CRITICAL CHANGE: Removed 'flex: 1'.
+ * This ensures the column width fits its content, keeping the Amount close.
+ */
+.transaction-item__details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  /* flex: 1; <--- REMOVED to stop pushing the amount to the far right */
+}
+
+/* * TITLE */
+.transaction-item__title {
+  font-family: var(--font-family-base, sans-serif);
+  font-weight: 700;
+  color: #101828; 
+  font-size: 15px;
+  white-space: nowrap; /* Prevents wrapping */
+}
+
+/* * META ROW */
+.transaction-item__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transaction-item__separator {
+  color: #98A2B3;
+  font-size: 10px;
+}
+
+.transaction-item__emotion {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #98A2B3;
+  white-space: nowrap; /* Keeps text on one line */
+}
+
+/* * AMOUNT COLUMN
+ * Displays the price and date.
+ * Naturally follows the details column because 'flex: 1' was removed above.
+ */
+.transaction-item__amount-col {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  /* margin-left: auto; <--- Ensure this is NOT present if you want it close */
+}
+
+.transaction-item__amount {
+  font-weight: 800;
+  font-size: 16px;
+  color: #101828;
+  white-space: nowrap;
+}
+
+.transaction-item__date {
+  font-size: 11px;
+  font-weight: 600;
+  color: #98A2B3;
+  text-transform: uppercase;
+}

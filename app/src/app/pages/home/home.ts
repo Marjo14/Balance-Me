@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 // ✅ imports de tes atoms
-import { Button } from '../../components/atoms/button/button';
-import { InputComponent } from '../../components/atoms/input/input';
+
+
 import { Radio } from '../../components/atoms/radio/radio';
-import { PlusIcon } from '../../components/atoms/plus-icon/plus-icon';
+
 import { Tag } from '../../components/atoms/tag/tag';
 
 type ExpenseType = 'necessary' | 'emotional';
@@ -23,7 +23,7 @@ interface ResultState {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, Button, InputComponent, Radio, PlusIcon, Tag],
+  imports: [CommonModule, FormsModule, Tag],
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
 })

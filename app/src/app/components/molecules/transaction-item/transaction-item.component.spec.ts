@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RemainingAmountCard } from './remaining-amount-card';
+import { TransactionItemComponent } from './transaction-item.component';
 
-describe('RemainingAmountCard', () => {
-  let component: RemainingAmountCard;
-  let fixture: ComponentFixture<RemainingAmountCard>;
+describe('TransactionItemComponent', () => {
+  let component: TransactionItemComponent;
+  let fixture: ComponentFixture<TransactionItemComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RemainingAmountCard]
+      imports: [TransactionItemComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(RemainingAmountCard);
+    fixture = TestBed.createComponent(TransactionItemComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,0 +1,29 @@
+<div class="transaction-item">
+  
+  <div class="transaction-item__icon" [ngClass]="'icon--' + computedTone">
+    <span>€</span>
+  </div>
+
+  <div class="transaction-item__details">
+    <div class="transaction-item__title">{{ title }}</div>
+    
+    <div class="transaction-item__meta">
+      <ui-tag [tone]="computedTone" size="sm" [ghost]="true">
+        {{ tagLabel }}
+      </ui-tag>
+      
+      <ng-container *ngIf="emotion">
+        <span class="transaction-item__separator">•</span>
+        <span class="transaction-item__emotion">{{ emotion }}</span>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="transaction-item__amount-col">
+    <div class="transaction-item__amount">
+      {{ amount | number:'1.2-2' }} €
+    </div>
+    <div class="transaction-item__date">{{ date }}</div>
+  </div>
+
+</div>
