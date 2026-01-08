@@ -11,6 +11,7 @@ export class UiInputComponent {
   @Input() placeholder = '';
   @Input() type: 'text' | 'number' | 'email' | 'password' = 'text';
   @Input() value: string | number | null = null;
+  @Input() autocomplete: string = 'off';
 
   @Input() required = false;
   @Input() disabled = false;

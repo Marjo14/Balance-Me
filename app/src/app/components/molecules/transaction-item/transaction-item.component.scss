@@ -1,22 +1,26 @@
 /* * ROOT CONTAINER
  * Horizontal layout (Row).
- * Uses a fixed 'gap' to separate columns, keeping them close together.
+ * Uses a fixed 'gap' to separate columns.
  */
 .transaction-item {
   display: flex;
-  align-items: center; /* Vertically center items */
-  gap: 16px; /* Space between Icon, Details, and Amount */
+  align-items: center;
+  gap: 16px;
   padding: 16px 0;
-  border-bottom: 1px solid #F2F4F7; /* Divider line */
+  border-bottom: 1px solid #F2F4F7;
+  width: 100%; /* Ensures it takes full width of the parent card */
 
   &:last-child {
     border-bottom: none;
   }
+
+  /* MOBILE RESPONSIVE TWEAK (< 480px) */
+  @media (max-width: 480px) {
+    gap: 10px; /* Tighter spacing on phones */
+  }
 }
 
-/* * ICON WRAPPER
- * Circular container for the currency symbol.
- */
+/* * ICON WRAPPER */
 .transaction-item__icon {
   width: 40px;
   height: 40px;
@@ -24,44 +28,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0; /* Prevents squashing */
+  flex-shrink: 0; 
 
   span {
     font-weight: 700;
     font-size: 18px;
   }
 
-  /* --- DYNAMIC VARIANTS --- */
-  
-  /* Variant: Emotional (Pink) */
-  &.icon--emotional {
-    background-color: #FFF5F7; 
-    color: #D48C9D;            
-  }
-
-  /* Variant: Vital Need (Teal/Primary) */
-  &.icon--primary {
-    background-color: #F0F9F9; 
-    color: #4FA6A6;            
-  }
-
-  /* Variant: Neutral (Grey) */
-  &.icon--neutral {
-    background-color: #F2F4F7; 
-    color: #667085;            
-  }
+  /* Variants */
+  &.icon--emotional { background-color: #FFF5F7; color: #D48C9D; }
+  &.icon--primary   { background-color: #F0F9F9; color: #4FA6A6; }
+  &.icon--neutral   { background-color: #F2F4F7; color: #667085; }
 }
 
 /* * DETAILS COLUMN
- * Contains Title + Tag/Emotion.
- * CRITICAL CHANGE: Removed 'flex: 1'.
- * This ensures the column width fits its content, keeping the Amount close.
+ * Contains Title + Tag.
+ * Added 'min-width: 0' to allow text truncation if needed (Flexbox behavior).
  */
 .transaction-item__details {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  /* flex: 1; <--- REMOVED to stop pushing the amount to the far right */
+  flex: 1;      /* Allows this column to grow */
+  min-width: 0; /* CRITICAL for responsiveness: prevents overflow */
 }
 
 /* * TITLE */
@@ -70,7 +59,9 @@
   font-weight: 700;
   color: #101828; 
   font-size: 15px;
-  white-space: nowrap; /* Prevents wrapping */
+  white-space: nowrap; 
+  overflow: hidden;        /* Truncates text with "..." if screen is too small */
+  text-overflow: ellipsis; /* ex: "Courses Biolog..." */
 }
 
 /* * META ROW */
@@ -80,9 +71,19 @@
   gap: 8px;
 }
 
-.transaction-item__separator {
+/* * SEPARATOR & EMOTION TEXT
+ * These are secondary information.
+ * On Mobile: We HIDE them to keep the UI clean and prevent overlapping.
+ */
+.transaction-item__separator,
+.transaction-item__emotion {
   color: #98A2B3;
   font-size: 10px;
+  
+  /* Mobile: Hide emotion text to prioritize the Tag */
+  @media (max-width: 480px) {
+    display: none; 
+  }
 }
 
 .transaction-item__emotion {
@@ -90,20 +91,18 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #98A2B3;
-  white-space: nowrap; /* Keeps text on one line */
+  white-space: nowrap;
 }
 
 /* * AMOUNT COLUMN
- * Displays the price and date.
- * Naturally follows the details column because 'flex: 1' was removed above.
+ * Keeps the amount visible on the right.
  */
 .transaction-item__amount-col {
   text-align: right;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  /* margin-left: auto; <--- Ensure this is NOT present if you want it close */
+  flex-shrink: 0; /* Ensures the amount is never squashed */
 }
 
 .transaction-item__amount {
