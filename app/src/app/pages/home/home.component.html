@@ -1,18 +1,19 @@
 <div class="page-container">
   
-
+  <div class="brand-header" style="margin-bottom: 2rem;">
+      <h1>Balance <span style="color: #E7B6C2; font-style: italic;">Me</span></h1>
+      <p style="color: #666;">Une interface sereine pour vos finances.</p>
+  </div>
 
   <main class="dashboard-grid">
 
     <div class="col-left">
       
       <ui-card variant="positive" padding="lg" elevation="md">
-        
         <div class="budget-content">
           <div>
             <div class="label-sm" aria-hidden="true">• ÉNERGIE FINANCIÈRE</div>
             <h2 class="sr-only">Votre Solde Restant</h2>
-            
             <div class="big-amount">
               {{ remainingBudget() | number:'1.2-2' }} <small>€</small>
             </div>
@@ -28,39 +29,41 @@
             </div>
           </div>
         </div>
-
       </ui-card>
 
-      <section class="history-section" aria-labelledby="hist-title">
-        <div class="history-header">
-          <h3 id="hist-title">Dernières réflexions</h3>
-        </div>
-        
-        <div class="transaction-list" role="list">
-          <p *ngIf="transactions().length === 0" class="empty-state">
-            Aucun flux pour le moment.
-          </p>
+      <ui-card variant="neutral" padding="lg" class="history-card" style="margin-top: 2rem;">
+        <section class="history-section" aria-labelledby="hist-title">
+          <div class="history-header">
+            <h3 id="hist-title" style="margin-bottom: 1.5rem;">Dernières réflexions</h3>
+          </div>
+          
+          <div class="transaction-list" role="list">
+            <p *ngIf="transactions().length === 0" class="empty-state">
+              Aucun flux pour le moment.
+            </p>
 
-          @for (item of visibleTransactions(); track item.id) {
-            <div role="listitem">
-              <app-transaction-item
-                [title]="item.title"
-                [amount]="item.amount"
-                [tagLabel]="item.category"
-                [date]="(item.date | date:'dd MMM yyyy') || ''"
-                [emotion]="item.emotion || ''">
-              </app-transaction-item>
-            </div>
-          }
-        </div>
+            @for (item of visibleTransactions(); track item.id) {
+              <div role="listitem">
+                <app-transaction-item
+                  [title]="item.title"
+                  [amount]="item.amount"
+                  [tagLabel]="item.category"
+                  [date]="(item.date | date:'dd MMM yyyy') || ''"
+                  [emotion]="item.emotion || ''">
+                </app-transaction-item>
+              </div>
+            }
+          </div>
 
-        <button 
-          *ngIf="transactions().length > 3"
-          class="btn-show-more"
-          (click)="toggleHistory()">
-          {{ showAllHistory() ? 'Voir moins' : 'Voir tout l\'historique' }}
-        </button>
-      </section>
+          <button 
+            *ngIf="transactions().length > 3"
+            class="load-more-btn"
+            style="margin-top: 1.5rem; width: 100%; border: none; background: transparent; cursor: pointer; color: #537C60; font-weight: 700; text-decoration: underline;"
+            (click)="toggleHistory()">
+            {{ showAllHistory() ? 'Voir moins' : 'Voir tout l\'historique' }}
+          </button>
+        </section>
+      </ui-card>
 
     </div>
 
@@ -68,15 +71,17 @@
       
       <section class="intention-card" aria-labelledby="form-heading">
         <h2 id="form-heading">Posez une intention</h2>
-        <p class="subtitle">Identifier l'origine d'un achat, c'est reprendre le contrôle.</p>
+        <p class="subtitle" style="color: #667085; font-size: 0.9rem; margin-bottom: 1.5rem;">
+          Identifier l'origine d'un achat, c'est reprendre le contrôle.
+        </p>
 
         <form (submit)="$event.preventDefault()">
           
-          <div class="form-grid">
+          <div class="form-grid" style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
             <div class="input-group">
-              <label for="amount">QUELLE SOMME INVESTISSEZ-VOUS ?</label>
+              <label style="font-size: 10px; font-weight: 800; color: #98A2B3; letter-spacing: 0.1em; display: block; margin-bottom: 8px;">QUELLE SOMME INVESTISSEZ-VOUS ?</label>
               <ui-input
-                id="amount"
+                [class.input-error]="showErrors && !formAmount"
                 placeholder="0.00 €"
                 type="number"
                 [value]="formAmount"
@@ -85,9 +90,9 @@
             </div>
 
             <div class="input-group">
-              <label for="title">QUEL EST L'OBJET DE CE FLUX ?</label>
+              <label style="font-size: 10px; font-weight: 800; color: #98A2B3; letter-spacing: 0.1em; display: block; margin-bottom: 8px;">QUEL EST L'OBJET DE CE FLUX ?</label>
               <ui-input
-                id="title"
+                [class.input-error]="showErrors && !formTitle"
                 placeholder="Ex: Moment partagé..."
                 type="text"
                 [value]="formTitle" 
@@ -98,32 +103,22 @@
 
           <div class="intention-actions">
             
-            <div class="labels-row">
-              <span class="action-label" id="intention-label">L'INTENTION DERRIÈRE L'ACTE</span>
+            <div class="labels-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <span class="action-label" style="font-size: 10px; font-weight: 800; color: #98A2B3; letter-spacing: 0.1em;">L'INTENTION DERRIÈRE L'ACTE</span>
               
-              <div class="help-tags">
-                <ui-tag 
-                  tone="primary" 
-                  class="clickable-tag"
-                  (click)="openVitalInfo()">
-                  BESOIN ?
-                </ui-tag>
-
-                <ui-tag 
-                  tone="emotional" 
-                  class="clickable-tag"
-                  (click)="openEmotionalInfo()">
-                  ENVIE ?
-                </ui-tag>
+              <div class="help-tags" style="display: flex; gap: 8px;">
+                <ui-tag tone="secondary" class="clickable-tag" (click)="openVitalInfo()" style="cursor: pointer;">BESOIN ?</ui-tag>
+                <ui-tag tone="emotional" class="clickable-tag" (click)="openEmotionalInfo()" style="cursor: pointer;">ENVIE ?</ui-tag>
               </div>
             </div>
 
-            <div class="pill-group" role="group" aria-labelledby="intention-label">
+            <div class="pill-group" style="display: flex; gap: 12px; margin-bottom: 1.5rem;">
               <button 
                 type="button" 
                 class="pill" 
                 [class.active]="isVitalActive()"
-                (click)="selectVital()">
+                (click)="selectVital()"
+                style="flex: 1; padding: 12px; border-radius: 50px; border: 1px solid #EAECF0; background: white; font-weight: 700; cursor: pointer;">
                 BESOIN VITAL
               </button>
 
@@ -131,20 +126,33 @@
                 type="button" 
                 class="pill" 
                 [class.active]="isEmotionalActive()"
-                (click)="selectEmotional()">
+                (click)="selectEmotional()"
+                style="flex: 1; padding: 12px; border-radius: 50px; border: 1px solid #EAECF0; background: white; font-weight: 700; cursor: pointer;">
                 ENVIE ÉMOTIONNELLE
               </button>
             </div>
           </div>
 
-          <ui-button 
-            variant="primary" 
-            class="submit-btn" 
-            [fullWidth]="true"
-            size="lg"
-            (click)="addTransaction()">
-            ENREGISTRER EN CONSCIENCE
-          </ui-button>
+          <div *ngIf="isEmotionalActive() && showEmotionSelect" style="margin-bottom: 1.5rem;">
+            <ui-select
+              label="HUMEUR AU MOMENT DU CHOIX"
+              placeholder="Comment vous sentez-vous ?"
+              [options]="emotionOptions"
+              [value]="formEmotion"
+              [variant]="formEmotion ? 'emotion' : 'neutral'"
+              (valueChange)="onEmotionChange($event)">
+            </ui-select>
+          </div>
+
+          <div #submitBtnRef tabindex="-1">
+            <ui-button 
+              variant="primary" 
+              [fullWidth]="true"
+              size="lg"
+              (click)="onPreSubmit()">
+              ENREGISTRER EN CONSCIENCE
+            </ui-button>
+          </div>
 
         </form>
       </section>
@@ -156,7 +164,7 @@
     *ngIf="isModalOpen"
     [content]="currentModalContent"
     (close)="closeModal()"
-    (confirm)="closeModal()">
+    (confirm)="confirmModalAction()">
   </app-ui-modal>
 
 </div>

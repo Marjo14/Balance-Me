@@ -1,66 +1,76 @@
 import { Injectable, signal, computed } from '@angular/core';
-import { Expense } from '../models/expense.model';
 
-@Injectable({
-  providedIn: 'root' // SINGLETON: Unique instance shared across the app
-})
+export interface Transaction {
+  id: string;
+  title: string;
+  amount: number;
+  date: Date;
+  category: 'VITAL' | 'EMOTIONAL';
+  emotion?: string;
+}
+
+@Injectable({ providedIn: 'root' })
 export class BudgetService {
+  // --- STATE ---
+  expenses = signal<Transaction[]>([]);
+  initialBudget = signal<number>(1350.00);
 
-  // 1. STATE (Private)
-  // We use Signals for reactive state management.
-  // Private to enforce encapsulation: only this service can modify data.
-  private _expenses = signal<Expense[]>([
-    { 
-      id: '1', 
-      title: 'Intuition', 
-      amount: -50.00, 
-      date: new Date(), 
-      category: 'EMOTIONAL', 
-      emotion: 'Besoin de réconfort' 
-    },
-    { 
-      id: '2', 
-      title: 'Courses Bio', 
-      amount: -85.20, 
-      date: new Date(), 
-      category: 'VITAL', 
-      emotion: 'Serein' 
-    }
-  ]);
-
-  private _initialBudget = signal<number>(1500); // Monthly income example
-
-  // 2. SELECTORS (Public Read-only)
-  // Expose signals to components without allowing direct modification.
-  readonly expenses = this._expenses.asReadonly();
-
-  // 3. COMPUTED VALUES (The "Brain")
-  // Automatically updates whenever _expenses changes.
-  // No need to manually recalculate totals.
-  totalExpenses = computed(() => {
-    return this._expenses().reduce((sum, item) => sum + item.amount, 0);
-  });
-
+  // --- COMPUTED ---
+  // Calculates the balance. If expenses > 1350, it naturally goes negative.
   remainingBudget = computed(() => {
-    return this._initialBudget() + this.totalExpenses();
+    const total = this.expenses().reduce((acc, t) => acc + t.amount, 0);
+    return this.initialBudget() - total;
   });
 
-  // 4. ACTIONS (Public Methods)
-  
+  constructor() {
+    this.loadFromStorage();
+  }
+
+  // --- METHODS ---
+
   /**
-   * Adds a new expense to the state using immutability pattern.
+   * Adds an expense to the list. 
+   * Validation is handled by the Strategy in the component, 
+   * but the service allows any amount (supports negative balance).
    */
-  addExpense(title: string, amount: number, category: 'VITAL' | 'EMOTIONAL', emotion?: string) {
-    const newExpense: Expense = {
+  addExpense(title: string, amount: number, category: 'VITAL' | 'EMOTIONAL', emotion: string) {
+    const newTx: Transaction = {
       id: Date.now().toString(),
       title,
-      amount: -Math.abs(amount), // Ensure negative value
+      amount, // Substracted regardless of the final balance
       date: new Date(),
       category,
       emotion
     };
+    
+    this.expenses.update(list => [newTx, ...list]);
+    this.saveToStorage();
+  }
 
-    // Update the signal with a new array reference
-    this._expenses.update(list => [newExpense, ...list]);
+  resetAll() {
+    this.expenses.set([]);
+    localStorage.removeItem('balance_expenses');
+  }
+
+  hasData(): boolean {
+    return this.expenses().length > 0;
+  }
+
+  // --- PERSISTENCE ---
+
+  private saveToStorage() {
+    localStorage.setItem('balance_expenses', JSON.stringify(this.expenses()));
+  }
+
+  private loadFromStorage() {
+    const data = localStorage.getItem('balance_expenses');
+    if (data) {
+      // Re-parse dates because JSON stringify transforms them into strings
+      const parsedData = JSON.parse(data).map((t: any) => ({
+        ...t,
+        date: new Date(t.date)
+      }));
+      this.expenses.set(parsedData);
+    }
   }
 }

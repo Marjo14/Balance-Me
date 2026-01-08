@@ -20,7 +20,6 @@
 }
 
 /* --- LAYOUT WRAPPER --- */
-/* Reuses the .container utility from design-system.scss */
 .page-container {
   width: 100%;
   max-width: 1040px;
@@ -29,20 +28,17 @@
 }
 
 /* --- HEADER --- */
-/* If you use app-ui-header component, this spacing handles the gap */
 app-ui-header {
   display: block;
   margin-bottom: var(--space-xl);
 }
 
 /* --- MAIN GRID LAYOUT --- */
-/* Mobile First: Stacked vertically */
 .dashboard-grid {
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
 
-  /* Desktop: 2 Columns (Left 45% / Right 55%) */
   @media (min-width: 900px) {
     display: grid;
     grid-template-columns: 0.8fr 1.2fr; 
@@ -61,8 +57,6 @@ app-ui-header {
   gap: var(--space-xl);
 }
 
-/* --- BUDGET CARD CONTENT --- */
-/* Specific styling for the content INSIDE the green UI-Card */
 .budget-content {
   color: var(--color-white);
   height: 100%;
@@ -81,7 +75,7 @@ app-ui-header {
 }
 
 .big-amount {
-  font-size: clamp(36px, 4vw, 56px); /* Responsive font size */
+  font-size: clamp(36px, 4vw, 56px); 
   font-weight: 800;
   line-height: 1;
   margin-bottom: var(--space-md);
@@ -93,11 +87,10 @@ app-ui-header {
   }
 }
 
-/* 👇 FIX: THE MISSING SEPARATOR LINE 👇 */
 .budget-separator {
   width: 100%;
   height: 1px;
-  background-color: rgba(255, 255, 255, 0.16); /* Semi-transparent white */
+  background-color: rgba(255, 255, 255, 0.16); 
   margin: var(--space-md) 0;
 }
 
@@ -118,9 +111,7 @@ app-ui-header {
   }
 }
 
-/* --- HISTORY SECTION --- */
 .history-section {
-  /* Ensure proper spacing on mobile */
   padding-bottom: var(--space-xl);
   
   .history-header {
@@ -168,24 +159,21 @@ app-ui-header {
   }
 }
 
-
 /* =====================================================
    RIGHT COLUMN: INTENTION FORM
    ===================================================== */
 
 .col-right {
-  /* Sticky effect on Desktop */
   @media (min-width: 900px) {
     position: sticky;
     top: var(--space-lg);
   }
 }
 
-/* The White Card Container */
 .intention-card {
   background: var(--color-surface);
-  border-radius: var(--radius-xl); /* 28px */
-  padding: var(--space-xl); /* 32px */
+  border-radius: var(--radius-xl); 
+  padding: var(--space-xl); 
   box-shadow: var(--shadow-lg);
   
   h2 {
@@ -203,14 +191,12 @@ app-ui-header {
   }
 }
 
-/* Form Grid (Inputs) */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-lg);
   margin-bottom: 32px;
 
-  /* On Tablet/Desktop, puts inputs side by side */
   @media (min-width: 600px) {
     grid-template-columns: 1fr 1fr;
   }
@@ -230,7 +216,6 @@ app-ui-header {
   }
 }
 
-/* Intention Actions (Buttons & Links) */
 .intention-actions {
   margin-bottom: 32px;
 }
@@ -261,7 +246,7 @@ app-ui-header {
   }
 }
 
-/* Pill Buttons (Besoin / Envie) */
+/* --- PILL BUTTONS CORRECTION --- */
 .pill-group {
   display: flex;
   gap: var(--space-md);
@@ -282,11 +267,11 @@ app-ui-header {
 
     &:hover { border-color: #98A2B3; }
     
-    /* ACTIVE STATE (Dark Green) */
+    /* MODIFICATION ICI : !important ajouté pour garantir la couleur sombre */
     &.active {
-      background-color: #1A2E22; /* Very dark green */
-      color: var(--color-white);
-      border-color: #1A2E22;
+      background-color: #1A2E22 !important; 
+      color: var(--color-white) !important;
+      border-color: #1A2E22 !important;
       box-shadow: 0 4px 12px rgba(26, 46, 34, 0.15);
     }
   }
@@ -294,5 +279,4 @@ app-ui-header {
 
 .submit-btn {
   width: 100%;
-  /* Assuming ui-button handles styles, but forcing width here */
 }

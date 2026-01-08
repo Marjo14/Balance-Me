@@ -1,199 +1,186 @@
+import { Component, inject, signal, computed, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, inject, signal, computed } from '@angular/core';
 
-// --- UI IMPORTS (Atoms & Molecules) ---
+// --- UI ATOMS & MOLECULES ---
 import { UiCardComponent } from '../../components/atoms/card/card.component';
 import { UiButtonComponent } from '../../components/atoms/button/button.component';
 import { UiInputComponent } from '../../components/atoms/input/input.component';
 import { UiTagComponent } from '../../components/atoms/tag/tag.component';
+import { UiSelectComponent } from '../../components/atoms/select/select.component';
 import { UiModalComponent, ModalContent } from '../../components/molecules/modal/modal.component';
 import { TransactionItemComponent } from '../../components/molecules/transaction-item/transaction-item.component';
-// Note: UiHeaderComponent is commented out until you create it to avoid errors
-// import { UiHeaderComponent } from '../../components/atoms/ui-header/ui-header.component';
 
-// --- LOGIC IMPORTS (Service & Strategy Pattern) ---
+// --- LOGIC & STRATEGY ---
 import { BudgetService } from '../../services/budget.service';
-  import { ExpenseStrategy, VitalNeedStrategy, EmotionalDesireStrategy } from '../../core/strategies/expense.strategy';
+import { ExpenseStrategy, VitalNeedStrategy, EmotionalDesireStrategy } from '../../core/strategies/expense.strategy';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule,
-    // UiHeaderComponent, 
+    CommonModule, 
     UiCardComponent, 
     UiButtonComponent, 
-    UiTagComponent,
-    UiModalComponent,
     UiInputComponent, 
+    UiTagComponent, 
+    UiSelectComponent, 
+    UiModalComponent, 
     TransactionItemComponent
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.scss',
+  styleUrl: './home.component.scss'
 })
-export class HomeComponent {
-  
-  // --- DEPENDENCY INJECTION ---
+export class HomeComponent implements OnInit {
+  // --- DEPENDENCIES ---
   private budgetService = inject(BudgetService);
 
-  // --- 1. DATA BINDING (Signals) ---
-  // We use signals to automatically update the UI when data changes in the service.
+  // --- VIEW CHILD ---
+  @ViewChild('submitBtnRef') submitBtnRef!: ElementRef;
+
+  // --- DATA SIGNALS ---
   transactions = this.budgetService.expenses;
   remainingBudget = this.budgetService.remainingBudget;
-
-  // --- 2. HISTORY VISIBILITY ---
-  // State to toggle between showing 3 items or the full list.
   showAllHistory = signal(false);
 
-  // Computed signal: reacts to 'transactions' or 'showAllHistory' changes.
+  /**
+   * FIX FOR TS2339: Property 'visibleTransactions' does not exist
+   * This computed signal manages the history display (3 items or all).
+   */
   visibleTransactions = computed(() => {
     const all = this.transactions();
     return this.showAllHistory() ? all : all.slice(0, 3);
   });
 
+  // --- FORM STATE ---
+  formTitle = '';
+  formAmount: number | null = null;
+  formEmotion = '';
+  showErrors = false;
+  showEmotionSelect = false;
+
+  // --- STRATEGY ---
+  currentStrategy = signal<ExpenseStrategy>(new VitalNeedStrategy());
+
+  // --- MODAL STATE ---
+  isModalOpen = false;
+  currentModalContent!: ModalContent;
+
+  // --- OPTIONS ---
+  emotionOptions = [
+    { value: 'Stress', label: 'Stressé(e)' },
+    { value: 'Ennui', label: 'Ennui' },
+    { value: 'Platitude', label: 'Platitude' },
+    { value: 'Besoin de réconfort', label: 'Besoin de réconfort' }
+  ];
+
+  constructor() {}
+
+  ngOnInit() {
+    console.log('🏗️ BalanceMe Home Initialized');
+  }
+
+  // --- CORE METHODS ---
+
   toggleHistory() {
     this.showAllHistory.update(v => !v);
   }
 
-  // --- 3. FORM STATE ---
-  formTitle: string = '';
-  formAmount: number | null = null;
-  
-  // --- STRATEGY PATTERN IMPLEMENTATION ---
-  // We hold the CURRENT active strategy behavior in a signal.
-  // Default is 'VitalNeedStrategy'.
-  currentStrategy = signal<ExpenseStrategy>(new VitalNeedStrategy());
-
-  // --- 4. MODAL STATE MANAGEMENT ---
-  isModalOpen = false;
-  currentModalContent!: ModalContent;
-
-  // Static Data: Modal content for "Vital Need"
-  private vitalContent: ModalContent = {
-    type: 'vital',
-    title: "Qu'est-ce qu'un Besoin Vital ?",
-    description: "Un Besoin Vital est une dépense non-négociable pour votre sécurité et votre santé.",
-    items: [
-      "Logement & Énergie",
-      "Alimentation de base",
-      "Santé & Assurances",
-      "Transport essentiel"
-    ],
-    buttonText: "J'AI COMPRIS"
-  };
-
-  // Static Data: Modal content for "Emotional Desire"
-  private emotionalContent: ModalContent = {
-    type: 'emotional',
-    title: "L'Envie Émotionnelle",
-    description: "Une envie naît souvent d'un besoin de combler un vide ou d'apaiser une tension. Pause HALT :",
-    checklistTitle: "CHECKLIST DE CONSCIENCE",
-    items: [
-      "Est-ce que je serai toujours heureux de cet achat dans 3 jours ?",
-      "Suis-je en train de fuir une émotion (stress, ennui) ?",
-      "Mon budget 'Plaisir' du mois le permet-il sans stresser ?"
-    ],
-    footerNote: "Astuce : Attendez 24h. Si l'envie est toujours là, go.",
-    buttonText: "J'AI COMPRIS"
-  };
-
-  constructor() {
-    console.log('🏗️ HomeComponent initialized successfully.');
+  selectVital() {
+    this.currentStrategy.set(new VitalNeedStrategy());
+    this.showEmotionSelect = false;
+    this.formEmotion = '';
   }
 
-  // --- USER ACTIONS: INPUTS ---
-
-  onTitleChange(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    this.formTitle = inputElement.value;
+  selectEmotional() {
+    this.currentStrategy.set(new EmotionalDesireStrategy());
+    this.openEmotionalInfo(); // Triggers the pink modal from your Storybook
   }
 
-  onAmountChange(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    this.formAmount = Number(inputElement.value);
+  onEmotionChange(val: string) {
+    this.formEmotion = val;
   }
 
-  // --- USER ACTIONS: MODALS & HELPERS ---
+  onTitleChange(e: Event) {
+    this.formTitle = (e.target as HTMLInputElement).value;
+  }
 
-  // Open specific modal info
+  onAmountChange(e: Event) {
+    this.formAmount = Number((e.target as HTMLInputElement).value);
+  }
+
+  // --- MODAL TRIGGERS (Matches your Stories) ---
+
   openVitalInfo() {
-    this.currentModalContent = this.vitalContent;
+    this.currentModalContent = {
+      type: 'vital',
+      title: "Qu'est-ce qu'un Besoin Vital ?",
+      description: "Un Besoin Vital est une dépense non-négociable pour votre sécurité et votre santé.",
+      items: ["Logement & Énergie", "Alimentation de base", "Santé & Assurances", "Transport essentiel"],
+      buttonText: "J'AI COMPRIS"
+    };
     this.isModalOpen = true;
   }
 
   openEmotionalInfo() {
-    this.currentModalContent = this.emotionalContent;
+    this.currentModalContent = {
+      type: 'emotional',
+      title: "L'Envie Émotionnelle",
+      description: "Une envie naît souvent d'un besoin de combler un vide. Pause HALT :",
+      checklistTitle: "CHECKLIST DE CONSCIENCE",
+      items: [
+        "Est-ce que je serai toujours heureux dans 3 jours ?",
+        "Suis-je en train de fuir une émotion ?",
+        "Mon budget 'Plaisir' le permet-il ?"
+      ],
+      footerNote: "Astuce : Attendez 24h. Si l'envie est toujours là, go.",
+      buttonText: "J'AI COMPRIS"
+    };
     this.isModalOpen = true;
   }
 
   closeModal() {
     this.isModalOpen = false;
-  }
-
-  // --- USER ACTIONS: STRATEGY SELECTION ---
-
-  selectVital() {
-    // Switch behavior to Vital Need
-    this.currentStrategy.set(new VitalNeedStrategy());
-  }
-
-  selectEmotional() {
-    // Switch behavior to Emotional Desire
-    this.currentStrategy.set(new EmotionalDesireStrategy());
-    // UX Enhancement: Trigger awareness modal automatically for emotional choices
-    this.openEmotionalInfo();
-  }
-
-  // Helpers for UI styling (active class)
-  isVitalActive(): boolean {
-    return this.currentStrategy() instanceof VitalNeedStrategy;
-  }
-  
-  isEmotionalActive(): boolean {
-    return this.currentStrategy() instanceof EmotionalDesireStrategy;
-  }
-
-  // --- MAIN ACTION: ADD TRANSACTION ---
-  
-  addTransaction() {
-    console.log('--- Attempting to add transaction ---');
-
-    // 1. Basic Form Validation
-    if (!this.formTitle || !this.formAmount) {
-      alert("⚠️ Please fill in both the amount and the title.");
-      return;
+    if (this.isEmotionalActive()) {
+      this.showEmotionSelect = true; // Shows Select after the HALT awareness modal
     }
+  }
 
-    // 2. STRATEGY EXECUTION
-    // We retrieve the active strategy object
+  // --- SUBMISSION LOGIC ---
+
+  onPreSubmit() {
+    this.showErrors = true;
+    if (!this.formTitle || !this.formAmount) return;
+    if (this.isEmotionalActive() && !this.formEmotion) return;
+
     const strategy = this.currentStrategy();
+    const result = strategy.validate(this.formAmount, this.remainingBudget());
 
-    // 3. VALIDATION DELEGATION
-    // We ask the strategy: "Is this expense allowed based on the current balance?"
-    const validation = strategy.validate(this.formAmount, this.remainingBudget());
-
-    if (!validation.isValid) {
-      // Logic blocked by the strategy (e.g., Emotional expense while in debt)
-      alert("🛑 " + validation.message);
-      return; 
-    }
-
-    // 4. SUCCESS: Call Service
-    // If validation passed, we proceed to add the expense via the service.
-    // We map the Strategy Label to the Service Category ('VITAL' or 'EMOTIONAL')
-    const categoryType = strategy.label === 'BESOIN VITAL' ? 'VITAL' : 'EMOTIONAL';
-
-    this.budgetService.addExpense(
-      this.formTitle,
-      this.formAmount,
-      categoryType, 
-      'Serein' // Default emotion
-    );
-
-    console.log(`✅ Transaction added using strategy: ${strategy.label}`);
-
-    // 5. Reset Form
-    this.formTitle = '';
-    this.formAmount = null;
+    this.currentModalContent = {
+      type: result.isValid ? 'vital' : 'emotional',
+      title: result.isValid ? 'Analyse : Accordée' : 'Analyse : Bloquée',
+      description: result.message,
+      buttonText: result.isValid ? 'CONFIRMER' : 'COMPRIS'
+    };
+    this.isModalOpen = true;
   }
+
+  confirmModalAction() {
+    if (this.currentModalContent.title.includes('Accordée')) {
+      this.budgetService.addExpense(
+        this.formTitle, 
+        this.formAmount!, 
+        this.isEmotionalActive() ? 'EMOTIONAL' : 'VITAL', 
+        this.isEmotionalActive() ? this.formEmotion : 'Serein'
+      );
+      this.formTitle = ''; 
+      this.formAmount = null; 
+      this.formEmotion = ''; 
+      this.showErrors = false;
+    }
+    this.closeModal();
+  }
+
+  // --- HELPERS ---
+  isVitalActive() { return this.currentStrategy() instanceof VitalNeedStrategy; }
+  isEmotionalActive() { return this.currentStrategy() instanceof EmotionalDesireStrategy; }
 }
