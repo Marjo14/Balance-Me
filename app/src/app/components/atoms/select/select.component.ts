@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type UiSelectVariant = 'neutral' | 'emotion';
@@ -18,60 +12,47 @@ export type UiSelectVariant = 'neutral' | 'emotion';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiSelectComponent {
-  /** Visible label above the select */
   @Input() label = '';
-
-  /** Optional helper text (below) */
-  @Input() hint = '';
-
-  /** Error message (below). If set => aria-invalid + error styles */
-  @Input() error = '';
-
-  /** Visual variant */
-  @Input() variant: UiSelectVariant = 'neutral';
-
-  /** Native select props */
-  @Input() id = '';
-  @Input() name = '';
+  @Input() placeholder = 'Sélectionner...';
+  @Input() options: Array<{ value: string; label: string }> = [];
   @Input() value: string | null = null;
   @Input() disabled = false;
-  @Input() required = false;
+  @Input() variant: UiSelectVariant = 'emotion';
+  @Input() id = '';
+  @Input() error = '';
 
-  /** Placeholder shown as first option */
-  @Input() placeholder = 'Sélectionner...';
-
-  /** Options list */
-  @Input() options: Array<{ value: string; label: string }> = [];
-
-  /** Emits selected value */
   @Output() valueChange = new EventEmitter<string>();
 
-  /** Emits native change event if needed */
-  @Output() changed = new EventEmitter<Event>();
+  isOpen = false;
 
   get selectId(): string {
-    return this.id || this.name || 'ui-select';
+    return this.id || 'ui-select-' + Math.random().toString(36).substring(2, 9);
   }
 
-  get describedBy(): string | null {
-    const ids: string[] = [];
-    if (this.hint) ids.push(`${this.selectId}-hint`);
-    if (this.error) ids.push(`${this.selectId}-error`);
-    return ids.length ? ids.join(' ') : null;
+  get selectedLabel(): string {
+    const found = this.options.find(o => o.value === this.value);
+    return found ? found.label : '';
   }
 
   get rootClasses(): string[] {
     return [
       'ui-select',
       `ui-select--${this.variant}`,
+      this.isOpen ? 'is-open' : '',
       this.error ? 'ui-select--error' : '',
       this.disabled ? 'ui-select--disabled' : '',
     ].filter(Boolean);
   }
 
-  onChange(e: Event) {
-    const target = e.target as HTMLSelectElement;
-    this.valueChange.emit(target.value);
-    this.changed.emit(e);
+  toggleDropdown() {
+    if (!this.disabled) {
+      this.isOpen = !this.isOpen;
+    }
+  }
+
+  selectOption(opt: { value: string; label: string }) {
+    this.value = opt.value;
+    this.valueChange.emit(opt.value);
+    this.isOpen = false;
   }
 }

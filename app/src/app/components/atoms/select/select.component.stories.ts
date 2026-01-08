@@ -6,9 +6,12 @@ const meta: Meta<UiSelectComponent> = {
   component: UiSelectComponent,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: { type: 'select' }, options: ['neutral', 'emotion'] },
+    variant: { 
+      control: { type: 'select' }, 
+      options: ['neutral', 'emotion'] 
+    },
     disabled: { control: { type: 'boolean' } },
-    required: { control: { type: 'boolean' } },
+    error: { control: { type: 'text' } },
   },
 };
 
@@ -22,9 +25,10 @@ const baseOptions = [
   { value: 'reconfort', label: 'Besoin de réconfort' },
 ];
 
+// --- VARIANTE NEUTRE ---
 export const Neutral: Story = {
   args: {
-    label: 'Sélection',
+    label: 'Catégorie de dépense',
     placeholder: 'Choisir…',
     options: baseOptions,
     variant: 'neutral',
@@ -33,23 +37,25 @@ export const Neutral: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width:520px; padding:24px;">
+      <div style="max-width:400px; padding:40px; background-color: #FBF6EE; min-height: 300px;">
         <ui-select
           [label]="label"
           [placeholder]="placeholder"
           [options]="options"
           [variant]="variant"
           [value]="value"
-        />
+          (valueChange)="value = $event"
+        ></ui-select>
       </div>
     `,
   }),
 };
 
+// --- VARIANTE EMOTION (ROSE) ---
 export const Emotion: Story = {
   args: {
     label: 'HUMEUR AU MOMENT DU CHOIX',
-    placeholder: 'Stressé(e)',
+    placeholder: 'Comment vous sentez-vous ?',
     options: baseOptions,
     variant: 'emotion',
     value: 'stress',
@@ -57,45 +63,46 @@ export const Emotion: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width:720px; padding:24px;">
+      <div style="max-width:400px; padding:40px; background-color: #FBF6EE; min-height: 400px;">
         <ui-select
           [label]="label"
           [placeholder]="placeholder"
           [options]="options"
           [variant]="variant"
           [value]="value"
-        />
+          (valueChange)="value = $event"
+        ></ui-select>
       </div>
     `,
   }),
 };
 
+// --- ÉTAT DÉSACTIVÉ ---
 export const Disabled: Story = {
   args: {
     label: 'HUMEUR AU MOMENT DU CHOIX',
-    placeholder: 'Stressé(e)',
+    placeholder: 'Option non disponible',
     options: baseOptions,
     variant: 'emotion',
-    value: 'stress',
     disabled: true,
   },
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width:720px; padding:24px;">
+      <div style="max-width:400px; padding:40px; background-color: #FBF6EE;">
         <ui-select
           [label]="label"
           [placeholder]="placeholder"
           [options]="options"
           [variant]="variant"
-          [value]="value"
           [disabled]="disabled"
-        />
+        ></ui-select>
       </div>
     `,
   }),
 };
 
+// --- ÉTAT ERREUR ---
 export const Error: Story = {
   args: {
     label: 'HUMEUR AU MOMENT DU CHOIX',
@@ -103,12 +110,12 @@ export const Error: Story = {
     options: baseOptions,
     variant: 'emotion',
     value: '',
-    error: 'Veuillez choisir une humeur.',
+    error: 'Veuillez choisir une humeur pour continuer.',
   },
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width:720px; padding:24px;">
+      <div style="max-width:400px; padding:40px; background-color: #FBF6EE; min-height: 350px;">
         <ui-select
           [label]="label"
           [placeholder]="placeholder"
@@ -116,7 +123,8 @@ export const Error: Story = {
           [variant]="variant"
           [value]="value"
           [error]="error"
-        />
+          (valueChange)="value = $event"
+        ></ui-select>
       </div>
     `,
   }),

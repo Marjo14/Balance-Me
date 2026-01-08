@@ -1,146 +1,93 @@
-/* Global Container */
-.ui-select {
-  display: flex;
-  flex-direction: column;
-  gap: 8px; /* Airy spacing */
-  width: 100%;
-  position: relative;
-  opacity: 1;
-  transition: opacity 0.2s;
-
-  /* Global Disabled State */
-  &.is-disabled {
-    opacity: 0.6;
-    pointer-events: none;
-    
-    .ui-select__native {
-      background-color: #F2F4F7; /* Neutral Grey */
-      border-color: #EAECF0;
-      color: #98A2B3;
-    }
-  }
-}
-
-/* Label: BalanceMe Style using Design System Token */
-.ui-select__label {
-  font-family: var(--font-family-base, sans-serif);
-  font-size: 11px; /* Legible size */
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  /* Using the emotional color token instead of hardcoded red */
-  color: var(--color-emotional, #D48C9D); 
-  margin-left: 12px;
-}
-
-/* Relative Wrapper */
-.ui-select__control {
-  position: relative;
-  width: 100%;
-  height: 48px; /* Restored comfortable standard height */
-}
-
-/* Native Select */
-.ui-select__native {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  height: 100%;
-  padding: 0 40px 0 20px; /* Generous padding */
-  
-  border-radius: 999px; /* Pill shape (Full rounding) */
-  border: 1px solid transparent;
-  
-  font-family: var(--font-family-base, sans-serif);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 48px; /* Text centering */
-  
-  /* --- COLORS --- */
-  background-color: #FFF5F7; /* Powder Pink Background */
-  border-color: #FCE7EB;     /* Soft Rose Border */
-  color: #344054;            /* Dark Grey Text (Legible) */
-
-  cursor: pointer;
-  transition: all 0.2s ease;
-
-  &:focus {
-    outline: none;
-    /* Focus ring using emotional color */
-    border-color: var(--color-emotional, #F472B6); 
-    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.15); /* Pink Halo */
-    background-color: #FFFFFF;
-  }
-
-  /* Placeholder (Empty value) */
-  &.placeholder-shown {
-    color: #98A2B3; /* Light Grey */
-    font-weight: 500;
-  }
-}
-
-/* --- ERROR VARIANT: POWDER PINK (Softness over Alert) --- */
-.ui-select.is-error {
-  .ui-select__label { 
-    /* Label stays linked to emotional color */
-    color: var(--color-emotional, #9F1239); 
-  }
-  
-  .ui-select__native {
-    border-color: #FDA4AF;     /* Soft Rose Border */
-    background-color: #FFF1F2; /* Powder Pink Background */
-    color: #9F1239;            /* Deep Rose Text (Not bright red) */
-    
-    &:focus {
-      border-color: var(--color-emotional, #F43F5E);
-      box-shadow: 0 0 0 4px rgba(253, 164, 175, 0.25);
-    }
-  }
-}
-
-/* Error Message */
-.ui-select__error-msg {
-  font-size: 12px;
-  /* Deep Rose for legibility, softer than alert red */
-  color: #9F1239; 
-  margin-left: 16px;
-  margin-top: 4px;
-  font-weight: 500;
-}
-
-/* Chevron SVG */
-.ui-select__chevron {
-  position: absolute;
-  right: 20px; /* Positioned to match pill shape */
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  pointer-events: none;
-  /* Chevron takes the Design System color */
-  color: var(--color-emotional, #D48C9D); 
-  opacity: 0.7;
-}
+/* =====================================================
+   SELECT COMPONENT - OUVERTURE VERS LE HAUT (TOP)
+   ===================================================== */
 
 :host {
   display: block;
   width: 100%;
 }
 
-.select-wrapper {
-  position: relative;
+.ui-select {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   width: 100%;
-}
 
-.options-dropdown {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  right: 0; /* Force l'alignement sur les bords du parent */
-  width: 100%;
-  z-index: 1000;
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-  overflow: hidden; /* Empêche les éléments internes de déborder */
+  &__label {
+    font-size: 10px;
+    font-weight: 800;
+    color: #D48C9D;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-left: 12px;
+  }
+
+  &__control {
+    position: relative; // Indispensable pour l'alignement du menu
+    width: 100%;
+  }
+
+  &__trigger {
+    width: 100%;
+    height: 56px;
+    padding: 0 24px;
+    background: #FFF5F7; 
+    border: 1px solid transparent;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #D48C9D;
+    font-weight: 600;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: #D48C9D;
+      background: white;
+      outline: none;
+    }
+  }
+
+  &__options {
+    position: absolute;
+    /* --- CHANGEMENT ICI : VERS LE HAUT --- */
+    bottom: calc(100% + 8px); /* Se place à 8px AU-DESSUS du bouton */
+    left: 0;
+    right: 0;
+    
+    margin: 0;
+    padding: 8px 0;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.12); /* Ombre inversée vers le haut */
+    z-index: 9999;
+    list-style: none;
+    max-height: 250px;
+    overflow-y: auto;
+
+    li {
+      padding: 14px 24px;
+      font-size: 14px;
+      color: #1A2E22;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover { background: #FFF5F7; }
+      &.is-selected {
+        background: #F2F4F7;
+        font-weight: 700;
+        color: #D48C9D;
+      }
+    }
+  }
+
+  &__chevron {
+    width: 18px;
+    transition: transform 0.3s ease;
+    &.is-open {
+      transform: rotate(180deg);
+    }
+  }
 }
