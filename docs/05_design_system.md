@@ -1,137 +1,97 @@
 # 🎨 Design System — BalanceMe
 
-Ce document présente le **Design System** du projet *BalanceMe*.
+Ce document présente le **Design System** du projet *BalanceMe*. 
 
 L’objectif du design system est de garantir :
 - 🎯 une cohérence visuelle sur l’ensemble de l’application,
 - 🧩 une meilleure lisibilité et maintenabilité du code,
-- 🔗 une continuité entre la conception (Figma) et le développement (Angular).
-
-Le design system a été volontairement limité aux éléments nécessaires au **MVP**.
+- [cite_start]🔗 une continuité entre la conception (Figma) et le développement (Angular). [cite: 56]
 
 ---
 
-## 🔗 Liens Figma : 
+## 🔗 Liens Figma
 
-- 🌈 **Moodboard**  
-  https://www.figma.com/design/2Vu4J6yLkhqhuKeK3JJ0Vq/BalanceMe?node-id=449-342
+- 🌈 **Moodboard** [Lien Figma](https://www.figma.com/design/2Vu4J6yLkhqhuKeK3JJ0Vq/BalanceMe?node-id=449-342)
+- 🎨 **Design System — Couleurs & Typographie** [Lien Figma](https://www.figma.com/design/2Vu4J6yLkhqhuKeK3JJ0Vq/BalanceMe?node-id=442-2491)
+- 🧱 **Composants (Atomic Design)** [Lien Figma](https://www.figma.com/design/2Vu4J6yLkhqhuKeK3JJ0Vq/BalanceMe?node-id=481-372)
 
-- 🎨 **Design System — Couleurs & Typographie**  
-  https://www.figma.com/design/2Vu4J6yLkhqhuKeK3JJ0Vq/BalanceMe?node-id=442-2491
-
-- 🧱 **Composants (Atomic Design)**  
-  https://www.figma.com/design/2Vu4J6yLkhqhuKeK3JJ0Vq/BalanceMe?node-id=481-372
-  
 ---
 
 ## 🧩 1. Design Tokens
 
-Les design tokens correspondent aux variables de design utilisées dans le projet.  
-Ils permettent de centraliser les choix esthétiques et de les rendre réutilisables
-dans l’interface et dans le code.
-
----
+[cite_start]Les design tokens sont les variables de design qui garantissent la cohérence visuelle à travers tout le produit. [cite: 330] [cite_start]Ils stockent les valeurs esthétiques sous forme de données réutilisables. [cite: 331]
 
 ### 🎨 1.1 Couleurs
-
-Les couleurs sont définies sous forme de variables afin d’assurer leur cohérence
-dans l’ensemble de l’application.
+[cite_start]Les couleurs sont définies via des variables CSS pour assurer la cohérence et faciliter le thème. [cite: 333]
 
 | Token              | Rôle UX                                         | Valeur HEX |
 |--------------------|-------------------------------------------------|------------|
-| color-primary      | Solde positif / état rassurant                  | #3E7F5A    |
-| color-secondary    | Boutons secondaires / actions neutres           | #4FA6A6    |
-| color-emotional    | États émotionnels / solde négatif               | #E8B6C1    |
-| color-insight      | Mise en avant / information clé                | #F2D37C    |
-| color-neutral      | Fond neutre / cartes                           | #7A5A4A    |
-| color-black        | Texte principal                                 | #1C1C1C    |
-| color-white        | Fond principal                                  | #FFFFFF    |
-
-👉 Ces couleurs sont définies dans Figma via des **Variables** et seront utilisées
-comme **design tokens** dans le CSS du projet Angular.
-
----
+| `color-primary`    | Solde positif / état rassurant                  | #3E7F5A    |
+| `color-secondary`  | Boutons secondaires / actions neutres           | #4FA6A6    |
+| `color-emotional`  | États émotionnels / solde négatif               | #E8B6C1    |
+| `color-insight`    | Focus accessibilité / information clé           | #F2D37C    |
+| `color-neutral`    | Fond neutre / cartes                            | #7A5A4A    |
+| `color-black`      | Texte principal                                 | #1C1C1C    |
+| `color-white`      | Fond principal                                  | #FFFFFF    |
 
 ### 🔤 1.2 Typographie
+La police choisie est **Plus Jakarta Sans**, sélectionnée pour sa modernité et son excellente lisibilité sur interface numérique.
 
-Une seule police est utilisée afin de garantir la lisibilité et la cohérence visuelle :
+| Style   | Taille (Desktop) | Usage |
+|:--------|:-----------------|:------|
+| `H1`    | 48px             | Titre principal (Budget) |
+| `H2`    | 36px             | Titres de section |
+| `H3`    | 32px             | Sous-titres |
+| `Body M`| 16px             | Texte courant / Inputs |
+| `Body S`| 12px             | Texte secondaire / Labels |
 
-- **Inter**
+### 📏 1.3 Espacements (Spacing)
+Le système repose sur une échelle de base 8 pour garantir un rythme visuel harmonieux et prévisible.
 
-Les styles typographiques sont définis sous forme de **Text Styles** dans Figma.
+| Token      | Valeur | Usage |
+|:-----------|:-------|:------|
+| `space-sm` | 8px    | Gaps entre les boutons et tags |
+| `space-md` | 16px   | Padding interne des cartes |
+| `space-lg` | 24px   | Marges entre les sections principales |
 
-| Style  | Taille | Usage |
-|-------|--------|-------|
-| H1    | 48px   | Titre principal |
-| H2    | 36px   | Titres de section |
-| H3    | 32px   | Sous-titres |
-| Body L| 24px   | Texte important |
-| Body M| 16px   | Texte courant |
-| Body S| 12px   | Texte secondaire |
+### 📐 1.4 Arrondis (Radius)
+Les rayons larges renforcent l'aspect bienveillant et sécurisant de l'interface.
 
-👉 Ces styles sont réutilisés sur l’ensemble des écrans afin de maintenir une hiérarchie claire.
+| Token       | Valeur | Usage |
+|:------------|:-------|:------|
+| `radius-lg` | 20px   | Boutons et éléments interactifs |
+| `radius-xl` | 28px   | Cartes de dashboard et formulaires |
 
 ---
 
 ## ⚛️ 2. Atomic Design
 
-Le design system suit la méthodologie **Atomic Design** afin de structurer les composants
-de manière claire et évolutive.
-
----
+[cite_start]L'application suit la méthodologie **Atomic Design** pour construire un système évolutif et maintenable. [cite: 325]
 
 ### ⚪ 2.1 Atomes
-
-Les atomes sont les éléments UI de base, indivisibles :
-
-- 🔘 Bouton primaire
-- 🔹 Bouton secondaire
-- ➕ Bouton d’ajout
-- 🔘 Radio button
-- 🔤 Styles typographiques
-- 🎨 Couleurs (design tokens)
-
-Ces éléments constituent la base de l’interface.
-
----
+[cite_start]Éléments de base indivisibles : [cite: 320]
+- **Boutons :** Primaires et secondaires.
+- **Inputs :** Champs de saisie montant et titre.
+- **Tags :** Badges de catégories (Vital / Emotional).
 
 ### 🧬 2.2 Molécules
-
-Les molécules sont des combinaisons simples d’atomes :
-
-- 💳 Carte “Solde restant” — état positif
-- 💳 Carte “Solde restant” — état négatif
-- 🧾 Carte de saisie (titre + zone de montant)
-
-Ces composants correspondent directement aux éléments présents dans les wireframes
-et dans l’interface finale.
+[cite_start]Combinaisons simples d'atomes : [cite: 322]
+- **Transaction Item :** Ligne d'historique (icône + texte + montant).
+- **Card Budget :** Bloc de solde avec variante dynamique (Positive/Danger).
 
 ---
 
-## 🧠 3. Choix UX & cohérence
+## 🧠 3. Choix UX & Accessibilité
 
-BalanceMe adopte une approche **bienveillante et éducative** de la gestion financière.
+[cite_start]BalanceMe adopte une approche **centrée utilisateur** et bienveillante de la finance. [cite: 228]
 
-Le design ne cherche pas à être strictement bancaire, mais à accompagner l’utilisateur
-dans sa prise de décision.
-
-Exemples de choix UX :
-- ✅ le solde positif est représenté par une couleur rassurante (vert),
-- 💗 le solde négatif utilise une couleur émotionnelle douce (rose),
-- 🤝 l’interface n’est pas culpabilisante : l’achat n’est pas encore effectué,
-  l’utilisateur est invité à analyser sa dépense.
-
-Ces choix sont cohérents avec la vocation sociale du projet et le persona ciblé.
+- [cite_start]**♿ Accessibilité :** Utilisation de balises sémantiques et gestion rigoureuse du focus clavier via le token `color-insight` (contour orange de 3px). [cite: 158, 207]
+- **Sémantique :** Le vert rassure, tandis que le rose émotionnel invite à la réflexion sans culpabilisation.
+- [cite_start]**🌱 Éco-conception :** Optimisation des performances via les **Signals Angular**, limitant les cycles de détection de changement pour réduire la consommation énergétique. [cite: 208, 216]
 
 ---
 
 ## 🚧 4. Limites du Design System (MVP)
 
-Dans le cadre de ce MVP, le design system est volontairement limité :
-
-- ❌ pas de gestion exhaustive des états (hover, disabled),
-- ❌ pas de composants complexes non nécessaires,
-- 🎯 focus sur les éléments réellement utilisés dans l’application.
-
-Ce choix permet de rester cohérent avec le périmètre du projet
-et de faciliter l’implémentation technique.
+- ❌ Gestion simplifiée des états `hover` et `active`.
+- 🎯 Focus sur les composants critiques nécessaires au flux d'intention d'achat.
