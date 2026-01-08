@@ -21,16 +21,20 @@ export class EmotionalDesireStrategy implements ExpenseStrategy {
   tone: 'emotional' = 'emotional'; 
 
   validate(amount: number, currentBalance: number) {
-    // Si la dépense dépasse le solde
-    if (currentBalance - amount < 0) {
+    const nextBalance = currentBalance - amount;
+
+    // Si le nouveau solde est négatif
+    if (nextBalance < 0) {
       return { 
-        isValid: true, // On met à TRUE pour que la modale de confirmation s'ouvre
-        message: `Attention : Cette envie dépasse votre budget de ${Math.abs(currentBalance - amount).toFixed(2)}€. Souhaitez-vous quand même l'enregistrer ?` 
+        isValid: true, 
+        message: `Attention : Cette envie fera passer votre solde à ${nextBalance.toFixed(2)}€. Souhaitez-vous quand même l'enregistrer ?` 
       };
     }
+
+    // Si le solde reste positif
     return { 
       isValid: true, 
-      message: "Votre budget permet cet achat. Est-ce vraiment ce dont vous avez besoin maintenant ?" 
+      message: `Votre budget permet cet achat (nouveau solde : ${nextBalance.toFixed(2)}€). Est-ce vraiment ce dont vous avez besoin maintenant ?` 
     };
   }
 }
