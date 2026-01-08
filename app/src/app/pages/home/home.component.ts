@@ -37,8 +37,6 @@ import { HeaderComponent } from '../../components/features/header/header.compone
 export class HomeComponent implements OnInit {
   private budgetService = inject(BudgetService);
 
-  @ViewChild('submitBtnRef') submitBtnRef!: ElementRef;
-
   // --- SIGNALS DU SERVICE ---
   initialBudget = this.budgetService.initialBudget;
   transactions = this.budgetService.expenses;
@@ -46,7 +44,6 @@ export class HomeComponent implements OnInit {
 
   // --- ETATS LOCAUX ---
   showAllHistory = signal(false);
-  tempBudgetInput: number | null = null; 
   formTitle = '';
   formAmount: number | null = null;
   formEmotion = '';
@@ -55,9 +52,7 @@ export class HomeComponent implements OnInit {
   isModalOpen = false;
   currentModalContent!: ModalContent;
 
-  // --- SIGNALS CALCULÉS ---
-
-  // Détermine la variante de couleur (Rose/Danger si solde < 0) [cite: 57, 149]
+  // Variante de couleur pour la carte budget (Rose si solde < 0)
   budgetVariant = computed<UiCardVariant>(() => {
     return this.remainingBudget() < 0 ? 'danger' : 'positive';
   });
@@ -81,31 +76,19 @@ export class HomeComponent implements OnInit {
   }
 
   // ==========================================
-  // METHODE CORRIGÉE : handleReset
+  // GESTION DU RESET VIA UI-MODAL
   // ==========================================
   handleReset() {
-    if(confirm("Voulez-vous vraiment réinitialiser toutes vos données ?")) {
-      this.budgetService.resetAll();
-    }
+    this.currentModalContent = {
+      type: 'vital', // Type neutre pour une modale d'alerte propre
+      title: "Remise à zéro",
+      description: "Voulez-vous vraiment réinitialiser toutes vos données ? Cette action est irréversible.",
+      buttonText: "OUI, RÉINITIALISER"
+    };
+    this.isModalOpen = true;
   }
 
-  // --- ACTIONS ONBOARDING ---
-
-  onTempBudgetChange(e: Event) {
-    this.tempBudgetInput = Number((e.target as HTMLInputElement).value);
-  }
-
-  onStartExperience() {
-    if (this.tempBudgetInput && this.tempBudgetInput > 0) {
-      this.budgetService.setInitialBudget(this.tempBudgetInput);
-    }
-  }
-
-  // --- LOGIQUE FORMULAIRE ---
-
-  toggleHistory() {
-    this.showAllHistory.update(v => !v);
-  }
+  // --- ACTIONS FORMULAIRE ---
 
   selectVital() {
     this.currentStrategy.set(new VitalNeedStrategy());
@@ -118,26 +101,18 @@ export class HomeComponent implements OnInit {
     this.openEmotionalInfo(); 
   }
 
-  onEmotionChange(val: string) {
-    this.formEmotion = val;
-  }
+  onEmotionChange(val: string) { this.formEmotion = val; }
+  onTitleChange(e: Event) { this.formTitle = (e.target as HTMLInputElement).value; }
+  onAmountChange(e: Event) { this.formAmount = Number((e.target as HTMLInputElement).value); }
 
-  onTitleChange(e: Event) {
-    this.formTitle = (e.target as HTMLInputElement).value;
-  }
-
-  onAmountChange(e: Event) {
-    this.formAmount = Number((e.target as HTMLInputElement).value);
-  }
-
-  // --- GESTION DES MODALES ---
+  // --- GESTION DES MODALES D'INFORMATION ---
 
   openVitalInfo() {
     this.currentModalContent = {
       type: 'vital',
-      title: "Qu'est-ce qu'un Besoin Vital ?",
-      description: "Un Besoin Vital est une dépense non-négociable pour votre sécurité et votre santé.",
-      items: ["Logement & Énergie", "Alimentation de base", "Santé & Assurances", "Transport essentiel"],
+      title: "Besoin Vital",
+      description: "Dépense non-négociable pour votre sécurité et votre santé.",
+      items: ["Logement & Énergie", "Alimentation de base", "Santé", "Transport essentiel"],
       buttonText: "J'AI COMPRIS"
     };
     this.isModalOpen = true;
@@ -147,14 +122,14 @@ export class HomeComponent implements OnInit {
     this.currentModalContent = {
       type: 'emotional',
       title: "L'Envie Émotionnelle",
-      description: "Une envie naît souvent d'un besoin de combler un vide. Pause HALT :",
+      description: "Une envie naît souvent d'un besoin de combler un vide. Faites une pause consciente :",
       checklistTitle: "CHECKLIST DE CONSCIENCE",
       items: [
-        "Est-ce que je serai toujours heureux dans 3 jours ?",
-        "Suis-je en train de fuir une émotion ?",
-        "Mon budget 'Plaisir' le permet-il ?"
+        "Serais-je toujours heureux de cet achat dans 3 jours ?",
+        "Suis-je en train de fuir une émotion (stress, ennui) ?",
+        "Mon budget 'Plaisir' le permet-il sans stress ?"
       ],
-      footerNote: "Astuce : Attendez 24h. Si l'envie est toujours là, go.",
+      footerNote: "Astuce : Attendez 24h. Si l'envie persiste, agissez sereinement.",
       buttonText: "J'AI COMPRIS"
     };
     this.isModalOpen = true;
@@ -185,21 +160,36 @@ export class HomeComponent implements OnInit {
   }
 
   confirmModalAction() {
-    if (this.currentModalContent.title.includes('Accordée')) {
+    // Cas 1 : Confirmation du Reset Global
+    if (this.currentModalContent.title === "Remise à zéro") {
+      this.budgetService.resetAll();
+      this.isModalOpen = false;
+    } 
+    // Cas 2 : Confirmation d'ajout de dépense (Analyse accordée)
+    else if (this.currentModalContent.title.includes('Accordée')) {
       this.budgetService.addExpense(
         this.formTitle, 
         this.formAmount!, 
         this.isEmotionalActive() ? 'EMOTIONAL' : 'VITAL', 
         this.isEmotionalActive() ? this.formEmotion : 'Serein'
       );
-      this.formTitle = ''; 
-      this.formAmount = null; 
-      this.formEmotion = ''; 
-      this.showErrors = false;
+      this.resetFormFields();
+      this.closeModal();
+    } 
+    // Cas 3 : Simple fermeture (Analyse bloquée ou Modale Info)
+    else {
+      this.closeModal();
     }
-    this.closeModal();
+  }
+
+  private resetFormFields() {
+    this.formTitle = ''; 
+    this.formAmount = null; 
+    this.formEmotion = ''; 
+    this.showErrors = false;
   }
 
   isVitalActive() { return this.currentStrategy() instanceof VitalNeedStrategy; }
   isEmotionalActive() { return this.currentStrategy() instanceof EmotionalDesireStrategy; }
+  toggleHistory() { this.showAllHistory.update(v => !v); }
 }

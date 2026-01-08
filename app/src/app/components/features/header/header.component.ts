@@ -1,20 +1,21 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+// Import indispensable pour utiliser <ui-button> dans le template
+import { UiButtonComponent } from '../../atoms/button/button.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  // On déclare le bouton ici pour corriger ton erreur de compilation
+  imports: [CommonModule, UiButtonComponent], 
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  // On crée une sortie (Output) pour prévenir le parent (Home) qu'on veut reset
+  // On émet l'événement vers le parent (Home)
   @Output() resetAll = new EventEmitter<void>();
 
   onResetClick(): void {
-    // On émet l'événement au lieu de coder la logique ici
-    // Cela permet à la page Home d'ouvrir SA modale du Design System
     this.resetAll.emit();
   }
 }
