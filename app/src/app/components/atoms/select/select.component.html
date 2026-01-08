@@ -1,43 +1,26 @@
 <div [class]="rootClasses.join(' ')">
-  <label *ngIf="label" [id]="selectId + '-label'" class="ui-select__label">
-    {{ label }}
-  </label>
+  <label *ngIf="label" class="ui-radio-group__label">{{ label }}</label>
 
-  <div class="ui-select__control">
-    <button 
-      type="button"
-      class="ui-select__trigger" 
-      [id]="selectId"
-      [attr.aria-haspopup]="'listbox'"
-      [attr.aria-expanded]="isOpen"
-      [attr.aria-labelledby]="selectId + '-label'"
-      (click)="toggleDropdown()"
-      [disabled]="disabled">
-      
-      <span class="ui-select__value">{{ selectedLabel || placeholder }}</span>
-      
-      <svg class="ui-select__chevron" [class.is-open]="isOpen" viewBox="0 0 20 20" fill="none" stroke="currentColor">
-        <path d="M5 7.5L10 12.5L15 7.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-
-    <ul 
-      class="ui-select__options" 
-      *ngIf="isOpen"
-      role="listbox"
-      [attr.aria-labelledby]="selectId + '-label'">
-      <li 
-        *ngFor="let opt of options" 
-        role="option"
-        [attr.aria-selected]="opt.value === value"
-        (click)="selectOption(opt)"
-        [class.is-selected]="opt.value === value">
-        {{ opt.label }}
-      </li>
-    </ul>
+  <div class="ui-radio-grid" role="radiogroup">
+    <label 
+      *ngFor="let opt of options" 
+      class="ui-radio-card" 
+      [class.is-selected]="value === opt.value"
+      [class.is-disabled]="disabled"
+    >
+      <input 
+        type="radio" 
+        [name]="selectId" 
+        [value]="opt.value" 
+        [checked]="value === opt.value"
+        [disabled]="disabled"
+        (change)="onRadioChange(opt.value)"
+      >
+      <span class="ui-radio-card__text">{{ opt.label }}</span>
+    </label>
   </div>
 
-  <div *ngIf="error" class="ui-select__error" [id]="selectId + '-error'">
+  <div *ngIf="error" class="ui-radio-group__error" role="alert">
     {{ error }}
   </div>
 </div>

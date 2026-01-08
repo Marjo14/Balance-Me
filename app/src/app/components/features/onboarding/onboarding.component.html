@@ -7,11 +7,14 @@
       <p style="color: #667085; margin-bottom: 2rem;">Définissez le budget que vous souhaitez allouer en conscience à cette séance.</p>
       
       <div style="margin-bottom: 2rem;">
-        <ui-input 
-          type="number" 
-          placeholder="Ex: 1350.00 €" 
-          (input)="onTempBudgetChange($event)">
-        </ui-input>
+       <ui-input 
+  id="budget-input"
+  type="number"
+  placeholder="Ex : 1350.00 €"
+  (input)="onTempBudgetChange($event)"
+  (keydown.enter)="onStart()"
+  [required]="true">
+</ui-input>
       </div>
 
       <ui-button 

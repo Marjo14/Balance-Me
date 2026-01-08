@@ -19,19 +19,20 @@ import { UiButtonComponent } from '../../atoms/button/button.component';
 })
 export class OnboardingComponent {
   private budgetService = inject(BudgetService);
-  
-  // Signal local pour stocker la saisie avant validation
   tempBudget = signal<number | null>(null);
 
   onTempBudgetChange(event: Event) {
     const val = (event.target as HTMLInputElement).value;
-    this.tempBudget.set(val ? parseFloat(val) : null);
+    // On s'assure que la valeur est un nombre positif
+    const parsed = parseFloat(val);
+    this.tempBudget.set(!isNaN(parsed) && parsed > 0 ? parsed : null);
   }
 
   onStart() {
-    if (this.tempBudget() !== null) {
-      // Met à jour le budget initial dans le service global
-      this.budgetService.setInitialBudget(this.tempBudget()!);
+    const budget = this.tempBudget();
+    if (budget !== null && budget > 0) {
+      // Met à jour le budget et ferme l'onboarding
+      this.budgetService.setInitialBudget(budget);
     }
   }
 }

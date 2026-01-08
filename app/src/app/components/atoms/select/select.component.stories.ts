@@ -25,22 +25,23 @@ const baseOptions = [
   { value: 'reconfort', label: 'Besoin de réconfort' },
 ];
 
-// --- VARIANTE NEUTRE ---
-export const Neutral: Story = {
+// --- VARIANTE EMOTION (LES PASTILLES ROSES) ---
+export const Emotion: Story = {
   args: {
-    label: 'Catégorie de dépense',
-    placeholder: 'Choisir…',
+    label: 'HUMEUR AU MOMENT DU CHOIX',
     options: baseOptions,
-    variant: 'neutral',
+    variant: 'emotion',
     value: '',
   },
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width:400px; padding:40px; background-color: #FBF6EE; min-height: 300px;">
+      <div style="max-width:400px; padding:24px; background-color: #FBF6EE;">
+        <p style="font-size: 12px; color: #667085; margin-bottom: 16px;">
+          ✨ <strong>Version Radio :</strong> Plus de menu déroulant, sélection directe.
+        </p>
         <ui-select
           [label]="label"
-          [placeholder]="placeholder"
           [options]="options"
           [variant]="variant"
           [value]="value"
@@ -51,25 +52,49 @@ export const Neutral: Story = {
   }),
 };
 
-// --- VARIANTE EMOTION (ROSE) ---
-export const Emotion: Story = {
+// --- VARIANTE NEUTRE (LES PASTILLES VERTES/GRISES) ---
+export const Neutral: Story = {
   args: {
-    label: 'HUMEUR AU MOMENT DU CHOIX',
-    placeholder: 'Comment vous sentez-vous ?',
+    label: 'Catégorie de dépense',
     options: baseOptions,
-    variant: 'emotion',
-    value: 'stress',
+    variant: 'neutral',
+    value: '',
   },
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width:400px; padding:40px; background-color: #FBF6EE; min-height: 400px;">
+      <div style="max-width:400px; padding:24px; background-color: #FBF6EE;">
         <ui-select
           [label]="label"
-          [placeholder]="placeholder"
           [options]="options"
           [variant]="variant"
           [value]="value"
+          (valueChange)="value = $event"
+        ></ui-select>
+      </div>
+    `,
+  }),
+};
+
+// --- ÉTAT ERREUR ---
+export const Error: Story = {
+  args: {
+    label: 'HUMEUR AU MOMENT DU CHOIX',
+    options: baseOptions,
+    variant: 'emotion',
+    value: '',
+    error: 'Veuillez choisir une humeur pour continuer.',
+  },
+  render: (args) => ({
+    props: args,
+    template: `
+      <div style="max-width:400px; padding:24px; background-color: #FBF6EE;">
+        <ui-select
+          [label]="label"
+          [options]="options"
+          [variant]="variant"
+          [value]="value"
+          [error]="error"
           (valueChange)="value = $event"
         ></ui-select>
       </div>
@@ -81,7 +106,6 @@ export const Emotion: Story = {
 export const Disabled: Story = {
   args: {
     label: 'HUMEUR AU MOMENT DU CHOIX',
-    placeholder: 'Option non disponible',
     options: baseOptions,
     variant: 'emotion',
     disabled: true,
@@ -89,41 +113,12 @@ export const Disabled: Story = {
   render: (args) => ({
     props: args,
     template: `
-      <div style="max-width:400px; padding:40px; background-color: #FBF6EE;">
+      <div style="max-width:400px; padding:24px; background-color: #FBF6EE;">
         <ui-select
           [label]="label"
-          [placeholder]="placeholder"
           [options]="options"
           [variant]="variant"
           [disabled]="disabled"
-        ></ui-select>
-      </div>
-    `,
-  }),
-};
-
-// --- ÉTAT ERREUR ---
-export const Error: Story = {
-  args: {
-    label: 'HUMEUR AU MOMENT DU CHOIX',
-    placeholder: 'Choisir…',
-    options: baseOptions,
-    variant: 'emotion',
-    value: '',
-    error: 'Veuillez choisir une humeur pour continuer.',
-  },
-  render: (args) => ({
-    props: args,
-    template: `
-      <div style="max-width:400px; padding:40px; background-color: #FBF6EE; min-height: 350px;">
-        <ui-select
-          [label]="label"
-          [placeholder]="placeholder"
-          [options]="options"
-          [variant]="variant"
-          [value]="value"
-          [error]="error"
-          (valueChange)="value = $event"
         ></ui-select>
       </div>
     `,

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 export type UiSelectVariant = 'neutral' | 'emotion';
@@ -13,7 +13,6 @@ export type UiSelectVariant = 'neutral' | 'emotion';
 })
 export class UiSelectComponent {
   @Input() label = '';
-  @Input() placeholder = 'Sélectionner...';
   @Input() options: Array<{ value: string; label: string }> = [];
   @Input() value: string | null = null;
   @Input() disabled = false;
@@ -23,36 +22,19 @@ export class UiSelectComponent {
 
   @Output() valueChange = new EventEmitter<string>();
 
-  isOpen = false;
-
   get selectId(): string {
-    return this.id || 'ui-select-' + Math.random().toString(36).substring(2, 9);
-  }
-
-  get selectedLabel(): string {
-    const found = this.options.find(o => o.value === this.value);
-    return found ? found.label : '';
+    return this.id || 'ui-radio-' + Math.random().toString(36).substring(2, 9);
   }
 
   get rootClasses(): string[] {
     return [
-      'ui-select',
+      'ui-radio-group',
       `ui-select--${this.variant}`,
-      this.isOpen ? 'is-open' : '',
-      this.error ? 'ui-select--error' : '',
-      this.disabled ? 'ui-select--disabled' : '',
+      this.error ? 'ui-radio-group--error' : '',
     ].filter(Boolean);
   }
 
-  toggleDropdown() {
-    if (!this.disabled) {
-      this.isOpen = !this.isOpen;
-    }
-  }
-
-  selectOption(opt: { value: string; label: string }) {
-    this.value = opt.value;
-    this.valueChange.emit(opt.value);
-    this.isOpen = false;
+  onRadioChange(newValue: string) {
+    this.valueChange.emit(newValue);
   }
 }

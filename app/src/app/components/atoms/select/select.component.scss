@@ -1,17 +1,12 @@
-/* =====================================================
-   SELECT COMPONENT - OUVERTURE VERS LE HAUT (TOP)
-   ===================================================== */
-
 :host {
   display: block;
   width: 100%;
 }
 
-.ui-select {
+.ui-radio-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  width: 100%;
+  gap: 12px;
 
   &__label {
     font-size: 10px;
@@ -19,75 +14,74 @@
     color: #D48C9D;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-left: 12px;
+    margin-left: 4px;
   }
 
-  &__control {
-    position: relative; // Indispensable pour l'alignement du menu
-    width: 100%;
+  .ui-radio-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); // 2 colonnes pour le mobile-first [cite: 243]
+    gap: 12px;
   }
 
-  &__trigger {
-    width: 100%;
-    height: 56px;
-    padding: 0 24px;
-    background: #FFF5F7; 
-    border: 1px solid transparent;
-    border-radius: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  &__error {
+    font-size: 11px;
     color: #D48C9D;
     font-weight: 600;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: all 0.2s ease;
-
-    &:focus {
-      border-color: #D48C9D;
-      background: white;
-      outline: none;
-    }
+    margin-top: 4px;
   }
+}
 
-  &__options {
+.ui-radio-card {
+  position: relative;
+  height: 48px;
+  background: #FFF5F7; // Ton rose signature
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+
+  input {
     position: absolute;
-    /* --- CHANGEMENT ICI : VERS LE HAUT --- */
-    bottom: calc(100% + 8px); /* Se place à 8px AU-DESSUS du bouton */
-    left: 0;
-    right: 0;
-    
-    margin: 0;
-    padding: 8px 0;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.12); /* Ombre inversée vers le haut */
-    z-index: 9999;
-    list-style: none;
-    max-height: 250px;
-    overflow-y: auto;
+    opacity: 0; // On cache le bouton radio standard
+    width: 0;
+    height: 0;
+  }
 
-    li {
-      padding: 14px 24px;
-      font-size: 14px;
-      color: #1A2E22;
-      cursor: pointer;
-      transition: background 0.2s;
+  &__text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #D48C9D;
+  }
 
-      &:hover { background: #FFF5F7; }
-      &.is-selected {
-        background: #F2F4F7;
-        font-weight: 700;
-        color: #D48C9D;
-      }
+  /* Focus visible pour l'accessibilité clavier [cite: 145, 530] */
+  &:has(input:focus-visible) {
+    outline: 2px solid #D48C9D;
+    outline-offset: 3px;
+  }
+
+  /* État sélectionné */
+  &.is-selected {
+    background: #D48C9D;
+    .ui-radio-card__text {
+      color: white;
     }
   }
 
-  &__chevron {
-    width: 18px;
-    transition: transform 0.3s ease;
-    &.is-open {
-      transform: rotate(180deg);
-    }
+  &.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+/* Variante Neutre */
+.ui-select--neutral {
+  .ui-radio-group__label { color: #667085; }
+  .ui-radio-card {
+    background: #F9FAFB;
+    .ui-radio-card__text { color: #1A2E22; }
+    &.is-selected { background: #1A2E22; }
   }
 }
