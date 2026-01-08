@@ -9,10 +9,12 @@
 
     <div class="col-left">
       
-      <ui-card variant="positive" padding="lg" elevation="md">
+      <ui-card [variant]="budgetVariant()" padding="lg" elevation="md">
         <div class="budget-content">
           <div>
-            <div class="label-sm" aria-hidden="true">• ÉNERGIE FINANCIÈRE</div>
+            <div class="label-sm" aria-hidden="true">
+              {{ remainingBudget() < 0 ? '⚠️ ÉQUILIBRE DU JOUR' : '• ÉNERGIE FINANCIÈRE' }}
+            </div>
             <h2 class="sr-only">Votre Solde Restant</h2>
             <div class="big-amount">
               {{ remainingBudget() | number:'1.2-2' }} <small>€</small>
@@ -22,10 +24,15 @@
           <div class="budget-separator"></div>
 
           <div class="quote">
-            <span class="icon" aria-hidden="true">🐚</span>
+            <span class="icon" aria-hidden="true">{{ remainingBudget() < 0 ? '🚦' : '🐚' }}</span>
             <div>
-              <div class="label-sm">PENSÉE DU JOUR</div>
-              <p>“L'équilibre est le mouvement vers soi.”</p>
+              <div class="label-sm">{{ remainingBudget() < 0 ? 'RAPPEL DE CONSCIENCE' : 'PENSÉE DU JOUR' }}</div>
+              <p>
+                {{ remainingBudget() < 0 
+                   ? '“Pause. Ton énergie est basse : priorise l’essentiel.”' 
+                   : '“L\'équilibre est le mouvement vers soi.”' 
+                }}
+              </p>
             </div>
           </div>
         </div>
@@ -68,7 +75,6 @@
     </div>
 
     <div class="col-right">
-      
       <section class="intention-card" aria-labelledby="form-heading">
         <h2 id="form-heading">Posez une intention</h2>
         <p class="subtitle" style="color: #667085; font-size: 0.9rem; margin-bottom: 1.5rem;">
@@ -76,7 +82,6 @@
         </p>
 
         <form (submit)="$event.preventDefault()">
-          
           <div class="form-grid" style="display: grid; gap: 1rem; margin-bottom: 1.5rem;">
             <div class="input-group">
               <label style="font-size: 10px; font-weight: 800; color: #98A2B3; letter-spacing: 0.1em; display: block; margin-bottom: 8px;">QUELLE SOMME INVESTISSEZ-VOUS ?</label>
@@ -102,10 +107,8 @@
           </div>
 
           <div class="intention-actions">
-            
             <div class="labels-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
               <span class="action-label" style="font-size: 10px; font-weight: 800; color: #98A2B3; letter-spacing: 0.1em;">L'INTENTION DERRIÈRE L'ACTE</span>
-              
               <div class="help-tags" style="display: flex; gap: 8px;">
                 <ui-tag tone="secondary" class="clickable-tag" (click)="openVitalInfo()" style="cursor: pointer;">BESOIN ?</ui-tag>
                 <ui-tag tone="emotional" class="clickable-tag" (click)="openEmotionalInfo()" style="cursor: pointer;">ENVIE ?</ui-tag>
@@ -153,7 +156,6 @@
               ENREGISTRER EN CONSCIENCE
             </ui-button>
           </div>
-
         </form>
       </section>
     </div>

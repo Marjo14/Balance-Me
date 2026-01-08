@@ -2,7 +2,7 @@ import { Component, inject, signal, computed, ViewChild, ElementRef, OnInit } fr
 import { CommonModule } from '@angular/common';
 
 // --- UI ATOMS & MOLECULES ---
-import { UiCardComponent } from '../../components/atoms/card/card.component';
+import { UiCardComponent, UiCardVariant } from '../../components/atoms/card/card.component';
 import { UiButtonComponent } from '../../components/atoms/button/button.component';
 import { UiInputComponent } from '../../components/atoms/input/input.component';
 import { UiTagComponent } from '../../components/atoms/tag/tag.component';
@@ -31,10 +31,8 @@ import { ExpenseStrategy, VitalNeedStrategy, EmotionalDesireStrategy } from '../
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
-  // --- DEPENDENCIES ---
   private budgetService = inject(BudgetService);
 
-  // --- VIEW CHILD ---
   @ViewChild('submitBtnRef') submitBtnRef!: ElementRef;
 
   // --- DATA SIGNALS ---
@@ -43,9 +41,13 @@ export class HomeComponent implements OnInit {
   showAllHistory = signal(false);
 
   /**
-   * FIX FOR TS2339: Property 'visibleTransactions' does not exist
-   * This computed signal manages the history display (3 items or all).
+   * NOUVEAU : Calcul de la variante de la carte en fonction du solde
+   * Si le solde est négatif, on passe sur la variante 'danger' (rose dans ton design)
    */
+  budgetVariant = computed<UiCardVariant>(() => {
+    return this.remainingBudget() < 0 ? 'danger' : 'positive';
+  });
+
   visibleTransactions = computed(() => {
     const all = this.transactions();
     return this.showAllHistory() ? all : all.slice(0, 3);
@@ -58,14 +60,10 @@ export class HomeComponent implements OnInit {
   showErrors = false;
   showEmotionSelect = false;
 
-  // --- STRATEGY ---
   currentStrategy = signal<ExpenseStrategy>(new VitalNeedStrategy());
-
-  // --- MODAL STATE ---
   isModalOpen = false;
   currentModalContent!: ModalContent;
 
-  // --- OPTIONS ---
   emotionOptions = [
     { value: 'Stress', label: 'Stressé(e)' },
     { value: 'Ennui', label: 'Ennui' },
@@ -79,8 +77,6 @@ export class HomeComponent implements OnInit {
     console.log('🏗️ BalanceMe Home Initialized');
   }
 
-  // --- CORE METHODS ---
-
   toggleHistory() {
     this.showAllHistory.update(v => !v);
   }
@@ -93,7 +89,7 @@ export class HomeComponent implements OnInit {
 
   selectEmotional() {
     this.currentStrategy.set(new EmotionalDesireStrategy());
-    this.openEmotionalInfo(); // Triggers the pink modal from your Storybook
+    this.openEmotionalInfo();
   }
 
   onEmotionChange(val: string) {
@@ -107,8 +103,6 @@ export class HomeComponent implements OnInit {
   onAmountChange(e: Event) {
     this.formAmount = Number((e.target as HTMLInputElement).value);
   }
-
-  // --- MODAL TRIGGERS (Matches your Stories) ---
 
   openVitalInfo() {
     this.currentModalContent = {
@@ -141,11 +135,9 @@ export class HomeComponent implements OnInit {
   closeModal() {
     this.isModalOpen = false;
     if (this.isEmotionalActive()) {
-      this.showEmotionSelect = true; // Shows Select after the HALT awareness modal
+      this.showEmotionSelect = true;
     }
   }
-
-  // --- SUBMISSION LOGIC ---
 
   onPreSubmit() {
     this.showErrors = true;
@@ -180,7 +172,6 @@ export class HomeComponent implements OnInit {
     this.closeModal();
   }
 
-  // --- HELPERS ---
   isVitalActive() { return this.currentStrategy() instanceof VitalNeedStrategy; }
   isEmotionalActive() { return this.currentStrategy() instanceof EmotionalDesireStrategy; }
 }
