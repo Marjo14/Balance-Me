@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 export type UiTagTone = 'neutral' | 'primary' | 'secondary' | 'emotional' | 'insight' | 'brown';
@@ -6,6 +7,7 @@ export type UiTagSize = 'sm' | 'md';
 @Component({
   selector: 'ui-tag',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './tag.component.html',
   styleUrls: ['./tag.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

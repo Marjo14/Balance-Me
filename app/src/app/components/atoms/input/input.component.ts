@@ -1,31 +1,44 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'ui-input',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss'],
 })
 export class UiInputComponent {
-  @Input() id = '';
-  @Input() label = '';
-  @Input() placeholder = '';
-  @Input() type: 'text' | 'number' | 'email' | 'password' = 'text';
-  @Input() value: string | number | null = null;
-  @Input() autocomplete: string = 'off';
+  /** BASIC ATTRIBUTES */
+  @Input() id = '';              // Unique DOM ID used to link label and input (Crucial for A11y)
+  @Input() label = '';           // The visible text label displayed above the field
+  @Input() placeholder = '';     // Ghost text shown when the field is empty
+  @Input() type: 'text' | 'number' | 'email' | 'password' = 'text'; // Native HTML input type
+  @Input() value: string | number | null = null; // Current value of the input field
 
-  @Input() required = false;
-  @Input() disabled = false;
+  /** BROWSER & MOBILE BEHAVIOR */
+  @Input() autocomplete: string = 'off'; // Browser autofill suggestion (e.g., 'email', 'new-password', 'off')
+  @Input() inputMode: string = 'text';   // Virtual keyboard layout on mobile (e.g., 'numeric' shows numbers)
 
-  // Accessibility + UI states
-  @Input() hint = '';          // helper text under field
-  @Input() error = '';         // error message (if not empty => error state)
+  /** STATES & VALIDATION */
+  @Input() required = false;     // Marks the field as mandatory (adds visual indicator)
+  @Input() disabled = false;     // Disables interaction and dims the field opacity
 
-  // Optional right unit (€, etc.)
-  @Input() suffix = '';        // e.g. "€"
+  /** FEEDBACK & ACCESSIBILITY */
+  @Input() hint = '';            // Neutral helper text displayed below the field
+  @Input() error = '';           // Error message text. If present, turns the field red.
 
+  /** VISUAL EXTRAS */
+  @Input() suffix = '';          // Icon or symbol at the right end (e.g., "€", "%")
+
+  /**
+   * ACCESSIBILITY HELPER
+   * Dynamically links the input to its description (error or hint) for screen readers.
+   */
   get describedById(): string | null {
-    if (this.error) return `${this.id}-error`;
-    if (this.hint) return `${this.id}-hint`;
+    if (this.error) return `${this.id}-error`; // Prioritize reading the error message
+    if (this.hint) return `${this.id}-hint`;   // Otherwise read the hint
     return null;
   }
 }
