@@ -11,33 +11,36 @@ export interface Transaction {
 
 @Injectable({ providedIn: 'root' })
 export class BudgetService {
-  // --- STATE ---
+  // --- STATE (Données brutes) ---
   expenses = signal<Transaction[]>([]);
-  initialBudget = signal<number>(1350.00);
+  initialBudget = signal<number | null>(null);
 
-  // --- COMPUTED ---
-  // Calculates the balance. If expenses > 1350, it naturally goes negative.
+  // --- COMPUTED (Données calculées) ---
+  // Calcule le solde restant. Si le budget n'est pas fixé, on part de 0.
   remainingBudget = computed(() => {
-    const total = this.expenses().reduce((acc, t) => acc + t.amount, 0);
-    return this.initialBudget() - total;
+    const totalExpenses = this.expenses().reduce((acc, t) => acc + t.amount, 0);
+    const budget = this.initialBudget() || 0;
+    return budget - totalExpenses;
   });
 
   constructor() {
     this.loadFromStorage();
   }
 
-  // --- METHODS ---
+  // --- ACTIONS ---
 
-  /**
-   * Adds an expense to the list. 
-   * Validation is handled by the Strategy in the component, 
-   * but the service allows any amount (supports negative balance).
-   */
+  // Définit le budget de départ et le sauvegarde
+  setInitialBudget(amount: number) {
+    this.initialBudget.set(amount);
+    localStorage.setItem('balance_initial_budget', amount.toString());
+  }
+
+  // Ajoute une dépense et sauvegarde la liste
   addExpense(title: string, amount: number, category: 'VITAL' | 'EMOTIONAL', emotion: string) {
     const newTx: Transaction = {
       id: Date.now().toString(),
       title,
-      amount, // Substracted regardless of the final balance
+      amount,
       date: new Date(),
       category,
       emotion
@@ -47,28 +50,33 @@ export class BudgetService {
     this.saveToStorage();
   }
 
+  // Nettoyage complet pour la réinitialisation
   resetAll() {
     this.expenses.set([]);
+    this.initialBudget.set(null);
     localStorage.removeItem('balance_expenses');
+    localStorage.removeItem('balance_initial_budget');
   }
 
-  hasData(): boolean {
-    return this.expenses().length > 0;
-  }
-
-  // --- PERSISTENCE ---
+  // --- PERSISTENCE (Interne) ---
 
   private saveToStorage() {
     localStorage.setItem('balance_expenses', JSON.stringify(this.expenses()));
   }
 
   private loadFromStorage() {
+    // 1. Charger le budget
+    const savedBudget = localStorage.getItem('balance_initial_budget');
+    if (savedBudget) {
+      this.initialBudget.set(parseFloat(savedBudget));
+    }
+
+    // 2. Charger les transactions
     const data = localStorage.getItem('balance_expenses');
     if (data) {
-      // Re-parse dates because JSON stringify transforms them into strings
       const parsedData = JSON.parse(data).map((t: any) => ({
         ...t,
-        date: new Date(t.date)
+        date: new Date(t.date) // Conversion string -> Date obligatoire
       }));
       this.expenses.set(parsedData);
     }

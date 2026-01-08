@@ -35,15 +35,25 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('submitBtnRef') submitBtnRef!: ElementRef;
 
-  // --- DATA SIGNALS ---
+  // --- SIGNALS DU SERVICE ---
+  initialBudget = this.budgetService.initialBudget;
   transactions = this.budgetService.expenses;
   remainingBudget = this.budgetService.remainingBudget;
-  showAllHistory = signal(false);
 
-  /**
-   * NOUVEAU : Calcul de la variante de la carte en fonction du solde
-   * Si le solde est négatif, on passe sur la variante 'danger' (rose dans ton design)
-   */
+  // --- ETATS LOCAUX ---
+  showAllHistory = signal(false);
+  tempBudgetInput: number | null = null; 
+  formTitle = '';
+  formAmount: number | null = null;
+  formEmotion = '';
+  showErrors = false;
+  showEmotionSelect = false;
+  isModalOpen = false;
+  currentModalContent!: ModalContent;
+
+  // --- SIGNALS CALCULÉS ---
+
+  // Détermine la variante de couleur (Rose/Danger si solde < 0) [cite: 57, 149]
   budgetVariant = computed<UiCardVariant>(() => {
     return this.remainingBudget() < 0 ? 'danger' : 'positive';
   });
@@ -53,16 +63,7 @@ export class HomeComponent implements OnInit {
     return this.showAllHistory() ? all : all.slice(0, 3);
   });
 
-  // --- FORM STATE ---
-  formTitle = '';
-  formAmount: number | null = null;
-  formEmotion = '';
-  showErrors = false;
-  showEmotionSelect = false;
-
   currentStrategy = signal<ExpenseStrategy>(new VitalNeedStrategy());
-  isModalOpen = false;
-  currentModalContent!: ModalContent;
 
   emotionOptions = [
     { value: 'Stress', label: 'Stressé(e)' },
@@ -71,11 +72,32 @@ export class HomeComponent implements OnInit {
     { value: 'Besoin de réconfort', label: 'Besoin de réconfort' }
   ];
 
-  constructor() {}
-
   ngOnInit() {
     console.log('🏗️ BalanceMe Home Initialized');
   }
+
+  // ==========================================
+  // METHODE CORRIGÉE : handleReset
+  // ==========================================
+  handleReset() {
+    if(confirm("Voulez-vous vraiment réinitialiser toutes vos données ?")) {
+      this.budgetService.resetAll();
+    }
+  }
+
+  // --- ACTIONS ONBOARDING ---
+
+  onTempBudgetChange(e: Event) {
+    this.tempBudgetInput = Number((e.target as HTMLInputElement).value);
+  }
+
+  onStartExperience() {
+    if (this.tempBudgetInput && this.tempBudgetInput > 0) {
+      this.budgetService.setInitialBudget(this.tempBudgetInput);
+    }
+  }
+
+  // --- LOGIQUE FORMULAIRE ---
 
   toggleHistory() {
     this.showAllHistory.update(v => !v);
@@ -89,7 +111,7 @@ export class HomeComponent implements OnInit {
 
   selectEmotional() {
     this.currentStrategy.set(new EmotionalDesireStrategy());
-    this.openEmotionalInfo();
+    this.openEmotionalInfo(); 
   }
 
   onEmotionChange(val: string) {
@@ -103,6 +125,8 @@ export class HomeComponent implements OnInit {
   onAmountChange(e: Event) {
     this.formAmount = Number((e.target as HTMLInputElement).value);
   }
+
+  // --- GESTION DES MODALES ---
 
   openVitalInfo() {
     this.currentModalContent = {
@@ -135,7 +159,7 @@ export class HomeComponent implements OnInit {
   closeModal() {
     this.isModalOpen = false;
     if (this.isEmotionalActive()) {
-      this.showEmotionSelect = true;
+      this.showEmotionSelect = true; 
     }
   }
 
