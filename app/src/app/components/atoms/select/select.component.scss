@@ -1,117 +1,123 @@
-/* =====================================================
-   UI SELECT – Atom (native select)
-   Goals:
-   - Native accessibility (keyboard / screen readers)
-   - Chevron never blocks click
-   - Stable on mobile (no overflow)
-   - Design tokens only
-   ===================================================== */
-
+/* Global Container */
 .ui-select {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Airy spacing */
   width: 100%;
-  display: grid;
-  gap: 10px;
+  position: relative;
+  opacity: 1;
+  transition: opacity 0.2s;
+
+  /* Global Disabled State */
+  &.is-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+    
+    .ui-select__native {
+      background-color: #F2F4F7; /* Neutral Grey */
+      border-color: #EAECF0;
+      color: #98A2B3;
+    }
+  }
 }
 
-/* Label */
+/* Label: BalanceMe Style using Design System Token */
 .ui-select__label {
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-family: var(--font-family-base, sans-serif);
+  font-size: 11px; /* Legible size */
   font-weight: 800;
-  color: rgba(16, 24, 40, 0.55); /* softer than pure black */
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  /* Using the emotional color token instead of hardcoded red */
+  color: var(--color-emotional, #D48C9D); 
+  margin-left: 12px;
 }
 
-/* Wrapper around native select + chevron */
+/* Relative Wrapper */
 .ui-select__control {
   position: relative;
   width: 100%;
-
-  /* Prevent “floating” look in Storybook containers */
-  display: flex;
-  align-items: center;
+  height: 48px; /* Restored comfortable standard height */
 }
 
-/* Native select */
+/* Native Select */
 .ui-select__native {
-  /* Reset-ish */
-  -webkit-appearance: none;
   appearance: none;
-
+  -webkit-appearance: none;
   width: 100%;
-  min-width: 0; /* ✅ prevents overflow in flex/grid */
-  box-sizing: border-box;
-
-  background: rgba(231, 182, 194, 0.14); /* soft emotion background (token-like) */
-  border: 2px solid rgba(231, 182, 194, 0.26);
-  border-radius: 999px;
-
-  padding: 16px 52px 16px 22px; /* right space for chevron */
-  line-height: 1.2;
-
-  font-weight: 700;
-  font-size: 18px;
-  color: rgba(231, 182, 194, 0.9); /* pink text like your screenshot */
+  height: 100%;
+  padding: 0 40px 0 20px; /* Generous padding */
+  
+  border-radius: 999px; /* Pill shape (Full rounding) */
+  border: 1px solid transparent;
+  
+  font-family: var(--font-family-base, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 48px; /* Text centering */
+  
+  /* --- COLORS --- */
+  background-color: #FFF5F7; /* Powder Pink Background */
+  border-color: #FCE7EB;     /* Soft Rose Border */
+  color: #344054;            /* Dark Grey Text (Legible) */
 
   cursor: pointer;
+  transition: all 0.2s ease;
 
-  /* ✅ ensures select is clickable even if chevron overlays */
-  position: relative;
-  z-index: 2;
+  &:focus {
+    outline: none;
+    /* Focus ring using emotional color */
+    border-color: var(--color-emotional, #F472B6); 
+    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.15); /* Pink Halo */
+    background-color: #FFFFFF;
+  }
+
+  /* Placeholder (Empty value) */
+  &.placeholder-shown {
+    color: #98A2B3; /* Light Grey */
+    font-weight: 500;
+  }
 }
 
-/* Placeholder / empty value style (optional)
-   Use when you have <option value="" disabled selected>... */
-.ui-select__native:invalid {
-  opacity: 0.75;
+/* --- ERROR VARIANT: POWDER PINK (Softness over Alert) --- */
+.ui-select.is-error {
+  .ui-select__label { 
+    /* Label stays linked to emotional color */
+    color: var(--color-emotional, #9F1239); 
+  }
+  
+  .ui-select__native {
+    border-color: #FDA4AF;     /* Soft Rose Border */
+    background-color: #FFF1F2; /* Powder Pink Background */
+    color: #9F1239;            /* Deep Rose Text (Not bright red) */
+    
+    &:focus {
+      border-color: var(--color-emotional, #F43F5E);
+      box-shadow: 0 0 0 4px rgba(253, 164, 175, 0.25);
+    }
+  }
 }
 
-/* Focus (keyboard) */
-.ui-select__native:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 4px rgba(242, 208, 124, 0.55); /* insight focus ring */
+/* Error Message */
+.ui-select__error-msg {
+  font-size: 12px;
+  /* Deep Rose for legibility, softer than alert red */
+  color: #9F1239; 
+  margin-left: 16px;
+  margin-top: 4px;
+  font-weight: 500;
 }
 
-/* Hover */
-.ui-select__native:hover {
-  border-color: rgba(231, 182, 194, 0.42);
-}
-
-/* Disabled */
-.ui-select__native:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-/* Chevron icon */
+/* Chevron SVG */
 .ui-select__chevron {
   position: absolute;
-  right: 18px;
+  right: 20px; /* Positioned to match pill shape */
   top: 50%;
   transform: translateY(-50%);
   width: 18px;
   height: 18px;
-
-  opacity: 0.55;
-
-  /* ✅ critical: never block clicks */
   pointer-events: none;
-
-  /* keep it behind the select click layer */
-  z-index: 1;
-}
-
-/* Variant: neutral (if you want a neutral select too) */
-.ui-select--neutral .ui-select__native {
-  background: rgba(16, 24, 40, 0.02);
-  border-color: rgba(16, 24, 40, 0.10);
-  color: rgba(16, 24, 40, 0.7);
-}
-
-/* Mobile: tighten padding + font to prevent “too big” feeling */
-@media (max-width: 420px) {
-  .ui-select__native {
-    font-size: 16px;
-    padding: 14px 48px 14px 18px;
-  }
+  /* Chevron takes the Design System color */
+  color: var(--color-emotional, #D48C9D); 
+  opacity: 0.7;
 }

@@ -1,52 +1,34 @@
 <div [class]="rootClasses.join(' ')">
-  <label
-    *ngIf="label"
-    class="ui-select__label"
-    [attr.for]="selectId"
-  >
+  
+  <label *ngIf="label" class="ui-select__label" [attr.for]="selectId">
     {{ label }}
   </label>
 
   <div class="ui-select__control">
-    <select
-      class="ui-select__native"
-      [id]="selectId"
-      [name]="name"
-      [disabled]="disabled"
-      [required]="required"
-      [value]="value ?? ''"
-      (change)="onChange($event)"
-      [attr.aria-invalid]="error ? 'true' : null"
-      [attr.aria-describedby]="describedBy"
-    >
-      <option value="" disabled hidden>{{ placeholder }}</option>
-
-      <option
-        *ngFor="let opt of options"
-        [value]="opt.value"
+    <div style="color: inherit"> 
+      <select
+        class="ui-select__native"
+        [id]="selectId"
+        [disabled]="disabled"
+        [value]="value ?? ''"
+        (change)="onChange($event)"
+        [class.placeholder-shown]="!value"
+        required
       >
-        {{ opt.label }}
-      </option>
-    </select>
+        <option value="" disabled selected hidden>{{ placeholder }}</option>
 
-    <!-- Chevron (not the default ugly arrows) -->
-    <svg class="ui-select__chevron" viewBox="0 0 20 20" aria-hidden="true">
-      <path
-        d="M5.5 7.5L10 12l4.5-4.5"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
+        <option *ngFor="let opt of options" [value]="opt.value">
+          {{ opt.label }}
+        </option>
+      </select>
+
+      <svg class="ui-select__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor">
+        <path d="M5 7.5L10 12.5L15 7.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
   </div>
 
-  <div *ngIf="hint && !error" class="ui-select__hint" [id]="selectId + '-hint'">
-    {{ hint }}
-  </div>
-
-  <div *ngIf="error" class="ui-select__error" [id]="selectId + '-error'">
+  <div *ngIf="error" class="ui-select__error">
     {{ error }}
   </div>
 </div>
