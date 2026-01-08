@@ -5,7 +5,7 @@ Ce document présente le **Design System** du projet *BalanceMe*.
 L’objectif du design system est de garantir :
 - 🎯 une cohérence visuelle sur l’ensemble de l’application,
 - 🧩 une meilleure lisibilité et maintenabilité du code,
-- [cite_start]🔗 une continuité entre la conception (Figma) et le développement (Angular). [cite: 56]
+- 🔗 une continuité entre la conception (Figma) et le développement (Angular). [cite: 56]
 
 ---
 
