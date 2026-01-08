@@ -13,6 +13,7 @@ import { TransactionItemComponent } from '../../components/molecules/transaction
 // --- LOGIC & STRATEGY ---
 import { BudgetService } from '../../services/budget.service';
 import { ExpenseStrategy, VitalNeedStrategy, EmotionalDesireStrategy } from '../../core/strategies/expense.strategy';
+import { OnboardingComponent } from '../../components/features/onboarding/onboarding.component';
 
 @Component({
   selector: 'app-home',
@@ -25,7 +26,8 @@ import { ExpenseStrategy, VitalNeedStrategy, EmotionalDesireStrategy } from '../
     UiTagComponent, 
     UiSelectComponent, 
     UiModalComponent, 
-    TransactionItemComponent
+    TransactionItemComponent,
+    OnboardingComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

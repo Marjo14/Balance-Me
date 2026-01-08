@@ -1,0 +1,26 @@
+<div class="onboarding-overlay">
+  <div class="onboarding-backdrop"></div>
+  
+  <div class="onboarding-content">
+    <ui-card variant="neutral" padding="lg" elevation="lg" style="text-align: center;">
+      <h2 style="margin-bottom: 1rem; font-weight: 700; color: #101828;">Quelle est votre énergie financière ?</h2>
+      <p style="color: #667085; margin-bottom: 2rem;">Définissez le budget que vous souhaitez allouer en conscience à cette séance.</p>
+      
+      <div style="margin-bottom: 2rem;">
+        <ui-input 
+          type="number" 
+          placeholder="Ex: 1350.00 €" 
+          (input)="onTempBudgetChange($event)">
+        </ui-input>
+      </div>
+
+      <ui-button 
+        variant="primary" 
+        [fullWidth]="true" 
+        size="lg" 
+        (click)="onStart()">
+        DÉMARRER L'EXPÉRIENCE
+      </ui-button>
+    </ui-card>
+  </div>
+</div>
