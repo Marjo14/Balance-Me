@@ -6,16 +6,17 @@
   <app-header (resetAll)="handleReset()"></app-header>
 
   <div class="page-container">
-    <main class="dashboard-grid">
+    <main class="dashboard-grid" role="main">
 
       <div class="col-left">
         <ui-card [variant]="budgetVariant()" padding="lg" elevation="md">
-          <div class="budget-content">
+          <div class="budget-content" aria-live="polite">
             <div>
               <div class="label-sm">
                 {{ remainingBudget() < 0 ? '⚠️ ÉQUILIBRE DU JOUR' : '• ÉNERGIE FINANCIÈRE' }}
               </div>
               <div class="big-amount">
+                <span class="sr-only">Solde actuel : </span>
                 {{ remainingBudget() | number:'1.2-2' }} <small>€</small>
               </div>
             </div>
@@ -23,7 +24,7 @@
             <div class="budget-separator"></div>
 
             <div class="quote">
-              <span class="icon">{{ remainingBudget() < 0 ? '🚦' : '🐚' }}</span>
+              <span class="icon" aria-hidden="true">{{ remainingBudget() < 0 ? '🚦' : '🐚' }}</span>
               <div>
                 <div class="label-sm">{{ remainingBudget() < 0 ? 'RAPPEL DE CONSCIENCE' : 'PENSÉE DU JOUR' }}</div>
                 <p>{{ remainingBudget() < 0 ? '“Pause. Ton énergie est basse : priorise l’essentiel.”' : '“L\'équilibre est le mouvement vers soi.”' }}</p>
@@ -32,50 +33,71 @@
           </div>
         </ui-card>
 
-        <ui-card variant="neutral" padding="lg" class="history-card" style="margin-top: 2rem;">
-          <h3 style="margin-bottom: 1.5rem;">Dernières réflexions</h3>
-          <div class="transaction-list">
+        <ui-card variant="neutral" padding="lg" class="history-card">
+          <h3>Dernières réflexions</h3>
+          <ul class="transaction-list" style="list-style: none; padding: 0;">
             <p *ngIf="transactions().length === 0" class="empty-state">Aucun flux enregistré.</p>
             @for (item of visibleTransactions(); track item.id) {
-              <app-transaction-item
-                [title]="item.title"
-                [amount]="item.amount"
-                [tagLabel]="item.category"
-                [date]="(item.date | date:'dd MMM yyyy')!"
-                [emotion]="item.emotion!">
-              </app-transaction-item>
+              <li>
+                <app-transaction-item
+                  [title]="item.title"
+                  [amount]="item.amount"
+                  [tagLabel]="item.category"
+                  [date]="(item.date | date:'dd MMM yyyy')!"
+                  [emotion]="item.emotion!">
+                </app-transaction-item>
+              </li>
             }
-          </div>
+          </ul>
         </ui-card>
       </div>
 
       <div class="col-right">
-        <section class="intention-card">
+        <section class="intention-card" aria-labelledby="form-intent">
           <h2>Posez une intention</h2>
           <p class="subtitle">Identifier l'origine d'un achat, c'est reprendre le contrôle.</p>
 
           <form (submit)="$event.preventDefault()">
             <div class="form-grid">
               <div class="input-group">
-                <label class="label-xs">QUELLE SOMME INVESTISSEZ-VOUS ?</label>
-                <ui-input [class.input-error]="showErrors && !formAmount" placeholder="0.00 €" type="number" [value]="formAmount" (input)="onAmountChange($event)"></ui-input>
+                <label for="amount-input" class="label-xs">QUELLE SOMME INVESTISSEZ-VOUS ?</label>
+                <ui-input id="amount-input" [class.input-error]="showErrors && !formAmount" placeholder="0.00 €" type="number" [value]="formAmount" (input)="onAmountChange($event)"></ui-input>
               </div>
               <div class="input-group">
-                <label class="label-xs">QUEL EST L'OBJET DE CE FLUX ?</label>
-                <ui-input [class.input-error]="showErrors && !formTitle" placeholder="Ex: Moment partagé..." type="text" [value]="formTitle" (input)="onTitleChange($event)"></ui-input>
+                <label for="title-input" class="label-xs">QUEL EST L'OBJET DE CE FLUX ?</label>
+                <ui-input id="title-input" [class.input-error]="showErrors && !formTitle" placeholder="Ex: Moment partagé..." type="text" [value]="formTitle" (input)="onTitleChange($event)"></ui-input>
+              </div>
+            </div>
+
+            <div class="intention-tag-header">
+              <label class="label-xs">L'INTENTION DERRIÈRE L'ACTE</label>
+              <div class="tag-trigger-group">
+                <ui-tag tone="secondary" size="sm" [ghost]="true" (click)="openVitalInfo()" role="button">BESOIN ?</ui-tag>
+                <ui-tag tone="emotional" size="sm" [ghost]="true" (click)="openEmotionalInfo()" role="button">ENVIE ?</ui-tag>
               </div>
             </div>
 
             <div class="pill-group">
-              <button type="button" class="pill" [class.active]="isVitalActive()" (click)="selectVital()">BESOIN VITAL</button>
-              <button type="button" class="pill" [class.active]="isEmotionalActive()" (click)="selectEmotional()">ENVIE ÉMOTIONNELLE</button>
+              <button type="button" class="pill" [class.active]="isVitalActive()" (click)="selectVital()" [attr.aria-pressed]="isVitalActive()">
+                BESOIN VITAL
+              </button>
+              <button type="button" class="pill" [class.active]="isEmotionalActive()" (click)="selectEmotional()" [attr.aria-pressed]="isEmotionalActive()">
+                ENVIE ÉMOTIONNELLE
+              </button>
             </div>
 
-            <div *ngIf="isEmotionalActive() && showEmotionSelect" style="margin-bottom: 1.5rem;">
-              <ui-select label="HUMEUR AU MOMENT DU CHOIX" [options]="emotionOptions" [value]="formEmotion" (valueChange)="onEmotionChange($event)"></ui-select>
+            <div *ngIf="isEmotionalActive() && showEmotionSelect" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+              <ui-select 
+                label="HUMEUR AU MOMENT DU CHOIX" 
+                [options]="emotionOptions" 
+                [value]="formEmotion" 
+                (valueChange)="onEmotionChange($event)">
+              </ui-select>
             </div>
 
-            <ui-button variant="primary" [fullWidth]="true" size="lg" (click)="onPreSubmit()">ENREGISTRER EN CONSCIENCE</ui-button>
+            <ui-button variant="primary" [fullWidth]="true" size="lg" (click)="onPreSubmit()">
+              ENREGISTRER EN CONSCIENCE
+            </ui-button>
           </form>
         </section>
       </div>

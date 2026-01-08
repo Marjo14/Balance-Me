@@ -22,4 +22,4 @@ export class TransactionItemComponent {
     if (label.includes('VITAL') || label.includes('BESOIN')) return 'primary';
     return 'neutral';
   }
-}
+} 

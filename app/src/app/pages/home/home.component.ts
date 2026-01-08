@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // --- UI ATOMS & MOLECULES ---
@@ -20,16 +20,9 @@ import { HeaderComponent } from '../../components/features/header/header.compone
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule, 
-    UiCardComponent, 
-    UiButtonComponent, 
-    UiInputComponent, 
-    UiTagComponent, 
-    UiSelectComponent, 
-    UiModalComponent, 
-    TransactionItemComponent,
-    OnboardingComponent,
-    HeaderComponent
+    CommonModule, UiCardComponent, UiButtonComponent, UiInputComponent, 
+    UiTagComponent, UiSelectComponent, UiModalComponent, TransactionItemComponent,
+    OnboardingComponent, HeaderComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -37,12 +30,10 @@ import { HeaderComponent } from '../../components/features/header/header.compone
 export class HomeComponent implements OnInit {
   private budgetService = inject(BudgetService);
 
-  // --- SIGNALS DU SERVICE ---
   initialBudget = this.budgetService.initialBudget;
   transactions = this.budgetService.expenses;
   remainingBudget = this.budgetService.remainingBudget;
 
-  // --- ETATS LOCAUX ---
   showAllHistory = signal(false);
   formTitle = '';
   formAmount: number | null = null;
@@ -52,16 +43,10 @@ export class HomeComponent implements OnInit {
   isModalOpen = false;
   currentModalContent!: ModalContent;
 
-  // Variante de couleur pour la carte budget (Rose si solde < 0)
-  budgetVariant = computed<UiCardVariant>(() => {
-    return this.remainingBudget() < 0 ? 'danger' : 'positive';
-  });
-
-  visibleTransactions = computed(() => {
-    const all = this.transactions();
-    return this.showAllHistory() ? all : all.slice(0, 3);
-  });
-
+  budgetVariant = computed<UiCardVariant>(() => this.remainingBudget() < 0 ? 'danger' : 'positive');
+  visibleTransactions = computed(() => this.showAllHistory() ? this.transactions() : this.transactions().slice(0, 3));
+  
+  // Correction 1 : Initialisation explicite sur Vital
   currentStrategy = signal<ExpenseStrategy>(new VitalNeedStrategy());
 
   emotionOptions = [
@@ -71,24 +56,17 @@ export class HomeComponent implements OnInit {
     { value: 'Besoin de réconfort', label: 'Besoin de réconfort' }
   ];
 
-  ngOnInit() {
-    console.log('🏗️ BalanceMe Home Initialized');
-  }
+  ngOnInit() { console.log('🏗️ BalanceMe Home Initialized'); }
 
-  // ==========================================
-  // GESTION DU RESET VIA UI-MODAL
-  // ==========================================
   handleReset() {
     this.currentModalContent = {
-      type: 'vital', // Type neutre pour une modale d'alerte propre
+      type: 'vital',
       title: "Remise à zéro",
-      description: "Voulez-vous vraiment réinitialiser toutes vos données ? Cette action est irréversible.",
+      description: "Voulez-vous vraiment réinitialiser toutes vos données ?",
       buttonText: "OUI, RÉINITIALISER"
     };
     this.isModalOpen = true;
   }
-
-  // --- ACTIONS FORMULAIRE ---
 
   selectVital() {
     this.currentStrategy.set(new VitalNeedStrategy());
@@ -105,14 +83,12 @@ export class HomeComponent implements OnInit {
   onTitleChange(e: Event) { this.formTitle = (e.target as HTMLInputElement).value; }
   onAmountChange(e: Event) { this.formAmount = Number((e.target as HTMLInputElement).value); }
 
-  // --- GESTION DES MODALES D'INFORMATION ---
-
   openVitalInfo() {
     this.currentModalContent = {
       type: 'vital',
-      title: "Besoin Vital",
-      description: "Dépense non-négociable pour votre sécurité et votre santé.",
-      items: ["Logement & Énergie", "Alimentation de base", "Santé", "Transport essentiel"],
+      title: "Qu'est-ce qu'un Besoin Vital ?",
+      description: "Un Besoin Vital est une dépense non-négociable pour votre sécurité et votre santé.",
+      items: ["Logement & Énergie", "Alimentation de base", "Santé & Assurances", "Transport essentiel"],
       buttonText: "J'AI COMPRIS"
     };
     this.isModalOpen = true;
@@ -124,12 +100,8 @@ export class HomeComponent implements OnInit {
       title: "L'Envie Émotionnelle",
       description: "Une envie naît souvent d'un besoin de combler un vide. Faites une pause consciente :",
       checklistTitle: "CHECKLIST DE CONSCIENCE",
-      items: [
-        "Serais-je toujours heureux de cet achat dans 3 jours ?",
-        "Suis-je en train de fuir une émotion (stress, ennui) ?",
-        "Mon budget 'Plaisir' le permet-il sans stress ?"
-      ],
-      footerNote: "Astuce : Attendez 24h. Si l'envie persiste, agissez sereinement.",
+      items: ["Serais-je heureux dans 3 jours ?", "Fuite d'émotion ?", "Budget permis ?"],
+      footerNote: "Astuce : Attendez 24h avant d'agir.",
       buttonText: "J'AI COMPRIS"
     };
     this.isModalOpen = true;
@@ -137,6 +109,7 @@ export class HomeComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
+    // Si l'utilisateur ferme la modale d'information émotionnelle, on affiche le select d'humeur
     if (this.isEmotionalActive()) {
       this.showEmotionSelect = true; 
     }
@@ -146,12 +119,9 @@ export class HomeComponent implements OnInit {
     this.showErrors = true;
     if (!this.formTitle || !this.formAmount) return;
     if (this.isEmotionalActive() && !this.formEmotion) return;
-
-    const strategy = this.currentStrategy();
-    const result = strategy.validate(this.formAmount, this.remainingBudget());
-
+    const result = this.currentStrategy().validate(this.formAmount, this.remainingBudget());
     this.currentModalContent = {
-      type: result.isValid ? 'vital' : 'emotional',
+      type: result.isValid ? 'analysis' : 'emotional',
       title: result.isValid ? 'Analyse : Accordée' : 'Analyse : Bloquée',
       description: result.message,
       buttonText: result.isValid ? 'CONFIRMER' : 'COMPRIS'
@@ -160,33 +130,33 @@ export class HomeComponent implements OnInit {
   }
 
   confirmModalAction() {
-    // Cas 1 : Confirmation du Reset Global
     if (this.currentModalContent.title === "Remise à zéro") {
       this.budgetService.resetAll();
       this.isModalOpen = false;
-    } 
-    // Cas 2 : Confirmation d'ajout de dépense (Analyse accordée)
-    else if (this.currentModalContent.title.includes('Accordée')) {
+    } else if (this.currentModalContent.title.includes('Accordée')) {
       this.budgetService.addExpense(
         this.formTitle, 
         this.formAmount!, 
         this.isEmotionalActive() ? 'EMOTIONAL' : 'VITAL', 
         this.isEmotionalActive() ? this.formEmotion : 'Serein'
       );
+      // Correction 2 : Reset complet après succès
       this.resetFormFields();
-      this.closeModal();
-    } 
-    // Cas 3 : Simple fermeture (Analyse bloquée ou Modale Info)
-    else {
-      this.closeModal();
+      this.isModalOpen = false;
+    } else {
+        // Pour les modales d'information "J'AI COMPRIS"
+        this.closeModal();
     }
   }
 
-  private resetFormFields() {
+  private resetFormFields() { 
     this.formTitle = ''; 
     this.formAmount = null; 
     this.formEmotion = ''; 
     this.showErrors = false;
+    // Correction 3 : Retour à l'état initial par défaut
+    this.showEmotionSelect = false;
+    this.currentStrategy.set(new VitalNeedStrategy());
   }
 
   isVitalActive() { return this.currentStrategy() instanceof VitalNeedStrategy; }
