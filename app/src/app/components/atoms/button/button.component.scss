@@ -1,39 +1,30 @@
 /* =====================================================
    UI BUTTON – Atom
-   Variants: primary | secondary | emotional | insight | brown | ghost
-   Sizes: sm | md | lg
-   A11y: focus-visible, disabled, loading, reduced motion
+   Affiné pour Master 3 - Couleurs BalanceMe
    ===================================================== */
 
 .ui-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   max-width: 100%; 
 
   border-radius: 999px;
   border: 1px solid transparent;
 
   font-family: var(--font-family-base);
-  font-weight: 800;
+  font-weight: 700; 
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.08em; 
 
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
-
-  transition: transform 140ms ease, box-shadow 140ms ease, background 140ms ease, border-color 140ms ease, color 140ms ease;
+  transition: all 140ms ease;
 
   &:active {
     transform: translateY(1px);
-  }
-
-  /* A11y focus */
-  &:focus-visible {
-    outline: 3px solid var(--focus-ring);
-    outline-offset: 3px;
   }
 
   &:disabled {
@@ -45,125 +36,83 @@
     width: 100%;
   }
 
-  /* Sizes (balanced like your captures) */
-  &--sm {
-    height: 42px;
-    padding: 0 18px;
-    font-size: 11px;
-  }
+  /* Tailles affinées pour éviter l'effet "trop gros" */
+  &--sm { height: 34px; padding: 0 14px; font-size: 10px; }
+  &--md { height: 42px; padding: 0 20px; font-size: 11px; }
+  &--lg { height: 48px; padding: 0 24px; font-size: 12px; }
 
-  &--md {
-    height: 52px;
-    padding: 0 24px;
-    font-size: 12px;
-  }
+  /* --- Variantes Solid (Tes couleurs d'origine) --- */
 
-  &--lg {
-    height: 60px;
-    padding: 0 20px;
-    font-size: 13px;
-    letter-spacing: 0.28em;
-  }
-
-  /* -------- Solid variants from tokens -------- */
   &--primary {
     background: var(--color-primary);
     color: var(--color-white);
-    box-shadow: var(--shadow-md);
-
-    &:hover:not(:disabled) {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-1px);
-    }
+    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   }
 
   &--secondary {
     background: var(--color-secondary);
     color: var(--color-white);
-    box-shadow: var(--shadow-md);
-
-    &:hover:not(:disabled) {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-1px);
-    }
+    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   }
 
   &--emotional {
     background: var(--color-emotional);
-    color: rgba(16, 24, 40, 0.82); /* keeps contrast on light pink */
-    box-shadow: var(--shadow-md);
-
-    &:hover:not(:disabled) {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-1px);
-    }
+    color: var(--color-black); // Meilleur contraste sur le rose
+    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   }
 
   &--insight {
     background: var(--color-insight);
-    color: rgba(16, 24, 40, 0.86); /* readable on warm yellow */
-    box-shadow: var(--shadow-md);
-
-    &:hover:not(:disabled) {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-1px);
-    }
+    color: var(--color-black); // Meilleur contraste sur le jaune
+    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   }
 
   &--brown {
     background: var(--color-brown);
     color: var(--color-white);
-    box-shadow: var(--shadow-md);
-
-    &:hover:not(:disabled) {
-      box-shadow: var(--shadow-lg);
-      transform: translateY(-1px);
-    }
+    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   }
 
-  /* -------- Ghost (inactive choice) --------
-     Softer text + light border like the mockups
-  */
+  /* --- Variante Ghost (Le gris de ta capture) --- */
   &--ghost {
-    background: rgba(255, 255, 255, 0.86);
-    color: var(--color-ink-soft);
-    border-color: var(--color-border-soft);
-    box-shadow: none;
-
+    background: #F2F2F2; 
+    color: #475467;      
+    border: 1px solid rgba(16, 24, 40, 0.1);
+    
     &:hover:not(:disabled) {
-      border-color: rgba(16, 24, 40, 0.16);
-      box-shadow: var(--shadow-sm);
+      background: #EAEAEA;
+      border-color: rgba(16, 24, 40, 0.2);
     }
   }
 
-  /* Loading */
-  &--loading {
+  /* --- Loading State --- */
+ &--loading {
     pointer-events: none;
-    .ui-btn__label { opacity: 0.9; }
+    position: relative; // Permet de centrer le spinner absolument
+    
+    .ui-btn__label { 
+      visibility: hidden; // Cache le texte tout en gardant sa largeur
+    }
+    
+    .ui-btn__spinner {
+      position: absolute;
+      left: calc(50% - 9px); // Centre horizontalement (18px / 2)
+      top: calc(50% - 9px);  // Centre verticalement
+    }
   }
 
-  /* Spinner */
   &__spinner {
-    width: 16px;
-    height: 16px;
-    border-radius: 999px;
-    border: 2px solid rgba(255, 255, 255, 0.35);
-    border-top-color: rgba(255, 255, 255, 0.95);
-    animation: uiSpin 800ms linear infinite;
-  }
-
-  /* Spinner contrast on light variants */
-  &--ghost .ui-btn__spinner,
-  &--emotional .ui-btn__spinner,
-  &--insight .ui-btn__spinner {
-    border-color: rgba(16, 24, 40, 0.18);
-    border-top-color: rgba(16, 24, 40, 0.62);
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-top-color: currentColor; // S'adapte à la couleur du texte du bouton
+    border-radius: 50%;
+    animation: uiSpin 0.8s linear infinite;
   }
 }
 
-@keyframes uiSpin {
-  to { transform: rotate(360deg); }
-}
+@keyframes uiSpin { to { transform: rotate(360deg); } }
 
 @media (prefers-reduced-motion: reduce) {
   .ui-btn { transition: none; }

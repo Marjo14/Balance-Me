@@ -1,0 +1,7 @@
+<span [class]="hostClasses.join(' ')">
+  <span *ngIf="dot" class="ui-tag__dot" aria-hidden="true"></span>
+
+  <span *ngIf="icon" class="ui-tag__icon" aria-hidden="true">{{ icon }}</span>
+
+  <ng-content></ng-content>
+</span>

@@ -1,0 +1,129 @@
+/* =====================================================
+   UI RADIO CARD GROUP – Atom
+   Purpose: Besoin vs Envie cards (accessible radios)
+   ===================================================== */
+
+.ui-rcg {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.ui-rcg__legend {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(16, 24, 40, 0.45);
+  margin-bottom: var(--space-md);
+}
+
+.ui-rcg__helpers {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-lg);
+  margin-top: -22px; /* match screenshot placement */
+  margin-bottom: var(--space-md);
+}
+
+.ui-rcg__helper {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.ui-rcg__helper--left {
+  color: var(--color-secondary);
+}
+
+.ui-rcg__helper--right {
+  color: var(--color-emotional);
+}
+
+.ui-rcg__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+}
+
+/* Card */
+.ui-rcg__card {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 76px;
+  padding: 18px 18px;
+  border-radius: 999px; /* pill */
+  border: 2px solid rgba(16, 24, 40, 0.06);
+  background: rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease, background 140ms ease;
+  box-shadow: 0 10px 26px rgba(16, 24, 40, 0.06);
+}
+
+.ui-rcg__label {
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(16, 24, 40, 0.40); /* softer ghost text */
+}
+
+/* Hidden but accessible */
+.ui-rcg__input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Focus ring (keyboard) */
+.ui-rcg__input:focus-visible + .ui-rcg__label,
+.ui-rcg__card:has(.ui-rcg__input:focus-visible) {
+  outline: 3px solid var(--color-insight);
+  outline-offset: 4px;
+}
+
+/* Selected (filled like screenshot) */
+.ui-rcg__card.is-selected {
+  background: rgba(16, 24, 40, 0.92);
+  border-color: rgba(16, 24, 40, 0.92);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(16, 24, 40, 0.16);
+}
+
+.ui-rcg__card.is-selected .ui-rcg__label {
+  color: rgba(255, 255, 255, 0.92);
+}
+
+/* Optional tones (if you ever want green/rose selection) */
+.ui-rcg__card.is-selected.tone-positive {
+  background: rgba(28, 44, 34, 0.96);
+  border-color: rgba(28, 44, 34, 0.96);
+}
+
+.ui-rcg__card.is-selected.tone-danger {
+  background: rgba(192, 88, 114, 0.95);
+  border-color: rgba(192, 88, 114, 0.95);
+}
+
+/* Disabled */
+.ui-rcg__card.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+@media (max-width: 480px) {
+  .ui-rcg__grid {
+    grid-template-columns: 1fr;
+  }
+  .ui-rcg__helpers {
+    justify-content: flex-start;
+    margin-top: 0;
+  }
+}

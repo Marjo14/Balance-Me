@@ -1,0 +1,61 @@
+/* =====================================================
+   UI TAG / PILL – Atom
+   Used for micro labels: "ÉNERGIE FINANCIÈRE", "BESOIN ?", etc.
+   ===================================================== */
+
+.ui-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 14px;
+  border-radius: 999px;
+
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+
+  user-select: none;
+  white-space: nowrap;
+
+  background: rgba(16, 24, 40, 0.04);
+  color: rgba(16, 24, 40, 0.55);
+  border: 1px solid transparent;
+}
+
+/* Sizes */
+.ui-tag--sm { padding: 8px 12px; font-size: 10px; }
+.ui-tag--md { padding: 10px 16px; font-size: 11px; }
+
+/* Dot (like "•") */
+.ui-tag__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  opacity: 0.55;
+  background: currentColor;
+}
+
+/* Emoji/icon */
+.ui-tag__icon {
+  font-size: 14px;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* Ghost pill (like BESOIN ? / ENVIE ?) */
+.ui-tag--ghost {
+  background: transparent;
+  border-color: rgba(16, 24, 40, 0.10);
+  color: rgba(16, 24, 40, 0.45);
+}
+
+/* Tones */
+.ui-tag--primary { color: var(--color-primary); background: rgba(62, 127, 90, 0.10); }
+.ui-tag--secondary { color: var(--color-secondary); background: rgba(79, 166, 166, 0.10); }
+.ui-tag--emotional { color: var(--color-danger); background: rgba(192, 88, 114, 0.10); }
+.ui-tag--insight { color: rgba(242, 208, 124, 1); background: rgba(242, 208, 124, 0.20); }
+
+/* Brown (from moodboard) – requires token */
+.ui-tag--brown { color: var(--color-brown); background: rgba(122, 90, 74, 0.12); }

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common'; 
 
 export type UiButtonVariant =
   | 'primary'
@@ -13,6 +14,7 @@ export type UiButtonSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'ui-button',
   standalone: true,
+  imports: [CommonModule], 
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,7 +27,6 @@ export class UiButtonComponent {
   @Input() loading = false;
   @Input() fullWidth = false;
 
-  /** Optional aria-label (useful when button has only an icon) */
   @Input() ariaLabel?: string;
 
   @Output() pressed = new EventEmitter<MouseEvent>();
