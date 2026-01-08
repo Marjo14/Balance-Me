@@ -57,13 +57,13 @@
 
   &--emotional {
     background: var(--color-emotional);
-    color: var(--color-black); // Meilleur contraste sur le rose
+    color: var(--color-black); 
     &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   }
 
   &--insight {
     background: var(--color-insight);
-    color: var(--color-black); // Meilleur contraste sur le jaune
+    color: var(--color-black); 
     &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }
   }
 

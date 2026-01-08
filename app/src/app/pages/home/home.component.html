@@ -1,1 +1,162 @@
-<p>home works!</p>
+<div class="page-container">
+  
+
+
+  <main class="dashboard-grid">
+
+    <div class="col-left">
+      
+      <ui-card variant="positive" padding="lg" elevation="md">
+        
+        <div class="budget-content">
+          <div>
+            <div class="label-sm" aria-hidden="true">• ÉNERGIE FINANCIÈRE</div>
+            <h2 class="sr-only">Votre Solde Restant</h2>
+            
+            <div class="big-amount">
+              {{ remainingBudget() | number:'1.2-2' }} <small>€</small>
+            </div>
+          </div>
+
+          <div class="budget-separator"></div>
+
+          <div class="quote">
+            <span class="icon" aria-hidden="true">🐚</span>
+            <div>
+              <div class="label-sm">PENSÉE DU JOUR</div>
+              <p>“L'équilibre est le mouvement vers soi.”</p>
+            </div>
+          </div>
+        </div>
+
+      </ui-card>
+
+      <section class="history-section" aria-labelledby="hist-title">
+        <div class="history-header">
+          <h3 id="hist-title">Dernières réflexions</h3>
+        </div>
+        
+        <div class="transaction-list" role="list">
+          <p *ngIf="transactions().length === 0" class="empty-state">
+            Aucun flux pour le moment.
+          </p>
+
+          @for (item of visibleTransactions(); track item.id) {
+            <div role="listitem">
+              <app-transaction-item
+                [title]="item.title"
+                [amount]="item.amount"
+                [tagLabel]="item.category"
+                [date]="(item.date | date:'dd MMM yyyy') || ''"
+                [emotion]="item.emotion || ''">
+              </app-transaction-item>
+            </div>
+          }
+        </div>
+
+        <button 
+          *ngIf="transactions().length > 3"
+          class="btn-show-more"
+          (click)="toggleHistory()">
+          {{ showAllHistory() ? 'Voir moins' : 'Voir tout l\'historique' }}
+        </button>
+      </section>
+
+    </div>
+
+    <div class="col-right">
+      
+      <section class="intention-card" aria-labelledby="form-heading">
+        <h2 id="form-heading">Posez une intention</h2>
+        <p class="subtitle">Identifier l'origine d'un achat, c'est reprendre le contrôle.</p>
+
+        <form (submit)="$event.preventDefault()">
+          
+          <div class="form-grid">
+            <div class="input-group">
+              <label for="amount">QUELLE SOMME INVESTISSEZ-VOUS ?</label>
+              <ui-input
+                id="amount"
+                placeholder="0.00 €"
+                type="number"
+                [value]="formAmount"
+                (input)="onAmountChange($event)">
+              </ui-input>
+            </div>
+
+            <div class="input-group">
+              <label for="title">QUEL EST L'OBJET DE CE FLUX ?</label>
+              <ui-input
+                id="title"
+                placeholder="Ex: Moment partagé..."
+                type="text"
+                [value]="formTitle" 
+                (input)="onTitleChange($event)">
+              </ui-input>
+            </div>
+          </div>
+
+          <div class="intention-actions">
+            
+            <div class="labels-row">
+              <span class="action-label" id="intention-label">L'INTENTION DERRIÈRE L'ACTE</span>
+              
+              <div class="help-tags">
+                <ui-tag 
+                  tone="primary" 
+                  class="clickable-tag"
+                  (click)="openVitalInfo()">
+                  BESOIN ?
+                </ui-tag>
+
+                <ui-tag 
+                  tone="emotional" 
+                  class="clickable-tag"
+                  (click)="openEmotionalInfo()">
+                  ENVIE ?
+                </ui-tag>
+              </div>
+            </div>
+
+            <div class="pill-group" role="group" aria-labelledby="intention-label">
+              <button 
+                type="button" 
+                class="pill" 
+                [class.active]="isVitalActive()"
+                (click)="selectVital()">
+                BESOIN VITAL
+              </button>
+
+              <button 
+                type="button" 
+                class="pill" 
+                [class.active]="isEmotionalActive()"
+                (click)="selectEmotional()">
+                ENVIE ÉMOTIONNELLE
+              </button>
+            </div>
+          </div>
+
+          <ui-button 
+            variant="primary" 
+            class="submit-btn" 
+            [fullWidth]="true"
+            size="lg"
+            (click)="addTransaction()">
+            ENREGISTRER EN CONSCIENCE
+          </ui-button>
+
+        </form>
+      </section>
+    </div>
+
+  </main>
+
+  <app-ui-modal 
+    *ngIf="isModalOpen"
+    [content]="currentModalContent"
+    (close)="closeModal()"
+    (confirm)="closeModal()">
+  </app-ui-modal>
+
+</div>

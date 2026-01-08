@@ -1,0 +1,298 @@
+/* =====================================================
+   HOME PAGE STYLES
+   Uses Global Design System Tokens
+   ===================================================== */
+
+:host {
+  display: block;
+  min-height: 100vh;
+  /* Use the cream background from your Design System */
+  background-color: var(--color-bg); 
+  
+  /* Optional: Add the waves background if you have the asset */
+  background-image: url('/assets/waves-bg.svg'); 
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: top center;
+
+  /* Font inheritance */
+  font-family: var(--font-family-base);
+}
+
+/* --- LAYOUT WRAPPER --- */
+/* Reuses the .container utility from design-system.scss */
+.page-container {
+  width: 100%;
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: var(--space-lg);
+}
+
+/* --- HEADER --- */
+/* If you use app-ui-header component, this spacing handles the gap */
+app-ui-header {
+  display: block;
+  margin-bottom: var(--space-xl);
+}
+
+/* --- MAIN GRID LAYOUT --- */
+/* Mobile First: Stacked vertically */
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+
+  /* Desktop: 2 Columns (Left 45% / Right 55%) */
+  @media (min-width: 900px) {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr; 
+    align-items: start;
+    gap: 40px;
+  }
+}
+
+/* =====================================================
+   LEFT COLUMN: BUDGET & HISTORY
+   ===================================================== */
+
+.col-left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* --- BUDGET CARD CONTENT --- */
+/* Specific styling for the content INSIDE the green UI-Card */
+.budget-content {
+  color: var(--color-white);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.label-sm {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: var(--space-xs);
+}
+
+.big-amount {
+  font-size: clamp(36px, 4vw, 56px); /* Responsive font size */
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: var(--space-md);
+  
+  small {
+    font-size: 0.5em;
+    opacity: 0.75;
+    font-weight: 600;
+  }
+}
+
+/* 👇 FIX: THE MISSING SEPARATOR LINE 👇 */
+.budget-separator {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.16); /* Semi-transparent white */
+  margin: var(--space-md) 0;
+}
+
+.quote {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: flex-start;
+  opacity: 0.95;
+  
+  .icon { font-size: 1.2rem; }
+  
+  p {
+    margin: 0;
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.4;
+    font-weight: 500;
+  }
+}
+
+/* --- HISTORY SECTION --- */
+.history-section {
+  /* Ensure proper spacing on mobile */
+  padding-bottom: var(--space-xl);
+  
+  .history-header {
+    margin-bottom: var(--space-md);
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-black);
+    }
+  }
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.empty-state {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  padding: var(--space-lg);
+  background: white;
+  border-radius: var(--radius-md);
+}
+
+.btn-show-more {
+  width: 100%;
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  background: transparent;
+  border: 1px dashed rgba(16, 24, 40, 0.2);
+  border-radius: var(--radius-md);
+  color: #666;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(16, 24, 40, 0.05);
+    border-color: var(--color-black);
+    color: var(--color-black);
+  }
+}
+
+
+/* =====================================================
+   RIGHT COLUMN: INTENTION FORM
+   ===================================================== */
+
+.col-right {
+  /* Sticky effect on Desktop */
+  @media (min-width: 900px) {
+    position: sticky;
+    top: var(--space-lg);
+  }
+}
+
+/* The White Card Container */
+.intention-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-xl); /* 28px */
+  padding: var(--space-xl); /* 32px */
+  box-shadow: var(--shadow-lg);
+  
+  h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: var(--space-xs);
+    color: var(--color-black);
+  }
+
+  .subtitle {
+    color: #667085;
+    font-size: 16px;
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+}
+
+/* Form Grid (Inputs) */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  margin-bottom: 32px;
+
+  /* On Tablet/Desktop, puts inputs side by side */
+  @media (min-width: 600px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #98A2B3;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+/* Intention Actions (Buttons & Links) */
+.intention-actions {
+  margin-bottom: 32px;
+}
+
+.labels-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.action-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #98A2B3;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.help-tags {
+  display: flex;
+  gap: 8px;
+
+  .clickable-tag {
+    cursor: pointer;
+    transition: transform 0.15s;
+    &:hover { transform: translateY(-1px); opacity: 0.8; }
+  }
+}
+
+/* Pill Buttons (Besoin / Envie) */
+.pill-group {
+  display: flex;
+  gap: var(--space-md);
+
+  .pill {
+    flex: 1;
+    padding: 14px;
+    border-radius: 50px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-black);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover { border-color: #98A2B3; }
+    
+    /* ACTIVE STATE (Dark Green) */
+    &.active {
+      background-color: #1A2E22; /* Very dark green */
+      color: var(--color-white);
+      border-color: #1A2E22;
+      box-shadow: 0 4px 12px rgba(26, 46, 34, 0.15);
+    }
+  }
+}
+
+.submit-btn {
+  width: 100%;
+  /* Assuming ui-button handles styles, but forcing width here */
+}

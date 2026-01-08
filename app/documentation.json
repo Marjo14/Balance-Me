@@ -2,6 +2,166 @@
     "pipes": [],
     "interfaces": [
         {
+            "name": "Expense",
+            "id": "interface-Expense-7ea70edb090286535b2cc6cbb99e86549fe02f4bb1dc9cabb19a38029fdfbceae00cc5ae7cab49d208a79762e18871cfddab8cf8373f7a265f0fd6176d7bcd1d",
+            "file": "src/app/models/expense.model.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export type ExpenseCategory = 'VITAL' | 'EMOTIONAL'; \n\n\nexport interface Expense {\n  id: string;\n  title: string;\n  amount: number;\n  date: Date;\n  category: ExpenseCategory;\n  emotion?: string; \n}",
+            "properties": [
+                {
+                    "name": "amount",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "category",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ExpenseCategory",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 15
+                },
+                {
+                    "name": "date",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Date",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
+                },
+                {
+                    "name": "emotion",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 16
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
+            "name": "ModalContent",
+            "id": "interface-ModalContent-872bf0f05b78836054d7c8aa2e203d28a69b73d452b3fc69c8272d5b35a867f9dc70042e1e9a4ea047533f4b7cd0d5153106e2dd59a2848d0ca576874e9c57f0",
+            "file": "src/app/components/molecules/modal/modal.component.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import { Component, EventEmitter, Input, Output } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nexport interface ModalContent {\n  type: 'vital' | 'emotional';\n  title: string;\n  description: string;\n  checklistTitle?: string; \n  items: string[]; \n  footerNote?: string;\n  buttonText: string;\n}\n\n@Component({\n  selector: 'app-ui-modal',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <div class=\"modal-overlay\" (click)=\"close.emit()\">\n      <div class=\"modal-card\" (click)=\"$event.stopPropagation()\">\n        \n        <button class=\"close-btn\" (click)=\"close.emit()\">\n          <svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n            <path d=\"M1 13L13 1M1 1L13 13\" stroke=\"#B0B0B0\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          </svg>\n        </button>\n\n        <h2 class=\"modal-title\">{{ content.title }}</h2>\n\n        <p class=\"modal-description\">{{ content.description }}</p>\n\n        <div *ngIf=\"content.type === 'emotional'\" class=\"pink-box\">\n          <h3 class=\"checklist-title\" *ngIf=\"content.checklistTitle\">{{ content.checklistTitle }}</h3>\n          <ul class=\"checklist-list\">\n            <li *ngFor=\"let item of content.items\">\n              <span class=\"icon\">✨</span>\n              <span class=\"text\">{{ item }}</span>\n            </li>\n          </ul>\n        </div>\n\n        <div *ngIf=\"content.type === 'vital'\" class=\"vital-list-container\">\n          <ul class=\"vital-list\">\n            <li *ngFor=\"let item of content.items\">\n              <span class=\"icon\" *ngIf=\"item.includes('Logement')\">🏠</span>\n              <span class=\"icon\" *ngIf=\"item.includes('Alimentation')\">🍎</span>\n              <span class=\"icon\" *ngIf=\"item.includes('Santé')\">💊</span>\n              <span class=\"icon\" *ngIf=\"item.includes('Transport')\">🚌</span>\n              <span class=\"text\">{{ item }}</span>\n            </li>\n          </ul>\n        </div>\n\n        <p *ngIf=\"content.footerNote\" class=\"footer-note\">\n          {{ content.footerNote }}\n        </p>\n\n        <div class=\"action-area\">\n          <button class=\"action-btn\" (click)=\"confirm.emit()\">\n            {{ content.buttonText }}\n          </button>\n        </div>\n\n      </div>\n    </div>\n  `,\n  styles: [`\n    /* --- 1. OVERLAY --- */\n    .modal-overlay {\n      position: fixed;\n      top: 0; left: 0; width: 100%; height: 100%;\n      background-color: rgba(69, 90, 75, 0.45); /* Vert sombre semi-transparent */\n      backdrop-filter: blur(5px);\n      display: flex; justify-content: center; align-items: center;\n      z-index: 9999;\n      padding: 1rem; /* Marge de sécurité mobile */\n      animation: fadeIn 0.3s ease-out;\n    }\n\n    /* --- 2. CARTE MODALE --- */\n    .modal-card {\n      background: white;\n      width: 100%;\n      max-width: 420px; /* Largeur optimale compacte */\n      border-radius: 32px;\n      padding: 2rem 2rem; /* Padding Desktop */\n      position: relative;\n      box-shadow: 0 20px 60px rgba(0,0,0,0.15);\n      text-align: left;\n      display: flex; flex-direction: column;\n      max-height: 90vh; \n      overflow-y: auto; /* Scroll si trop petit écran */\n      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);\n\n      /* RESPONSIVE MOBILE */\n      @media (max-width: 480px) {\n        padding: 1.5rem 1.25rem; /* Padding réduit sur mobile */\n        border-radius: 24px;\n      }\n    }\n\n    /* --- 3. GLOBAL --- */\n    .close-btn {\n      position: absolute; top: 1.5rem; right: 1.5rem;\n      background: transparent; border: none; cursor: pointer;\n      padding: 0.5rem; transition: transform 0.2s;\n    }\n    .close-btn:hover { transform: scale(1.1); }\n\n    .modal-title {\n      font-family: 'DM Sans', sans-serif;\n      font-size: 1.6rem; font-weight: 700; color: #1A2E22;\n      margin: 0.5rem 0 0.8rem 0; line-height: 1.1;\n      \n      @media (max-width: 480px) { font-size: 1.4rem; }\n    }\n\n    .modal-description {\n      color: #5C6B62; font-size: 0.9rem; line-height: 1.5;\n      margin-bottom: 1.2rem;\n    }\n\n    /* --- 4. STYLE EMOTIONAL (BOITE ROSE COMPACTE) --- */\n    .pink-box {\n      background-color: #FFF5F5;\n      border: 1px solid #FFE0E0;\n      border-radius: 16px;\n      padding: 1rem 1.2rem; /* Compact ! */\n      margin-bottom: 1.2rem;\n    }\n\n    .checklist-title {\n      color: #E0AFA0; font-size: 0.65rem; font-weight: 700;\n      letter-spacing: 1.2px; text-transform: uppercase;\n      margin-bottom: 0.8rem;\n    }\n\n    .checklist-list { list-style: none; padding: 0; margin: 0; }\n    .checklist-list li {\n      display: flex; align-items: flex-start; gap: 10px;\n      margin-bottom: 0.6rem; /* Espace réduit entre items */\n      font-size: 0.85rem; /* Police légèrement plus petite */\n      color: #444; line-height: 1.35;\n    }\n    .checklist-list li .icon { font-size: 0.9rem; margin-top: 1px; }\n\n    /* --- 5. STYLE VITAL --- */\n    .vital-list-container { margin-bottom: 1.5rem; }\n    .vital-list { list-style: none; padding: 0; margin: 0; }\n    .vital-list li {\n      display: flex; align-items: center; gap: 10px;\n      margin-bottom: 0.8rem; font-size: 0.95rem; color: #4A5550;\n    }\n\n    /* --- 6. FOOTER --- */\n    .footer-note {\n      font-size: 0.75rem; color: #9AA6A0; font-style: italic;\n      margin-bottom: 1.5rem; line-height: 1.4;\n    }\n\n    .action-area { margin-top: auto; } /* Pousse le bouton en bas */\n\n    .action-btn {\n      width: 100%; padding: 1rem;\n      background-color: #537C60; color: white;\n      font-weight: 700; font-size: 0.85rem; letter-spacing: 1px;\n      text-transform: uppercase; border: none; border-radius: 50px;\n      cursor: pointer; transition: background 0.2s;\n    }\n    .action-btn:hover { background-color: #42634d; }\n\n    /* --- ANIMATIONS --- */\n    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }\n  `]\n})\nexport class UiModalComponent {\n  @Input() content!: ModalContent;\n  @Output() close = new EventEmitter<void>();\n  @Output() confirm = new EventEmitter<void>();\n}",
+            "properties": [
+                {
+                    "name": "buttonText",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "checklistTitle",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 8
+                },
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
+                },
+                {
+                    "name": "footerNote",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": true,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "items",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string[]",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "type",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"vital\" | \"emotional\"",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 5
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 172,
+            "methods": [],
+            "extends": []
+        },
+        {
             "name": "User",
             "id": "interface-User-d4821beac0e4a852e513391b7470981c4353fdd95a18628bb68136c8695b489ee15b926e2e5031bc26cf30e1508e0a362c3ee13a06734702b4d15af140e485d5",
             "file": "src/stories/user.ts",
@@ -27,7 +187,165 @@
             "extends": []
         }
     ],
-    "injectables": [],
+    "injectables": [
+        {
+            "name": "BudgetService",
+            "id": "injectable-BudgetService-b0d8438c684cf698c1a8ccfec7ae502842931247bb5658173b3688973d5fd1cd31883b204d25ef57f5f23b22c98247ac8f3a64c9bf9adf503822c86e08063cd4",
+            "file": "src/app/services/budget.service.ts",
+            "properties": [
+                {
+                    "name": "_expenses",
+                    "defaultValue": "signal<Expense[]>([\n    { \n      id: '1', \n      title: 'Intuition', \n      amount: -50.00, \n      date: new Date(), \n      category: 'EMOTIONAL', \n      emotion: 'Besoin de réconfort' \n    },\n    { \n      id: '2', \n      title: 'Courses Bio', \n      amount: -85.20, \n      date: new Date(), \n      category: 'VITAL', \n      emotion: 'Serein' \n    }\n  ])",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 12,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "_initialBudget",
+                    "defaultValue": "signal<number>(1500)",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 31,
+                    "modifierKind": [
+                        123
+                    ]
+                },
+                {
+                    "name": "expenses",
+                    "defaultValue": "this._expenses.asReadonly()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 35,
+                    "modifierKind": [
+                        148
+                    ]
+                },
+                {
+                    "name": "remainingBudget",
+                    "defaultValue": "computed(() => {\n    return this._initialBudget() + this.totalExpenses();\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 44
+                },
+                {
+                    "name": "totalExpenses",
+                    "defaultValue": "computed(() => {\n    return this._expenses().reduce((sum, item) => sum + item.amount, 0);\n  })",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 40
+                }
+            ],
+            "methods": [
+                {
+                    "name": "addExpense",
+                    "args": [
+                        {
+                            "name": "title",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "amount",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "category",
+                            "type": "\"VITAL\" | \"EMOTIONAL\"",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        },
+                        {
+                            "name": "emotion",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 53,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nAdds a new expense to the state using immutability pattern.\n",
+                    "description": "<p>Adds a new expense to the state using immutability pattern.</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": "title",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "amount",
+                            "type": "number",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "category",
+                            "type": "\"VITAL\" | \"EMOTIONAL\"",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        },
+                        {
+                            "name": "emotion",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "optional": true,
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable, signal, computed } from '@angular/core';\nimport { Expense } from '../models/expense.model';\n\n@Injectable({\n  providedIn: 'root' // SINGLETON: Unique instance shared across the app\n})\nexport class BudgetService {\n\n  // 1. STATE (Private)\n  // We use Signals for reactive state management.\n  // Private to enforce encapsulation: only this service can modify data.\n  private _expenses = signal<Expense[]>([\n    { \n      id: '1', \n      title: 'Intuition', \n      amount: -50.00, \n      date: new Date(), \n      category: 'EMOTIONAL', \n      emotion: 'Besoin de réconfort' \n    },\n    { \n      id: '2', \n      title: 'Courses Bio', \n      amount: -85.20, \n      date: new Date(), \n      category: 'VITAL', \n      emotion: 'Serein' \n    }\n  ]);\n\n  private _initialBudget = signal<number>(1500); // Monthly income example\n\n  // 2. SELECTORS (Public Read-only)\n  // Expose signals to components without allowing direct modification.\n  readonly expenses = this._expenses.asReadonly();\n\n  // 3. COMPUTED VALUES (The \"Brain\")\n  // Automatically updates whenever _expenses changes.\n  // No need to manually recalculate totals.\n  totalExpenses = computed(() => {\n    return this._expenses().reduce((sum, item) => sum + item.amount, 0);\n  });\n\n  remainingBudget = computed(() => {\n    return this._initialBudget() + this.totalExpenses();\n  });\n\n  // 4. ACTIONS (Public Methods)\n  \n  /**\n   * Adds a new expense to the state using immutability pattern.\n   */\n  addExpense(title: string, amount: number, category: 'VITAL' | 'EMOTIONAL', emotion?: string) {\n    const newExpense: Expense = {\n      id: Date.now().toString(),\n      title,\n      amount: -Math.abs(amount), // Ensure negative value\n      date: new Date(),\n      category,\n      emotion\n    };\n\n    // Update the signal with a new array reference\n    this._expenses.update(list => [newExpense, ...list]);\n  }\n}",
+            "extends": [],
+            "type": "injectable"
+        }
+    ],
     "guards": [],
     "interceptors": [],
     "classes": [],
@@ -89,73 +407,7 @@
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\n<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->\n<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->\n<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\n<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->\n<!-- * * * * * * * to get started with your project! * * * * * * * -->\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\n\n<style>\n  :host {\n    --bright-blue: oklch(51.01% 0.274 263.83);\n    --electric-violet: oklch(53.18% 0.28 296.97);\n    --french-violet: oklch(47.66% 0.246 305.88);\n    --vivid-pink: oklch(69.02% 0.277 332.77);\n    --hot-red: oklch(61.42% 0.238 15.34);\n    --orange-red: oklch(63.32% 0.24 31.68);\n\n    --gray-900: oklch(19.37% 0.006 300.98);\n    --gray-700: oklch(36.98% 0.014 302.71);\n    --gray-400: oklch(70.9% 0.015 304.04);\n\n    --red-to-pink-to-purple-vertical-gradient: linear-gradient(\n      180deg,\n      var(--orange-red) 0%,\n      var(--vivid-pink) 50%,\n      var(--electric-violet) 100%\n    );\n\n    --red-to-pink-to-purple-horizontal-gradient: linear-gradient(\n      90deg,\n      var(--orange-red) 0%,\n      var(--vivid-pink) 50%,\n      var(--electric-violet) 100%\n    );\n\n    --pill-accent: var(--bright-blue);\n\n    font-family: \"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto,\n      Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\",\n      \"Segoe UI Symbol\";\n    box-sizing: border-box;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n  }\n\n  h1 {\n    font-size: 3.125rem;\n    color: var(--gray-900);\n    font-weight: 500;\n    line-height: 100%;\n    letter-spacing: -0.125rem;\n    margin: 0;\n    font-family: \"Inter Tight\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto,\n      Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\",\n      \"Segoe UI Symbol\";\n  }\n\n  p {\n    margin: 0;\n    color: var(--gray-700);\n  }\n\n  main {\n    width: 100%;\n    min-height: 100%;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    padding: 1rem;\n    box-sizing: inherit;\n    position: relative;\n  }\n\n  .angular-logo {\n    max-width: 9.2rem;\n  }\n\n  .content {\n    display: flex;\n    justify-content: space-around;\n    width: 100%;\n    max-width: 700px;\n    margin-bottom: 3rem;\n  }\n\n  .content h1 {\n    margin-top: 1.75rem;\n  }\n\n  .content p {\n    margin-top: 1.5rem;\n  }\n\n  .divider {\n    width: 1px;\n    background: var(--red-to-pink-to-purple-vertical-gradient);\n    margin-inline: 0.5rem;\n  }\n\n  .pill-group {\n    display: flex;\n    flex-direction: column;\n    align-items: start;\n    flex-wrap: wrap;\n    gap: 1.25rem;\n  }\n\n  .pill {\n    display: flex;\n    align-items: center;\n    --pill-accent: var(--bright-blue);\n    background: color-mix(in srgb, var(--pill-accent) 5%, transparent);\n    color: var(--pill-accent);\n    padding-inline: 0.75rem;\n    padding-block: 0.375rem;\n    border-radius: 2.75rem;\n    border: 0;\n    transition: background 0.3s ease;\n    font-family: var(--inter-font);\n    font-size: 0.875rem;\n    font-style: normal;\n    font-weight: 500;\n    line-height: 1.4rem;\n    letter-spacing: -0.00875rem;\n    text-decoration: none;\n    white-space: nowrap;\n  }\n\n  .pill:hover {\n    background: color-mix(in srgb, var(--pill-accent) 15%, transparent);\n  }\n\n  .pill-group .pill:nth-child(6n + 1) {\n    --pill-accent: var(--bright-blue);\n  }\n  .pill-group .pill:nth-child(6n + 2) {\n    --pill-accent: var(--electric-violet);\n  }\n  .pill-group .pill:nth-child(6n + 3) {\n    --pill-accent: var(--french-violet);\n  }\n\n  .pill-group .pill:nth-child(6n + 4),\n  .pill-group .pill:nth-child(6n + 5),\n  .pill-group .pill:nth-child(6n + 6) {\n    --pill-accent: var(--hot-red);\n  }\n\n  .pill-group svg {\n    margin-inline-start: 0.25rem;\n  }\n\n  .social-links {\n    display: flex;\n    align-items: center;\n    gap: 0.73rem;\n    margin-top: 1.5rem;\n  }\n\n  .social-links path {\n    transition: fill 0.3s ease;\n    fill: var(--gray-400);\n  }\n\n  .social-links a:hover svg path {\n    fill: var(--gray-900);\n  }\n\n  @media screen and (max-width: 650px) {\n    .content {\n      flex-direction: column;\n      width: max-content;\n    }\n\n    .divider {\n      height: 1px;\n      width: 100%;\n      background: var(--red-to-pink-to-purple-horizontal-gradient);\n      margin-block: 1.5rem;\n    }\n  }\n</style>\n\n<main class=\"main\">\n  <div class=\"content\">\n    <div class=\"left-side\">\n      <svg\n        xmlns=\"http://www.w3.org/2000/svg\"\n        viewBox=\"0 0 982 239\"\n        fill=\"none\"\n        class=\"angular-logo\"\n      >\n        <g clip-path=\"url(#a)\">\n          <path\n            fill=\"url(#b)\"\n            d=\"M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z\"\n          />\n          <path\n            fill=\"url(#c)\"\n            d=\"M388.676 191.625h30.849L363.31 31.828h-35.758l-56.215 159.797h30.848l13.174-39.356h60.061l13.256 39.356Zm-65.461-62.675 21.602-64.311h1.227l21.602 64.311h-44.431Zm126.831-7.527v70.202h-28.23V71.839h27.002v20.374h1.392c2.782-6.71 7.2-12.028 13.255-15.956 6.056-3.927 13.584-5.89 22.503-5.89 8.264 0 15.465 1.8 21.684 5.318 6.137 3.518 10.964 8.673 14.319 15.382 3.437 6.71 5.074 14.81 4.992 24.383v76.175h-28.23v-71.92c0-8.019-2.046-14.237-6.219-18.819-4.173-4.5-9.819-6.791-17.102-6.791-4.91 0-9.328 1.063-13.174 3.272-3.846 2.128-6.792 5.237-9.001 9.328-2.046 4.009-3.191 8.918-3.191 14.728ZM589.233 239c-10.147 0-18.82-1.391-26.103-4.091-7.282-2.7-13.092-6.382-17.511-10.964-4.418-4.582-7.528-9.655-9.164-15.219l25.448-6.136c1.145 2.372 2.782 4.663 4.991 6.954 2.209 2.291 5.155 4.255 8.837 5.81 3.683 1.554 8.428 2.291 14.074 2.291 8.019 0 14.647-1.964 19.884-5.81 5.237-3.845 7.856-10.227 7.856-19.064v-22.665h-1.391c-1.473 2.946-3.601 5.892-6.383 9.001-2.782 3.109-6.464 5.645-10.965 7.691-4.582 2.046-10.228 3.109-17.101 3.109-9.165 0-17.511-2.209-25.039-6.545-7.446-4.337-13.42-10.883-17.757-19.474-4.418-8.673-6.628-19.473-6.628-32.565 0-13.091 2.21-24.301 6.628-33.383 4.419-9.082 10.311-15.955 17.839-20.7 7.528-4.746 15.874-7.037 25.039-7.037 7.037 0 12.846 1.145 17.347 3.518 4.582 2.373 8.182 5.236 10.883 8.51 2.7 3.272 4.746 6.382 6.137 9.327h1.554v-19.8h27.821v121.749c0 10.228-2.454 18.737-7.364 25.447-4.91 6.709-11.538 11.7-20.048 15.055-8.509 3.355-18.165 4.991-28.884 4.991Zm.245-71.266c5.974 0 11.047-1.473 15.302-4.337 4.173-2.945 7.446-7.118 9.573-12.519 2.21-5.482 3.274-12.027 3.274-19.637 0-7.609-1.064-14.155-3.274-19.8-2.127-5.646-5.318-10.064-9.491-13.255-4.174-3.11-9.329-4.746-15.384-4.746s-11.537 1.636-15.792 4.91c-4.173 3.272-7.365 7.772-9.492 13.418-2.128 5.727-3.191 12.191-3.191 19.392 0 7.2 1.063 13.745 3.273 19.228 2.127 5.482 5.318 9.736 9.573 12.764 4.174 3.027 9.41 4.582 15.629 4.582Zm141.56-26.51V71.839h28.23v119.786h-27.412v-21.273h-1.227c-2.7 6.709-7.119 12.191-13.338 16.446-6.137 4.255-13.747 6.382-22.748 6.382-7.855 0-14.81-1.718-20.783-5.237-5.974-3.518-10.72-8.591-14.075-15.382-3.355-6.709-5.073-14.891-5.073-24.464V71.839h28.312v71.921c0 7.609 2.046 13.664 6.219 18.083 4.173 4.5 9.655 6.709 16.365 6.709 4.173 0 8.183-.982 12.111-3.028 3.927-2.045 7.118-5.072 9.655-9.082 2.537-4.091 3.764-9.164 3.764-15.218Zm65.707-109.395v159.796h-28.23V31.828h28.23Zm44.841 162.169c-7.61 0-14.402-1.391-20.457-4.091-6.055-2.7-10.883-6.791-14.32-12.109-3.518-5.319-5.237-11.946-5.237-19.801 0-6.791 1.228-12.355 3.765-16.773 2.536-4.419 5.891-7.937 10.228-10.637 4.337-2.618 9.164-4.664 14.647-6.055 5.4-1.391 11.046-2.373 16.856-3.027 7.037-.737 12.683-1.391 17.102-1.964 4.337-.573 7.528-1.555 9.574-2.782 1.963-1.309 3.027-3.273 3.027-5.973v-.491c0-5.891-1.718-10.391-5.237-13.664-3.518-3.191-8.51-4.828-15.056-4.828-6.955 0-12.356 1.473-16.447 4.5-4.009 3.028-6.71 6.546-8.183 10.719l-26.348-3.764c2.046-7.282 5.483-13.336 10.31-18.328 4.746-4.909 10.638-8.59 17.511-11.045 6.955-2.455 14.565-3.682 22.912-3.682 5.809 0 11.537.654 17.265 2.045s10.965 3.6 15.711 6.71c4.746 3.109 8.51 7.282 11.455 12.6 2.864 5.318 4.337 11.946 4.337 19.883v80.184h-27.166v-16.446h-.9c-1.719 3.355-4.092 6.464-7.201 9.328-3.109 2.864-6.955 5.237-11.619 6.955-4.828 1.718-10.229 2.536-16.529 2.536Zm7.364-20.701c5.646 0 10.556-1.145 14.729-3.354 4.173-2.291 7.364-5.237 9.655-9.001 2.292-3.763 3.355-7.854 3.355-12.273v-14.155c-.9.737-2.373 1.391-4.5 2.046-2.128.654-4.419 1.145-7.037 1.636-2.619.491-5.155.9-7.692 1.227-2.537.328-4.746.655-6.628.901-4.173.572-8.019 1.472-11.292 2.781-3.355 1.31-5.973 3.11-7.855 5.401-1.964 2.291-2.864 5.318-2.864 8.918 0 5.237 1.882 9.164 5.728 11.782 3.682 2.782 8.51 4.091 14.401 4.091Zm64.643 18.328V71.839h27.412v19.965h1.227c2.21-6.955 5.974-12.274 11.292-16.038 5.319-3.763 11.456-5.645 18.329-5.645 1.555 0 3.355.082 5.237.163 1.964.164 3.601.328 4.91.573v25.938c-1.227-.41-3.109-.819-5.646-1.146a58.814 58.814 0 0 0-7.446-.49c-5.155 0-9.738 1.145-13.829 3.354-4.091 2.209-7.282 5.236-9.655 9.164-2.373 3.927-3.519 8.427-3.519 13.5v70.448h-28.312ZM222.077 39.192l-8.019 125.923L137.387 0l84.69 39.192Zm-53.105 162.825-57.933 33.056-57.934-33.056 11.783-28.556h92.301l11.783 28.556ZM111.039 62.675l30.357 73.803H80.681l30.358-73.803ZM7.937 165.115 0 39.192 84.69 0 7.937 165.115Z\"\n          />\n        </g>\n        <defs>\n          <radialGradient\n            id=\"c\"\n            cx=\"0\"\n            cy=\"0\"\n            r=\"1\"\n            gradientTransform=\"rotate(118.122 171.182 60.81) scale(205.794)\"\n            gradientUnits=\"userSpaceOnUse\"\n          >\n            <stop stop-color=\"#FF41F8\" />\n            <stop offset=\".707\" stop-color=\"#FF41F8\" stop-opacity=\".5\" />\n            <stop offset=\"1\" stop-color=\"#FF41F8\" stop-opacity=\"0\" />\n          </radialGradient>\n          <linearGradient\n            id=\"b\"\n            x1=\"0\"\n            x2=\"982\"\n            y1=\"192\"\n            y2=\"192\"\n            gradientUnits=\"userSpaceOnUse\"\n          >\n            <stop stop-color=\"#F0060B\" />\n            <stop offset=\"0\" stop-color=\"#F0070C\" />\n            <stop offset=\".526\" stop-color=\"#CC26D5\" />\n            <stop offset=\"1\" stop-color=\"#7702FF\" />\n          </linearGradient>\n          <clipPath id=\"a\"><path fill=\"#fff\" d=\"M0 0h982v239H0z\" /></clipPath>\n        </defs>\n      </svg>\n      <h1>Hello, {{ title() }}</h1>\n      <p>Congratulations! Your app is running. 🎉</p>\n    </div>\n    <div class=\"divider\" role=\"separator\" aria-label=\"Divider\"></div>\n    <div class=\"right-side\">\n      <div class=\"pill-group\">\n        @for (item of [\n          { title: 'Explore the Docs', link: 'https://angular.dev' },\n          { title: 'Learn with Tutorials', link: 'https://angular.dev/tutorials' },\n          { title: 'Prompt and best practices for AI', link: 'https://angular.dev/ai/develop-with-ai'},\n          { title: 'CLI Docs', link: 'https://angular.dev/tools/cli' },\n          { title: 'Angular Language Service', link: 'https://angular.dev/tools/language-service' },\n          { title: 'Angular DevTools', link: 'https://angular.dev/tools/devtools' },\n        ]; track item.title) {\n          <a\n            class=\"pill\"\n            [href]=\"item.link\"\n            target=\"_blank\"\n            rel=\"noopener\"\n          >\n            <span>{{ item.title }}</span>\n            <svg\n              xmlns=\"http://www.w3.org/2000/svg\"\n              height=\"14\"\n              viewBox=\"0 -960 960 960\"\n              width=\"14\"\n              fill=\"currentColor\"\n            >\n              <path\n                d=\"M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm188-212-56-56 372-372H560v-80h280v280h-80v-144L388-332Z\"\n              />\n            </svg>\n          </a>\n        }\n      </div>\n      <div class=\"social-links\">\n        <a\n          href=\"https://github.com/angular/angular\"\n          aria-label=\"Github\"\n          target=\"_blank\"\n          rel=\"noopener\"\n        >\n          <svg\n            width=\"25\"\n            height=\"24\"\n            viewBox=\"0 0 25 24\"\n            fill=\"none\"\n            xmlns=\"http://www.w3.org/2000/svg\"\n            alt=\"Github\"\n          >\n            <path\n              d=\"M12.3047 0C5.50634 0 0 5.50942 0 12.3047C0 17.7423 3.52529 22.3535 8.41332 23.9787C9.02856 24.0946 9.25414 23.7142 9.25414 23.3871C9.25414 23.0949 9.24389 22.3207 9.23876 21.2953C5.81601 22.0377 5.09414 19.6444 5.09414 19.6444C4.53427 18.2243 3.72524 17.8449 3.72524 17.8449C2.61064 17.082 3.81137 17.0973 3.81137 17.0973C5.04697 17.1835 5.69604 18.3647 5.69604 18.3647C6.79321 20.2463 8.57636 19.7029 9.27978 19.3881C9.39052 18.5924 9.70736 18.0499 10.0591 17.7423C7.32641 17.4347 4.45429 16.3765 4.45429 11.6618C4.45429 10.3185 4.9311 9.22133 5.72065 8.36C5.58222 8.04931 5.16694 6.79833 5.82831 5.10337C5.82831 5.10337 6.85883 4.77319 9.2121 6.36459C10.1965 6.09082 11.2424 5.95546 12.2883 5.94931C13.3342 5.95546 14.3801 6.09082 15.3644 6.36459C17.7023 4.77319 18.7328 5.10337 18.7328 5.10337C19.3942 6.79833 18.9789 8.04931 18.8559 8.36C19.6403 9.22133 20.1171 10.3185 20.1171 11.6618C20.1171 16.3888 17.2409 17.4296 14.5031 17.7321C14.9338 18.1012 15.3337 18.8559 15.3337 20.0084C15.3337 21.6552 15.3183 22.978 15.3183 23.3779C15.3183 23.7009 15.5336 24.0854 16.1642 23.9623C21.0871 22.3484 24.6094 17.7341 24.6094 12.3047C24.6094 5.50942 19.0999 0 12.3047 0Z\"\n            />\n          </svg>\n        </a>\n        <a\n          href=\"https://x.com/angular\"\n          aria-label=\"X\"\n          target=\"_blank\"\n          rel=\"noopener\"\n        >\n          <svg\n            width=\"24\"\n            height=\"24\"\n            viewBox=\"0 0 24 24\"\n            fill=\"none\"\n            xmlns=\"http://www.w3.org/2000/svg\"\n            alt=\"X\"\n          >\n            <path\n              d=\"M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z\"\n            />\n          </svg>\n        </a>\n        <a\n          href=\"https://www.youtube.com/channel/UCbn1OgGei-DV7aSRo_HaAiw\"\n          aria-label=\"Youtube\"\n          target=\"_blank\"\n          rel=\"noopener\"\n        >\n          <svg\n            width=\"29\"\n            height=\"20\"\n            viewBox=\"0 0 29 20\"\n            fill=\"none\"\n            xmlns=\"http://www.w3.org/2000/svg\"\n            alt=\"Youtube\"\n          >\n            <path\n              fill-rule=\"evenodd\"\n              clip-rule=\"evenodd\"\n              d=\"M27.4896 1.52422C27.9301 1.96749 28.2463 2.51866 28.4068 3.12258C29.0004 5.35161 29.0004 10 29.0004 10C29.0004 10 29.0004 14.6484 28.4068 16.8774C28.2463 17.4813 27.9301 18.0325 27.4896 18.4758C27.0492 18.9191 26.5 19.2389 25.8972 19.4032C23.6778 20 14.8068 20 14.8068 20C14.8068 20 5.93586 20 3.71651 19.4032C3.11363 19.2389 2.56449 18.9191 2.12405 18.4758C1.68361 18.0325 1.36732 17.4813 1.20683 16.8774C0.613281 14.6484 0.613281 10 0.613281 10C0.613281 10 0.613281 5.35161 1.20683 3.12258C1.36732 2.51866 1.68361 1.96749 2.12405 1.52422C2.56449 1.08095 3.11363 0.76113 3.71651 0.596774C5.93586 0 14.8068 0 14.8068 0C14.8068 0 23.6778 0 25.8972 0.596774C26.5 0.76113 27.0492 1.08095 27.4896 1.52422ZM19.3229 10L11.9036 5.77905V14.221L19.3229 10Z\"\n            />\n          </svg>\n        </a>\n      </div>\n    </div>\n  </div>\n</main>\n\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\n<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->\n<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->\n<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\n<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->\n<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->\n\n\n<router-outlet />\n"
-        },
-        {
-            "name": "Button",
-            "id": "component-Button-933a73b9342a1b89233ed1f02f63ae28f17388630000069bb5cb50ab548fee2f4a1b9fcc4aabcfffc9b1bb33a728f6361656fd6f6687260e83508d16e28140ee",
-            "file": "src/app/components/atoms/button/button.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "app-button",
-            "styleUrls": [],
-            "styles": [],
-            "templateUrl": [
-                "./button.html"
-            ],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [
-                {
-                    "name": "disabled",
-                    "defaultValue": "false",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 12,
-                    "type": "boolean",
-                    "decorators": []
-                },
-                {
-                    "name": "label",
-                    "defaultValue": "'Bouton'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 10,
-                    "type": "string",
-                    "decorators": []
-                },
-                {
-                    "name": "variant",
-                    "defaultValue": "'primary'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 11,
-                    "type": "\"primary\" | \"secondary\" | \"emotional\" | \"insight\" | \"neutral\"",
-                    "decorators": []
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": false,
-            "imports": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'app-button',\n  imports: [],\n  templateUrl: './button.html',\n  styleUrl: './button.scss',\n})\nexport class Button {\n  @Input() label = 'Bouton';\n  @Input() variant: 'primary' | 'secondary' | 'emotional' | 'insight' | 'neutral' = 'primary';\n  @Input() disabled = false;\n\n}\n",
-            "styleUrl": "./button.scss",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "extends": [],
-            "templateData": "<button\n  [disabled]=\"disabled\"\n  [class]=\"variant\"\n>\n  {{ label }}\n</button>\n"
+            "templateData": "<router-outlet></router-outlet>"
         },
         {
             "name": "ButtonComponent",
@@ -378,136 +630,207 @@
             "extends": []
         },
         {
-            "name": "InfoCard",
-            "id": "component-InfoCard-2bc8ffc2731eab124e51f73137ddc0b45a3bc40fce76349084491a3bd07cea644f9d532a85b04415c0c143a983510ed826bccb9a4febdeee3c86fc9395356149",
-            "file": "src/app/components/molecules/info-card/info-card.ts",
+            "name": "HomeComponent",
+            "id": "component-HomeComponent-a7c50ec51f7f492f38697b96cd4831fd9e9a5ebaac1629f45a49cee5eb860f2019ca802e374a9840cde368585aa407d1c968427aacc06d8e7b5c62a7b9d36434",
+            "file": "src/app/pages/home/home.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-info-card",
+            "selector": "app-home",
             "styleUrls": [],
             "styles": [],
             "templateUrl": [
-                "./info-card.html"
+                "./home.component.html"
             ],
             "viewProviders": [],
             "hostDirectives": [],
-            "inputsClass": [
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
                 {
-                    "name": "title",
-                    "defaultValue": "'Titre card'",
+                    "name": "budgetService",
+                    "defaultValue": "inject(BudgetService)",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 10,
-                    "type": "string",
-                    "decorators": []
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30,
+                    "modifierKind": [
+                        123
+                    ]
                 },
                 {
-                    "name": "variant",
-                    "defaultValue": "'insight'",
+                    "name": "formAmount",
+                    "defaultValue": "null",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 11,
-                    "type": "\"insight\" | \"secondary\"",
-                    "decorators": []
+                    "type": "number | null",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 38
+                },
+                {
+                    "name": "formTitle",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 37
+                },
+                {
+                    "name": "remainingBudget",
+                    "defaultValue": "this.budgetService.remainingBudget",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34
+                },
+                {
+                    "name": "transactions",
+                    "defaultValue": "this.budgetService.expenses",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "unknown",
+                    "indexKey": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 33
                 }
             ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "addTransaction",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 87,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nÉTAPE 3 : L'utilisateur clique sur AJOUTER\n",
+                    "description": "<p>ÉTAPE 3 : L&#39;utilisateur clique sur AJOUTER</p>\n"
+                },
+                {
+                    "name": "onAmountChange",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 68,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nÉTAPE 2 : L'utilisateur tape dans le champ MONTANT\n",
+                    "description": "<p>ÉTAPE 2 : L&#39;utilisateur tape dans le champ MONTANT</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onTitleChange",
+                    "args": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 49,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\n\nÉTAPE 1 : L'utilisateur tape dans le champ TITRE\nDéclenché par (input) ou (change) dans le HTML\n",
+                    "description": "<p>ÉTAPE 1 : L&#39;utilisateur tape dans le champ TITRE\nDéclenché par (input) ou (change) dans le HTML</p>\n",
+                    "jsdoctags": [
+                        {
+                            "name": "event",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
-            "imports": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'app-info-card',\n  imports: [],\n  templateUrl: './info-card.html',\n  styleUrl: './info-card.scss',\n})\nexport class InfoCard {\n  @Input() title = 'Titre card';\n  @Input() variant: 'insight' | 'secondary' = 'insight';\n\n}\n",
-            "styleUrl": "./info-card.scss",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "extends": [],
-            "templateData": "<div class=\"card\" [class]=\"variant\">\n  {{ title }}\n</div>\n"
-        },
-        {
-            "name": "InputComponent",
-            "id": "component-InputComponent-f705d2bfa6554ee5f402ba7ff5b72f1e69fd925edf77336df50196d17fbb38ab8717d47510dc68f1dc5ce2141706aa10d58c96ecb097af29c13eee711ef7807f",
-            "file": "src/app/components/atoms/input/input.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "app-input",
-            "styleUrls": [],
-            "styles": [],
-            "templateUrl": [
-                "./input.html"
-            ],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [
+            "standalone": true,
+            "imports": [
                 {
-                    "name": "disabled",
-                    "defaultValue": "false",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 13,
-                    "type": "boolean",
-                    "decorators": []
+                    "name": "CommonModule",
+                    "type": "module"
                 },
                 {
-                    "name": "label",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 10,
-                    "type": "string",
-                    "decorators": []
+                    "name": "UiCardComponent",
+                    "type": "component"
                 },
                 {
-                    "name": "placeholder",
-                    "defaultValue": "''",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 12,
-                    "type": "string",
-                    "decorators": []
+                    "name": "UiButtonComponent",
+                    "type": "component"
                 },
                 {
-                    "name": "type",
-                    "defaultValue": "'text'",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "line": 11,
-                    "type": "\"text\" | \"number\"",
-                    "decorators": []
+                    "name": "UiTagComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "UiInputComponent",
+                    "type": "component"
+                },
+                {
+                    "name": "TransactionItemComponent",
+                    "type": "component"
                 }
             ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": false,
-            "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'app-input',\n  imports: [],\n  templateUrl: './input.html',\n  styleUrl: './input.scss',\n})\nexport class InputComponent{\n  @Input() label = '';\n  @Input() type: 'text' | 'number' = 'text';\n  @Input() placeholder = '';\n  @Input() disabled = false;\n\n}\n",
-            "styleUrl": "./input.scss",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { Component, inject } from '@angular/core';\n\n// --- UI IMPORTS (Atoms & Molecules) ---\nimport { UiCardComponent } from '../../components/atoms/card/card.component';\nimport { UiButtonComponent } from '../../components/atoms/button/button.component';\nimport { UiInputComponent } from '../../components/atoms/input/input.component';\nimport { TransactionItemComponent } from '../../components/molecules/transaction-item/transaction-item.component';\n\n// --- LOGIC IMPORT (Service) ---\nimport { BudgetService } from '../../services/budget.service';\nimport { UiTagComponent } from '../../components/atoms/tag/tag.component';\n\n@Component({\n  selector: 'app-home',\n  standalone: true,\n  imports: [CommonModule,\n    UiCardComponent, \n    UiButtonComponent, \n    UiTagComponent,\n    UiInputComponent, \n    TransactionItemComponent\n  ],\n  templateUrl: './home.component.html',\n  styleUrl: './home.component.scss',\n})\nexport class HomeComponent {\n  // --- DEPENDENCY INJECTION ---\n  // Accessing the Singleton Service to get state & methods\n  private budgetService = inject(BudgetService);\n\n  // 2. LECTURE DES DONNÉES (SIGNALS)\n  transactions = this.budgetService.expenses;\n  remainingBudget = this.budgetService.remainingBudget;\n\n  // 3. ÉTAT LOCAL DU FORMULAIRE\n  formTitle: string = '';\n  formAmount: number | null = null;\n\n  constructor() {\n    // Juste pour vérifier que le composant charge bien\n    console.log('🏗️ HomeComponent initialisé.');\n  }\n\n  /**\n   * ÉTAPE 1 : L'utilisateur tape dans le champ TITRE\n   * Déclenché par (input) ou (change) dans le HTML\n   */\n  onTitleChange(event: Event): void {\n    console.log('--- 1. Événement onTitleChange détecté ---');\n    \n    // a. Récupération de l'élément HTML qui a déclenché l'événement\n    const inputElement = event.target as HTMLInputElement;\n    console.log('   📍 Élément cible:', inputElement);\n\n    // b. Extraction de la valeur brute\n    const newValue = inputElement.value;\n    console.log(`   📝 Valeur tapée : \"${newValue}\"`);\n\n    // c. Mise à jour de la variable de classe (IMPORTANT !)\n    this.formTitle = newValue;\n    console.log('   💾 Variable this.formTitle mise à jour :', this.formTitle);\n  }\n\n  /**\n   * ÉTAPE 2 : L'utilisateur tape dans le champ MONTANT\n   */\n  onAmountChange(event: Event): void {\n    console.log('--- 2. Événement onAmountChange détecté ---');\n\n    const inputElement = event.target as HTMLInputElement;\n    const rawValue = inputElement.value;\n    console.log(`   📝 Valeur brute (string) : \"${rawValue}\"`);\n\n    // Conversion en nombre (le + ou Number() transforme \"10\" en 10)\n    const newAmount = Number(rawValue);\n    console.log(`   🔢 Valeur convertie (number) : ${newAmount}`);\n\n    // Mise à jour de la variable de classe\n    this.formAmount = newAmount;\n    console.log('   💾 Variable this.formAmount mise à jour :', this.formAmount);\n  }\n\n  /**\n   * ÉTAPE 3 : L'utilisateur clique sur AJOUTER\n   */\n  addTransaction() {\n    console.log('--- 3. Tentative d\\'ajout de transaction ---');\n    console.log('   🔎 État actuel du formulaire :', { \n      titre: this.formTitle, \n      montant: this.formAmount \n    });\n\n    // Validation simple\n    if (!this.formTitle || !this.formAmount) {\n      console.warn('   ⚠️ ERREUR : Le titre ou le montant est vide. Action annulée.');\n      return; // On arrête tout ici si c'est vide\n    }\n\n    console.log('   ✅ Validation OK. Appel du BudgetService...');\n\n    // Appel au Service (Le Cerveau)\n    this.budgetService.addExpense(\n      this.formTitle,\n      this.formAmount,\n      'EMOTIONAL', \n      'Envie'\n    );\n\n    console.log('   🚀 Transaction envoyée au service !');\n\n    // Reset du Formulaire (Nettoyage)\n    this.formTitle = '';\n    this.formAmount = null;\n    console.log('   🧹 Formulaire réinitialisé.');\n  }\n\n}\n",
+            "styleUrl": "./home.component.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 38
+            },
             "extends": [],
-            "templateData": "<label class=\"input-label\">\n  {{ label }}\n\n  <input\n    class=\"input-field\"\n    [type]=\"type\"\n    [placeholder]=\"placeholder\"\n    [disabled]=\"disabled\"\n    inputmode=\"numeric\"\n    aria-label=\"{{ label }}\"\n  />\n</label>\n"
+            "templateData": "<div class=\"page-container\">\n  \n  <app-ui-header></app-ui-header>\n\n  <main class=\"dashboard-grid\">\n\n    <div class=\"col-left\">\n      \n      <ui-card variant=\"positive\" padding=\"lg\" class=\"budget-card\">\n        <div class=\"budget-content\">\n          <span class=\"label-sm\" aria-hidden=\"true\">• ÉNERGIE FINANCIÈRE</span>\n          <h2 class=\"sr-only\">Budget restant</h2>\n          \n          <div class=\"big-amount\">\n            {{ remainingBudget() | number:'1.2-2' }} <small aria-hidden=\"true\">€</small>\n          </div>\n          \n          <div class=\"quote\" aria-hidden=\"true\">\n            <span class=\"icon\">🐚</span>\n            <p>“L'équilibre est le mouvement vers soi.”</p>\n          </div>\n        </div>\n      </ui-card>\n\n      <section class=\"history-section\" aria-labelledby=\"hist-title\">\n        <div class=\"history-header\">\n          <h3 id=\"hist-title\">Dernières réflexions</h3>\n        </div>\n        \n        <div class=\"transaction-list\" role=\"list\">\n          <p *ngIf=\"transactions().length === 0\" class=\"empty-state\">\n            Aucun flux pour le moment.\n          </p>\n\n          @for (item of visibleTransactions(); track item.id) {\n            <div role=\"listitem\">\n              <app-transaction-item\n                [title]=\"item.title\"\n                [amount]=\"item.amount\"\n                [tagLabel]=\"item.category\"\n                [date]=\"(item.date | date:'dd MMM yyyy') || ''\"\n                [emotion]=\"item.emotion || ''\">\n              </app-transaction-item>\n            </div>\n          }\n        </div>\n\n        <button \n          *ngIf=\"transactions().length > 3\"\n          class=\"btn-show-more\"\n          (click)=\"toggleHistory()\">\n          {{ showAllHistory() ? 'Voir moins' : 'Voir tout l\\'historique' }}\n        </button>\n      </section>\n    </div>\n\n    <div class=\"col-right\">\n      <section class=\"intention-card\" aria-labelledby=\"form-heading\">\n        <h2 id=\"form-heading\">Posez une intention</h2>\n        <p class=\"subtitle\">Identifier l'origine d'un achat, c'est reprendre le contrôle.</p>\n\n        <form (submit)=\"$event.preventDefault()\">\n          <div class=\"form-grid\">\n            <div class=\"input-group\">\n              <label>QUELLE SOMME ?</label>\n              <ui-input\n                placeholder=\"0.00\"\n                type=\"number\"\n                [value]=\"formAmount\"\n                (input)=\"onAmountChange($event)\">\n              </ui-input>\n            </div>\n\n            <div class=\"input-group\">\n              <label>QUEL OBJET ?</label>\n              <ui-input\n                placeholder=\"Ex: Café...\"\n                type=\"text\"\n                [value]=\"formTitle\" \n                (input)=\"onTitleChange($event)\">\n              </ui-input>\n            </div>\n          </div>\n\n          <div class=\"intention-actions\">\n            \n            <div class=\"labels-row\">\n              <span class=\"action-label\" id=\"intention-label\">L'INTENTION DERRIÈRE L'ACTE</span>\n              \n              <div class=\"help-tags\">\n                <ui-tag \n                  tone=\"primary\" \n                  class=\"clickable-tag\"\n                  (click)=\"openVitalInfo()\">\n                  BESOIN ?\n                </ui-tag>\n\n                <ui-tag \n                  tone=\"emotional\" \n                  class=\"clickable-tag\"\n                  (click)=\"openEmotionalInfo()\">\n                  ENVIE ?\n                </ui-tag>\n              </div>\n            </div>\n\n            <div class=\"pill-group\" role=\"group\" aria-labelledby=\"intention-label\">\n              <button \n                type=\"button\" \n                class=\"pill\" \n                [class.active]=\"isVitalActive()\"\n                (click)=\"selectVital()\">\n                BESOIN VITAL\n              </button>\n\n              <button \n                type=\"button\" \n                class=\"pill\" \n                [class.active]=\"isEmotionalActive()\"\n                (click)=\"selectEmotional()\">\n                ENVIE ÉMOTIONNELLE\n              </button>\n            </div>\n          </div>\n\n          <ui-button \n            variant=\"primary\" \n            class=\"submit-btn\" \n            (click)=\"addTransaction()\">\n            ENREGISTRER EN CONSCIENCE\n          </ui-button>\n        </form>\n      </section>\n    </div>\n\n  </main>\n\n  <app-ui-modal \n    *ngIf=\"isModalOpen\"\n    [content]=\"currentModalContent\"\n    (close)=\"closeModal()\"\n    (confirm)=\"closeModal()\">\n  </app-ui-modal>\n\n</div>"
         },
         {
             "name": "PageComponent",
@@ -604,46 +927,8 @@
             "extends": []
         },
         {
-            "name": "PlusIcon",
-            "id": "component-PlusIcon-e323e7729268d3e3b859785e72886a3fc8acd2dbe7a2f149c5e262acc0fa1102a609882819b44cf7c6d12e04499e61219ca0837b3eb84aee267c02b04ca032f3",
-            "file": "src/app/components/atoms/plus-icon/plus-icon.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "app-plus-icon",
-            "styleUrls": [],
-            "styles": [],
-            "templateUrl": [
-                "./plus-icon.html"
-            ],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": false,
-            "imports": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-plus-icon',\n  imports: [],\n  templateUrl: './plus-icon.html',\n  styleUrl: './plus-icon.scss',\n})\nexport class PlusIcon {\n\n}\n",
-            "styleUrl": "./plus-icon.scss",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "extends": [],
-            "templateData": "<span class=\"plus\">+</span>\n"
-        },
-        {
             "name": "Radio",
-            "id": "component-Radio-5b1f265f88021d5fc81935fb9dcd888885c541382fa03adc7c17d734d4fd4407b848b71038e34263a8ca8ae53e42ab1b71ec8037075676071542c843c6665929",
+            "id": "component-Radio-90a8b080d18b9bfaf1ecbca792c0d2b31b96df886007d12389bd56fc08bdfb615080f9e8e8a7afec170bdf57bf06ff3a7d4c979251cdbc3d98810e8ab8e0bc1b",
             "file": "src/app/components/atoms/radio/radio.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -696,9 +981,31 @@
                     "decorators": []
                 }
             ],
-            "outputsClass": [],
+            "outputsClass": [
+                {
+                    "name": "checkedChange",
+                    "defaultValue": "new EventEmitter<boolean>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nEmits \"true\" when user selects this option",
+                    "description": "<p>Emits &quot;true&quot; when user selects this option</p>\n",
+                    "line": 16,
+                    "type": "EventEmitter"
+                }
+            ],
             "propertiesClass": [],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "select",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 18,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -708,28 +1015,30 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'app-radio',\n  imports: [],\n  templateUrl: './radio.html',\n  styleUrl: './radio.scss',\n})\nexport class Radio {\n  @Input() label = 'Option';\n  @Input() variant: 'neutral' | 'emotional' = 'neutral';\n  @Input() checked = false;\n  @Input() disabled = false;\n\n}\n",
+            "sourceCode": "import { Component, EventEmitter, Input, Output } from '@angular/core';\n\n@Component({\n  selector: 'app-radio',\n  imports: [],\n  templateUrl: './radio.html',\n  styleUrl: './radio.scss',\n})\nexport class Radio {\n  @Input() label = 'Option';\n  @Input() variant: 'neutral' | 'emotional' = 'neutral';\n  @Input() checked = false;\n  @Input() disabled = false;\n\n  /** Emits \"true\" when user selects this option */\n  @Output() checkedChange = new EventEmitter<boolean>();\n\n  select(): void {\n    if (this.disabled) return;\n    this.checkedChange.emit(true);\n  }\n\n}\n",
             "styleUrl": "./radio.scss",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
             "extends": [],
-            "templateData": "<label class=\"radio\" [class]=\"variant\" [class.disabled]=\"disabled\">\n  <span class=\"icon\">\n    {{ checked ? '◉' : '○' }}\n  </span>\n  <span class=\"label\">{{ label }}</span>\n</label>\n"
+            "templateData": "<button\n  type=\"button\"\n  class=\"radio u-focus\"\n  [class]=\"variant\"\n  [class.disabled]=\"disabled\"\n  role=\"radio\"\n  [attr.aria-checked]=\"checked\"\n  [disabled]=\"disabled\"\n  (click)=\"select()\"\n>\n  <span class=\"icon\" aria-hidden=\"true\">\n    {{ checked ? '◉' : '○' }}\n  </span>\n  <span class=\"label\">{{ label }}</span>\n</button>\n"
         },
         {
-            "name": "RemainingAmountCard",
-            "id": "component-RemainingAmountCard-8f35a0a4cc953171042b65a8135fca9fedb25a982be05aa776e31e55e72304192a159f563aad8d4b43ea3354d8063c2d4f53e45f85d6e33a93d9d2f7eddda5e1",
-            "file": "src/app/components/molecules/remaining-amount-card/remaining-amount-card.ts",
+            "name": "TransactionItemComponent",
+            "id": "component-TransactionItemComponent-82cdae86e2cdfa0a060f2474e347e3a7e203c57fe09821e935f7aed8f2060eada9420c10c550d452687a06a53129dd1ba3d69369fb18117cb28f080463f2be4d",
+            "file": "src/app/components/molecules/transaction-item/transaction-item.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-remaining-amount-card",
-            "styleUrls": [],
+            "selector": "app-transaction-item",
+            "styleUrls": [
+                "./transaction-item.component.scss"
+            ],
             "styles": [],
             "templateUrl": [
-                "./remaining-amount-card.html"
+                "./transaction-item.component.html"
             ],
             "viewProviders": [],
             "hostDirectives": [],
@@ -739,81 +1048,52 @@
                     "defaultValue": "0",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 10,
+                    "rawdescription": "\nTransaction amount. Negative usually implies an expense.",
+                    "description": "<p>Transaction amount. Negative usually implies an expense.</p>\n",
+                    "line": 17,
                     "type": "number",
                     "decorators": []
-                }
-            ],
-            "outputsClass": [],
-            "propertiesClass": [],
-            "methodsClass": [],
-            "deprecated": false,
-            "deprecationMessage": "",
-            "hostBindings": [],
-            "hostListeners": [],
-            "standalone": false,
-            "imports": [],
-            "description": "",
-            "rawdescription": "\n",
-            "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'app-remaining-amount-card',\n  imports: [],\n  templateUrl: './remaining-amount-card.html',\n  styleUrl: './remaining-amount-card.scss',\n})\nexport class RemainingAmountCard {\n@Input() amount = 0;\n}\n",
-            "styleUrl": "./remaining-amount-card.scss",
-            "assetsDirs": [],
-            "styleUrlsData": "",
-            "stylesData": "",
-            "extends": [],
-            "templateData": "<div class=\"card\" [class.positive]=\"amount >= 0\" [class.negative]=\"amount < 0\">\n  <div class=\"label\">Il vous reste :</div>\n  <div class=\"amount\">\n    {{ amount >= 0 ? '+' : '-' }} {{ (amount >= 0 ? amount : -amount) }} €\n  </div>\n</div>\n"
-        },
-        {
-            "name": "ResultCard",
-            "id": "component-ResultCard-4df1209bf934d75f10ec6a2e6231a07c49bb26875e2df0bbf4391d05c43204547d521c1992275eda3bb912bfd72e9e54a0800eb210deef274a79f5547fc8d09c",
-            "file": "src/app/components/molecules/result-card/result-card.ts",
-            "encapsulation": [],
-            "entryComponents": [],
-            "inputs": [],
-            "outputs": [],
-            "providers": [],
-            "selector": "app-result-card",
-            "styleUrls": [],
-            "styles": [],
-            "templateUrl": [
-                "./result-card.html"
-            ],
-            "viewProviders": [],
-            "hostDirectives": [],
-            "inputsClass": [
+                },
                 {
-                    "name": "label",
-                    "defaultValue": "'Info'",
+                    "name": "date",
+                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 16,
+                    "rawdescription": "\nFormatted date string (e.g., \"JAN 8, 2026\")",
+                    "description": "<p>Formatted date string (e.g., &quot;JAN 8, 2026&quot;)</p>\n",
+                    "line": 20,
                     "type": "string",
                     "decorators": []
                 },
                 {
-                    "name": "message",
-                    "defaultValue": "'Message…'",
+                    "name": "emotion",
+                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 17,
+                    "rawdescription": "\nOptional emotional context text (e.g., \"BOREDOM\", \"STRESS\")",
+                    "description": "<p>Optional emotional context text (e.g., &quot;BOREDOM&quot;, &quot;STRESS&quot;)</p>\n",
+                    "line": 26,
                     "type": "string",
                     "decorators": []
                 },
                 {
-                    "name": "status",
-                    "defaultValue": "'neutral'",
+                    "name": "tagLabel",
+                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 15,
-                    "type": "ResultStatus",
+                    "rawdescription": "\nCategory label displayed inside the Tag (e.g., \"VITAL NEED\", \"EMOTIONAL\")",
+                    "description": "<p>Category label displayed inside the Tag (e.g., &quot;VITAL NEED&quot;, &quot;EMOTIONAL&quot;)</p>\n",
+                    "line": 23,
+                    "type": "string",
                     "decorators": []
                 },
                 {
                     "name": "title",
-                    "defaultValue": "'Résultat'",
+                    "defaultValue": "''",
                     "deprecated": false,
                     "deprecationMessage": "",
+                    "rawdescription": "\nTitle of the transaction (e.g., \"Grocery Shopping\")",
+                    "description": "<p>Title of the transaction (e.g., &quot;Grocery Shopping&quot;)</p>\n",
                     "line": 14,
                     "type": "string",
                     "decorators": []
@@ -826,52 +1106,310 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
+            "standalone": true,
             "imports": [
                 {
                     "name": "CommonModule",
                     "type": "module"
                 },
                 {
-                    "name": "Tag"
+                    "name": "UiTagComponent",
+                    "type": "component"
                 }
             ],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { CommonModule } from '@angular/common'; \nimport { Tag } from '../../atoms/tag/tag';\n\ntype ResultStatus = 'positive' | 'warning' | 'negative' | 'neutral';\n\n@Component({\n  selector: 'app-result-card',\n  imports: [CommonModule,Tag],\n  templateUrl: './result-card.html',\n  styleUrl: './result-card.scss',\n})\nexport class ResultCard {\n  @Input() title = 'Résultat';\n  @Input() status: ResultStatus = 'neutral';\n  @Input() label = 'Info';\n  @Input() message = 'Message…';\n\n}\n",
-            "styleUrl": "./result-card.scss",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { UiTagComponent, UiTagTone } from '../../atoms/tag/tag.component';\n\n@Component({\n  selector: 'app-transaction-item',\n  standalone: true,\n  imports: [CommonModule, UiTagComponent],\n  templateUrl: './transaction-item.component.html',\n  styleUrls: ['./transaction-item.component.scss']\n})\nexport class TransactionItemComponent {\n  /** Title of the transaction (e.g., \"Grocery Shopping\") */\n  @Input() title: string = '';\n\n  /** Transaction amount. Negative usually implies an expense. */\n  @Input() amount: number = 0;\n\n  /** Formatted date string (e.g., \"JAN 8, 2026\") */\n  @Input() date: string = '';\n  \n  /** Category label displayed inside the Tag (e.g., \"VITAL NEED\", \"EMOTIONAL\") */\n  @Input() tagLabel: string = ''; \n  \n  /** Optional emotional context text (e.g., \"BOREDOM\", \"STRESS\") */\n  @Input() emotion: string = '';\n\n  /**\n   * Computes the visual tone of the Tag and Icon based on the category label.\n   * Maps business logic keywords to Design System tokens.\n   * * @returns {UiTagTone} - The color variant ('emotional', 'primary', or 'neutral').\n   */\n  get computedTone(): UiTagTone {\n    const label = this.tagLabel.toUpperCase();\n\n    // CASE 1: Emotional / Impulse Purchase -> PINK (Danger/Emotional Tone)\n    if (label.includes('EMOTION') || label.includes('ENVIE') || label.includes('PLAISIR')) {\n      return 'emotional';\n    }\n\n    // CASE 2: Vital Need / Necessary -> TEAL (Primary Tone)\n    // Matches the \"BESOIN ?\" tag from the Design System.\n    if (label.includes('VITAL') || label.includes('BESOIN') || label.includes('NECESSAIRE')) {\n      return 'primary'; \n    }\n\n    // DEFAULT: Standard category -> GREY (Neutral Tone)\n    return 'neutral'; \n  }\n}",
             "assetsDirs": [],
-            "styleUrlsData": "",
+            "styleUrlsData": [
+                {
+                    "data": "/* * ROOT CONTAINER\n * Horizontal layout (Row).\n * Uses a fixed 'gap' to separate columns.\n */\n.transaction-item {\n  display: flex;\n  align-items: center;\n  gap: 16px;\n  padding: 16px 0;\n  border-bottom: 1px solid #F2F4F7;\n  width: 100%; /* Ensures it takes full width of the parent card */\n\n  &:last-child {\n    border-bottom: none;\n  }\n\n  /* MOBILE RESPONSIVE TWEAK (< 480px) */\n  @media (max-width: 480px) {\n    gap: 10px; /* Tighter spacing on phones */\n  }\n}\n\n/* * ICON WRAPPER */\n.transaction-item__icon {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0; \n\n  span {\n    font-weight: 700;\n    font-size: 18px;\n  }\n\n  /* Variants */\n  &.icon--emotional { background-color: #FFF5F7; color: #D48C9D; }\n  &.icon--primary   { background-color: #F0F9F9; color: #4FA6A6; }\n  &.icon--neutral   { background-color: #F2F4F7; color: #667085; }\n}\n\n/* * DETAILS COLUMN\n * Contains Title + Tag.\n * Added 'min-width: 0' to allow text truncation if needed (Flexbox behavior).\n */\n.transaction-item__details {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  flex: 1;      /* Allows this column to grow */\n  min-width: 0; /* CRITICAL for responsiveness: prevents overflow */\n}\n\n/* * TITLE */\n.transaction-item__title {\n  font-family: var(--font-family-base, sans-serif);\n  font-weight: 700;\n  color: #101828; \n  font-size: 15px;\n  white-space: nowrap; \n  overflow: hidden;        /* Truncates text with \"...\" if screen is too small */\n  text-overflow: ellipsis; /* ex: \"Courses Biolog...\" */\n}\n\n/* * META ROW */\n.transaction-item__meta {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n}\n\n/* * SEPARATOR & EMOTION TEXT\n * These are secondary information.\n * On Mobile: We HIDE them to keep the UI clean and prevent overlapping.\n */\n.transaction-item__separator,\n.transaction-item__emotion {\n  color: #98A2B3;\n  font-size: 10px;\n  \n  /* Mobile: Hide emotion text to prioritize the Tag */\n  @media (max-width: 480px) {\n    display: none; \n  }\n}\n\n.transaction-item__emotion {\n  font-size: 11px;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  white-space: nowrap;\n}\n\n/* * AMOUNT COLUMN\n * Keeps the amount visible on the right.\n */\n.transaction-item__amount-col {\n  text-align: right;\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  flex-shrink: 0; /* Ensures the amount is never squashed */\n}\n\n.transaction-item__amount {\n  font-weight: 800;\n  font-size: 16px;\n  color: #101828;\n  white-space: nowrap;\n}\n\n.transaction-item__date {\n  font-size: 11px;\n  font-weight: 600;\n  color: #98A2B3;\n  text-transform: uppercase;\n}",
+                    "styleUrl": "./transaction-item.component.scss"
+                }
+            ],
             "stylesData": "",
             "extends": [],
-            "templateData": "<section class=\"result-card\" aria-labelledby=\"resultTitle\">\n  <h2 id=\"resultTitle\" class=\"result-card__title\">{{ title }}</h2>\n\n  <div class=\"result-card__status\" role=\"status\" aria-live=\"polite\">\n    <app-tag [variant]=\"status\" [label]=\"label\"></app-tag>\n  </div>\n\n  <p class=\"result-card__message\">\n    {{ message }}\n  </p>\n</section>\n"
+            "accessors": {
+                "computedTone": {
+                    "name": "computedTone",
+                    "getSignature": {
+                        "name": "computedTone",
+                        "type": "unknown",
+                        "returnType": "UiTagTone",
+                        "line": 33,
+                        "rawdescription": "\n\nComputes the visual tone of the Tag and Icon based on the category label.\nMaps business logic keywords to Design System tokens.\n* @returns {UiTagTone} - The color variant ('emotional', 'primary', or 'neutral').\n",
+                        "description": "<p>Computes the visual tone of the Tag and Icon based on the category label.\nMaps business logic keywords to Design System tokens.</p>\n<ul>\n<li>@returns {UiTagTone} - The color variant (&#39;emotional&#39;, &#39;primary&#39;, or &#39;neutral&#39;).</li>\n</ul>\n",
+                        "jsdoctags": [
+                            {
+                                "pos": 1084,
+                                "end": 1168,
+                                "kind": 343,
+                                "id": 0,
+                                "flags": 16842752,
+                                "modifierFlagsCache": 0,
+                                "transformFlags": 0,
+                                "tagName": {
+                                    "pos": 1085,
+                                    "end": 1092,
+                                    "kind": 80,
+                                    "id": 0,
+                                    "flags": 16842752,
+                                    "transformFlags": 0,
+                                    "escapedText": "returns"
+                                },
+                                "comment": "<ul>\n<li>The color variant (&#39;emotional&#39;, &#39;primary&#39;, or &#39;neutral&#39;).</li>\n</ul>\n",
+                                "typeExpression": {
+                                    "pos": 1093,
+                                    "end": 1104,
+                                    "kind": 310,
+                                    "id": 0,
+                                    "flags": 16842752,
+                                    "modifierFlagsCache": 0,
+                                    "transformFlags": 0,
+                                    "type": {
+                                        "pos": 1094,
+                                        "end": 1103,
+                                        "kind": 184,
+                                        "id": 0,
+                                        "flags": 16777216,
+                                        "modifierFlagsCache": 0,
+                                        "transformFlags": 1,
+                                        "typeName": {
+                                            "pos": 1094,
+                                            "end": 1103,
+                                            "kind": 80,
+                                            "id": 0,
+                                            "flags": 16777216,
+                                            "transformFlags": 0,
+                                            "escapedText": "UiTagTone"
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            "templateData": "<div class=\"transaction-item\">\n  \n  <div class=\"transaction-item__icon\" [ngClass]=\"'icon--' + computedTone\">\n    <span>€</span>\n  </div>\n\n  <div class=\"transaction-item__details\">\n    <div class=\"transaction-item__title\">{{ title }}</div>\n    \n    <div class=\"transaction-item__meta\">\n      <ui-tag [tone]=\"computedTone\" size=\"sm\" [ghost]=\"true\">\n        {{ tagLabel }}\n      </ui-tag>\n      \n      <ng-container *ngIf=\"emotion\">\n        <span class=\"transaction-item__separator\">•</span>\n        <span class=\"transaction-item__emotion\">{{ emotion }}</span>\n      </ng-container>\n    </div>\n  </div>\n\n  <div class=\"transaction-item__amount-col\">\n    <div class=\"transaction-item__amount\">\n      {{ amount | number:'1.2-2' }} €\n    </div>\n    <div class=\"transaction-item__date\">{{ date }}</div>\n  </div>\n\n</div>"
         },
         {
-            "name": "Tag",
-            "id": "component-Tag-6230f95b9b73968f8081d1d26ae35a3a25a9b99ea389b2912b874d5cdf600a183eda18b96b55a89ecd4841dc106e6e142662e66ac150987bcb84bee4aa834fea",
-            "file": "src/app/components/atoms/tag/tag.ts",
+            "name": "UiButtonComponent",
+            "id": "component-UiButtonComponent-a4d77acbcb67c69f0f8171df7e99e89c6f28edd835d9a6a8919659ea24430c6f8c45069fe4c77cd30c40d337109922e25bc456966176f574ba6baf3ce27f5978",
+            "file": "src/app/components/atoms/button/button.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "app-tag",
-            "styleUrls": [],
+            "selector": "ui-button",
+            "styleUrls": [
+                "./button.component.scss"
+            ],
             "styles": [],
             "templateUrl": [
-                "./tag.html"
+                "./button.component.html"
             ],
             "viewProviders": [],
             "hostDirectives": [],
             "inputsClass": [
                 {
-                    "name": "label",
-                    "defaultValue": "'Tag'",
+                    "name": "ariaLabel",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 10,
+                    "line": 30,
                     "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 26,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "fullWidth",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 28,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "loading",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 27,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'md'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 24,
+                    "type": "UiButtonSize",
+                    "decorators": []
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "'button'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 25,
+                    "type": "\"button\" | \"submit\" | \"reset\"",
+                    "decorators": []
+                },
+                {
+                    "name": "variant",
+                    "defaultValue": "'primary'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 23,
+                    "type": "UiButtonVariant",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "pressed",
+                    "defaultValue": "new EventEmitter<MouseEvent>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 32,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "onClick",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "MouseEvent",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 48,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "e",
+                            "type": "MouseEvent",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';\nimport { CommonModule } from '@angular/common'; \n\nexport type UiButtonVariant =\n  | 'primary'\n  | 'secondary'\n  | 'emotional'\n  | 'insight'\n  | 'brown'\n  | 'ghost';\n\nexport type UiButtonSize = 'sm' | 'md' | 'lg';\n\n@Component({\n  selector: 'ui-button',\n  standalone: true,\n  imports: [CommonModule], \n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class UiButtonComponent {\n  @Input() variant: UiButtonVariant = 'primary';\n  @Input() size: UiButtonSize = 'md';\n  @Input() type: 'button' | 'submit' | 'reset' = 'button';\n  @Input() disabled = false;\n  @Input() loading = false;\n  @Input() fullWidth = false;\n\n  @Input() ariaLabel?: string;\n\n  @Output() pressed = new EventEmitter<MouseEvent>();\n\n  get isDisabled(): boolean {\n    return this.disabled || this.loading;\n  }\n\n  get hostClasses(): string[] {\n    return [\n      'ui-btn',\n      `ui-btn--${this.variant}`,\n      `ui-btn--${this.size}`,\n      this.fullWidth ? 'ui-btn--full' : '',\n      this.loading ? 'ui-btn--loading' : '',\n    ].filter(Boolean);\n  }\n\n  onClick(e: MouseEvent) {\n    if (this.isDisabled) {\n      e.preventDefault();\n      e.stopPropagation();\n      return;\n    }\n    this.pressed.emit(e);\n  }\n}",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "/* =====================================================\n   UI BUTTON – Atom\n   Affiné pour Master 3 - Couleurs BalanceMe\n   ===================================================== */\n\n.ui-btn {\n  display: inline-flex;\n  align-items: center;\n  justify-content: center;\n  gap: 8px;\n  max-width: 100%; \n\n  border-radius: 999px;\n  border: 1px solid transparent;\n\n  font-family: var(--font-family-base);\n  font-weight: 700; \n  text-transform: uppercase;\n  letter-spacing: 0.08em; \n\n  cursor: pointer;\n  user-select: none;\n  white-space: nowrap;\n  transition: all 140ms ease;\n\n  &:active {\n    transform: translateY(1px);\n  }\n\n  &:disabled {\n    cursor: not-allowed;\n    opacity: 0.55;\n  }\n\n  &--full {\n    width: 100%;\n  }\n\n  /* Tailles affinées pour éviter l'effet \"trop gros\" */\n  &--sm { height: 34px; padding: 0 14px; font-size: 10px; }\n  &--md { height: 42px; padding: 0 20px; font-size: 11px; }\n  &--lg { height: 48px; padding: 0 24px; font-size: 12px; }\n\n  /* --- Variantes Solid (Tes couleurs d'origine) --- */\n\n  &--primary {\n    background: var(--color-primary);\n    color: var(--color-white);\n    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }\n  }\n\n  &--secondary {\n    background: var(--color-secondary);\n    color: var(--color-white);\n    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }\n  }\n\n  &--emotional {\n    background: var(--color-emotional);\n    color: var(--color-black); // Meilleur contraste sur le rose\n    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }\n  }\n\n  &--insight {\n    background: var(--color-insight);\n    color: var(--color-black); // Meilleur contraste sur le jaune\n    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }\n  }\n\n  &--brown {\n    background: var(--color-brown);\n    color: var(--color-white);\n    &:hover:not(:disabled) { transform: translateY(-1px); box-shadow: var(--shadow-sm); }\n  }\n\n  /* --- Variante Ghost (Le gris de ta capture) --- */\n  &--ghost {\n    background: #F2F2F2; \n    color: #475467;      \n    border: 1px solid rgba(16, 24, 40, 0.1);\n    \n    &:hover:not(:disabled) {\n      background: #EAEAEA;\n      border-color: rgba(16, 24, 40, 0.2);\n    }\n  }\n\n  /* --- Loading State --- */\n &--loading {\n    pointer-events: none;\n    position: relative; // Permet de centrer le spinner absolument\n    \n    .ui-btn__label { \n      visibility: hidden; // Cache le texte tout en gardant sa largeur\n    }\n    \n    .ui-btn__spinner {\n      position: absolute;\n      left: calc(50% - 9px); // Centre horizontalement (18px / 2)\n      top: calc(50% - 9px);  // Centre verticalement\n    }\n  }\n\n  &__spinner {\n    position: absolute;\n    width: 18px;\n    height: 18px;\n    border: 2px solid rgba(0, 0, 0, 0.1);\n    border-top-color: currentColor; // S'adapte à la couleur du texte du bouton\n    border-radius: 50%;\n    animation: uiSpin 0.8s linear infinite;\n  }\n}\n\n@keyframes uiSpin { to { transform: rotate(360deg); } }\n\n@media (prefers-reduced-motion: reduce) {\n  .ui-btn { transition: none; }\n  .ui-btn__spinner { animation: none; }\n}",
+                    "styleUrl": "./button.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "accessors": {
+                "isDisabled": {
+                    "name": "isDisabled",
+                    "getSignature": {
+                        "name": "isDisabled",
+                        "type": "boolean",
+                        "returnType": "boolean",
+                        "line": 34
+                    }
+                },
+                "hostClasses": {
+                    "name": "hostClasses",
+                    "getSignature": {
+                        "name": "hostClasses",
+                        "type": "[]",
+                        "returnType": "string[]",
+                        "line": 38
+                    }
+                }
+            },
+            "templateData": "<button\n  [type]=\"type\"\n  [disabled]=\"isDisabled\"\n  [class]=\"hostClasses.join(' ')\"\n  [attr.aria-label]=\"ariaLabel\"\n  [attr.aria-busy]=\"loading\"\n  (click)=\"onClick($event)\"\n>\n  <span class=\"ui-btn__spinner\" *ngIf=\"loading\" aria-hidden=\"true\"></span>\n  \n  <span class=\"ui-btn__label\">\n    <ng-content></ng-content>\n  </span>\n\n  <span \n    class=\"u-sr-only\" \n    role=\"status\" \n    aria-live=\"polite\">\n    {{ loading ? 'Analyse en cours...' : '' }}\n  </span>\n</button>"
+        },
+        {
+            "name": "UiCardComponent",
+            "id": "component-UiCardComponent-82d6b91ac1e4c5635382c8e2fc4f4a55406fbf05ca7659f5d10df73b142054b28b8e3828b24bc50497f7c32f9a5066981229b9bdf045118688b0e069d177d65f",
+            "file": "src/app/components/atoms/card/card.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-card",
+            "styleUrls": [
+                "./card.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./card.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "elevation",
+                    "defaultValue": "'md'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 17,
+                    "type": "UiCardElevation",
+                    "decorators": []
+                },
+                {
+                    "name": "fullHeight",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 18,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "padding",
+                    "defaultValue": "'lg'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 16,
+                    "type": "UiCardPadding",
                     "decorators": []
                 },
                 {
@@ -879,8 +1417,8 @@
                     "defaultValue": "'neutral'",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 11,
-                    "type": "\"positive\" | \"warning\" | \"negative\" | \"neutral\"",
+                    "line": 15,
+                    "type": "UiCardVariant",
                     "decorators": []
                 }
             ],
@@ -891,29 +1429,641 @@
             "deprecationMessage": "",
             "hostBindings": [],
             "hostListeners": [],
-            "standalone": false,
+            "standalone": true,
             "imports": [],
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input } from '@angular/core';\n\n@Component({\n  selector: 'app-tag',\n  imports: [],\n  templateUrl: './tag.html',\n  styleUrl: './tag.scss',\n})\nexport class Tag {\n  @Input() label = 'Tag';\n  @Input() variant: 'positive' | 'warning' | 'negative' | 'neutral' = 'neutral';\n\n    get icon(): string {\n    switch (this.variant) {\n      case 'positive':\n        return '✅';\n      case 'warning':\n        return '⚠️';\n      case 'negative':\n        return '❌';\n      default:\n        return 'ℹ️';\n    }\n  }\n  \n}\n",
-            "styleUrl": "./tag.scss",
+            "sourceCode": "import { ChangeDetectionStrategy, Component, Input } from '@angular/core';\n\nexport type UiCardVariant = 'neutral' | 'positive' | 'danger' | 'info' | 'soft';\nexport type UiCardPadding = 'md' | 'lg';\nexport type UiCardElevation = 'sm' | 'md' | 'lg';\n\n@Component({\n  selector: 'ui-card',\n  standalone: true,\n  templateUrl: './card.component.html',\n  styleUrls: ['./card.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class UiCardComponent {\n  @Input() variant: UiCardVariant = 'neutral';\n  @Input() padding: UiCardPadding = 'lg';\n  @Input() elevation: UiCardElevation = 'md';\n  @Input() fullHeight = false;\n\n  get hostClasses(): string {\n    return [\n      'ui-card',\n      `ui-card--${this.variant}`,\n      `ui-card--pad-${this.padding}`,\n      `ui-card--elev-${this.elevation}`,\n      this.fullHeight ? 'ui-card--full' : '',\n    ]\n      .filter(Boolean)\n      .join(' ');\n  }\n}\n",
             "assetsDirs": [],
-            "styleUrlsData": "",
+            "styleUrlsData": [
+                {
+                    "data": "/* =====================================================\n   UI CARD – Atom & Modal Base\n   Variants: neutral | positive | danger | info | soft\n   ===================================================== */\n\n.ui-card {\n  background: var(--color-surface);\n  border: 1px solid var(--color-border);\n  border-radius: 24px;\n  display: block;\n  overflow: hidden;\n  transition: transform 160ms ease, box-shadow 160ms ease;\n  position: relative; /* Important pour positionner des éléments (ex: croix de fermeture) */\n\n  /* Padding */\n  &--pad-md { padding: 24px; }\n  &--pad-lg { padding: 32px; }\n\n  /* Elevation */\n  &--elev-sm { box-shadow: 0 2px 8px rgba(0,0,0,0.04); }\n  &--elev-md { box-shadow: 0 8px 24px rgba(0,0,0,0.08); }\n  &--elev-lg { box-shadow: 0 24px 60px rgba(0,0,0,0.15); } /* Ombre profonde pour la Modal */\n\n  /* Layout */\n  &--full { height: 100%; }\n\n  /* --- Variantes --- */\n\n  /* ✅ NEUTRAL (Pour ta carte \"Réflexions\" et ta MODAL) */\n  &--neutral {\n    background: var(--color-surface);\n    color: var(--color-black);\n    border: 1px solid var(--color-border);\n  }\n\n  /* ✅ POSITIVE (Énergie Financière) */\n  &--positive {\n    background: var(--gradient-positive);\n    color: var(--color-white);\n    border: none;\n    box-shadow: var(--shadow-positive);\n  }\n\n  /* ✅ DANGER (Équilibre du jour) */\n  &--danger {\n    background: var(--color-danger);\n    border-color: rgba(255, 255, 255, 0.14);\n    color: var(--color-white);\n  }\n\n  /* ✅ INFO (Bleu) */\n  &--info {\n    background: var(--color-info);\n    border-color: rgba(255, 255, 255, 0.14);\n    color: var(--color-white);\n  }\n\n  /* ✅ SOFT (Réflexion consciente) */\n  &--soft {\n    background: var(--color-soft);\n    border-color: rgba(231, 182, 194, 0.2);\n    color: var(--color-black);\n  }\n}",
+                    "styleUrl": "./card.component.scss"
+                }
+            ],
             "stylesData": "",
             "extends": [],
             "accessors": {
-                "icon": {
-                    "name": "icon",
+                "hostClasses": {
+                    "name": "hostClasses",
                     "getSignature": {
-                        "name": "icon",
+                        "name": "hostClasses",
                         "type": "string",
                         "returnType": "string",
-                        "line": 13
+                        "line": 20
                     }
                 }
             },
-            "templateData": "<span class=\"tag\" [ngClass]=\"variant\" role=\"status\" aria-live=\"polite\">\n  <span class=\"icon\" aria-hidden=\"true\">{{ icon }}</span>\n  <span class=\"label\">{{ label }}</span>\n</span>\n"
+            "templateData": "<section [class]=\"hostClasses\">\n  <ng-content></ng-content>\n</section>\n"
+        },
+        {
+            "name": "UiInputComponent",
+            "id": "component-UiInputComponent-e043597a907a8995676723ef837dd245494e4c4314bfbf6734aa47ea724280db90ba2429902494482f3259c48f59b4326557839dfe0b53e7c82fa2b55c8afbde",
+            "file": "src/app/components/atoms/input/input.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-input",
+            "styleUrls": [
+                "./input.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./input.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "autocomplete",
+                    "defaultValue": "'off'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nBROWSER & MOBILE BEHAVIOR",
+                    "description": "<p>BROWSER &amp; MOBILE BEHAVIOR</p>\n",
+                    "line": 21,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 26,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "error",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 30,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "hint",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nFEEDBACK & ACCESSIBILITY",
+                    "description": "<p>FEEDBACK &amp; ACCESSIBILITY</p>\n",
+                    "line": 29,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "id",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nBASIC ATTRIBUTES",
+                    "description": "<p>BASIC ATTRIBUTES</p>\n",
+                    "line": 14,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "inputMode",
+                    "defaultValue": "'text'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 22,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 15,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "placeholder",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 16,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "required",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nSTATES & VALIDATION",
+                    "description": "<p>STATES &amp; VALIDATION</p>\n",
+                    "line": 25,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "suffix",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nVISUAL EXTRAS",
+                    "description": "<p>VISUAL EXTRAS</p>\n",
+                    "line": 33,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "'text'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 17,
+                    "type": "\"text\" | \"number\" | \"email\" | \"password\"",
+                    "decorators": []
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 18,
+                    "type": "string | number | null",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\n\n@Component({\n  selector: 'ui-input',\n  standalone: true,\n  imports: [CommonModule],\n  templateUrl: './input.component.html',\n  styleUrls: ['./input.component.scss'],\n})\nexport class UiInputComponent {\n  /** BASIC ATTRIBUTES */\n  @Input() id = '';              // Unique DOM ID used to link label and input (Crucial for A11y)\n  @Input() label = '';           // The visible text label displayed above the field\n  @Input() placeholder = '';     // Ghost text shown when the field is empty\n  @Input() type: 'text' | 'number' | 'email' | 'password' = 'text'; // Native HTML input type\n  @Input() value: string | number | null = null; // Current value of the input field\n\n  /** BROWSER & MOBILE BEHAVIOR */\n  @Input() autocomplete: string = 'off'; // Browser autofill suggestion (e.g., 'email', 'new-password', 'off')\n  @Input() inputMode: string = 'text';   // Virtual keyboard layout on mobile (e.g., 'numeric' shows numbers)\n\n  /** STATES & VALIDATION */\n  @Input() required = false;     // Marks the field as mandatory (adds visual indicator)\n  @Input() disabled = false;     // Disables interaction and dims the field opacity\n\n  /** FEEDBACK & ACCESSIBILITY */\n  @Input() hint = '';            // Neutral helper text displayed below the field\n  @Input() error = '';           // Error message text. If present, turns the field red.\n\n  /** VISUAL EXTRAS */\n  @Input() suffix = '';          // Icon or symbol at the right end (e.g., \"€\", \"%\")\n\n  /**\n   * ACCESSIBILITY HELPER\n   * Dynamically links the input to its description (error or hint) for screen readers.\n   */\n  get describedById(): string | null {\n    if (this.error) return `${this.id}-error`; // Prioritize reading the error message\n    if (this.hint) return `${this.id}-hint`;   // Otherwise read the hint\n    return null;\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "/* * ROOT CONTAINER\n * Stacks label, input field, and helper text vertically.\n * Handles the global disabled state opacity.\n */\n.ui-input {\n  display: flex;\n  flex-direction: column;\n  gap: 8px; /* Consistent spacing with UiSelect */\n  width: 100%;\n  opacity: 1;\n  transition: opacity 0.2s ease-in-out;\n\n  /* State: Disabled */\n  &.is-disabled {\n    opacity: 0.6;\n    pointer-events: none; /* Prevents user interaction */\n    \n    .ui-input__field {\n      background-color: #F2F4F7; /* Neutral Grey */\n      border-color: #EAECF0;\n    }\n  }\n}\n\n/* * LABEL\n * Uppercase & Bold, consistent with BalanceMe typography.\n * Uses a subtle grey to avoid visual clutter.\n */\n.ui-input__label {\n  font-family: var(--font-family-base, sans-serif);\n  font-size: 11px;\n  font-weight: 800;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  color: #9CA3AF; /* Cool Grey */\n  margin-left: 12px; /* Aligned with the field padding */\n}\n\n/* * FIELD WRAPPER\n * The rounded container (Pill shape).\n * Height: 48px (Matches UiSelect for consistency).\n */\n.ui-input__field {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  \n  width: 100%;\n  height: 48px; /* Standardized height */\n  padding: 0 20px;\n  \n  border-radius: 999px; /* Full Pill Shape */\n  border: 1px solid transparent; /* Prevents layout shift on focus */\n  \n  /* --- DEFAULT COLORS --- */\n  background-color: #F9FAFB; /* Very light grey */\n  border-color: #E5E7EB;     /* Subtle border */\n  \n  transition: all 0.2s ease;\n\n  /* Focus State */\n  &:focus-within {\n    background-color: #FFFFFF;\n    border-color: var(--color-primary, #4FA6A6); \n    box-shadow: 0 0 0 4px rgba(79, 166, 166, 0.15); /* Soft teal halo */\n  }\n\n  /* Error State (Powder Pink style) */\n  &.ui-input__field--error {\n    background-color: #FFF1F2; /* Powder Pink */\n    border-color: #FDA4AF;     /* Soft Rose */\n    \n    &:focus-within {\n      border-color: var(--color-emotional, #F43F5E);\n      box-shadow: 0 0 0 4px rgba(253, 164, 175, 0.25);\n    }\n  }\n}\n\n/* * NATIVE INPUT CONTROL\n * Invisible styling to blend perfectly into the wrapper.\n */\n.ui-input__control {\n  width: 100%;\n  height: 100%;\n  border: none;\n  outline: none;\n  background: transparent;\n  \n  font-family: var(--font-family-base, sans-serif);\n  font-size: 15px; /* Legible standard size */\n  font-weight: 600;\n  color: #374151; /* Dark Grey text */\n\n  /* Placeholder Style */\n  &::placeholder {\n    color: #D1D5DB; \n    font-weight: 500;\n  }\n}\n\n/* * ERROR MESSAGE\n * Displayed below the field using the emotional color.\n */\n.ui-input__error {\n  font-size: 12px;\n  color: var(--color-emotional, #9F1239); /* Deep Rose */\n  margin-left: 16px;\n  margin-top: 4px;\n  font-weight: 500;\n}\n\n/* * HINT TEXT\n * Helper text below the field.\n */\n.ui-input__hint {\n  font-size: 12px;\n  color: #6B7280;\n  margin-left: 16px;\n  margin-top: 4px;\n}\n\n/* * UTILITY: REMOVE SPINNERS\n * Hides the up/down arrows on number inputs for a cleaner UI.\n */\n.ui-input__control[type='number'] {\n  -moz-appearance: textfield; /* Firefox */\n  appearance: textfield;\n  \n  &::-webkit-outer-spin-button,\n  &::-webkit-inner-spin-button {\n    -webkit-appearance: none; /* Webkit */\n    margin: 0;\n  }\n}",
+                    "styleUrl": "./input.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "accessors": {
+                "describedById": {
+                    "name": "describedById",
+                    "getSignature": {
+                        "name": "describedById",
+                        "type": "unknown",
+                        "returnType": "string | null",
+                        "line": 39,
+                        "rawdescription": "\n\nACCESSIBILITY HELPER\nDynamically links the input to its description (error or hint) for screen readers.\n",
+                        "description": "<p>ACCESSIBILITY HELPER\nDynamically links the input to its description (error or hint) for screen readers.</p>\n"
+                    }
+                }
+            },
+            "templateData": "<div class=\"ui-input\">\n  <label *ngIf=\"label\" class=\"ui-input__label\" [attr.for]=\"id\">\n    {{ label }}\n  </label>\n\n  <div class=\"ui-input__field\" [class.ui-input__field--error]=\"!!error\" [class.ui-input__field--disabled]=\"disabled\">\n   <input\n  class=\"ui-input__control\"\n  [attr.id]=\"id\"\n  [attr.type]=\"type\"\n  [attr.placeholder]=\"placeholder\"\n  [attr.required]=\"required ? true : null\"\n  [disabled]=\"disabled\"\n  [attr.aria-invalid]=\"error ? 'true' : 'false'\"\n  [attr.aria-describedby]=\"describedById\"\n  [attr.inputmode]=\"inputMode\"\n  [attr.autocomplete]=\"autocomplete\"\n  [value]=\"value ?? ''\"\n/>\n\n\n    <span *ngIf=\"suffix\" class=\"ui-input__suffix\">{{ suffix }}</span>\n  </div>\n\n  <p *ngIf=\"hint && !error\" class=\"ui-input__hint\" [attr.id]=\"id + '-hint'\">\n    {{ hint }}\n  </p>\n\n  <p *ngIf=\"error\" class=\"ui-input__error\" [attr.id]=\"id + '-error'\">\n    {{ error }}\n  </p>\n</div>\n"
+        },
+        {
+            "name": "UiModalComponent",
+            "id": "component-UiModalComponent-872bf0f05b78836054d7c8aa2e203d28a69b73d452b3fc69c8272d5b35a867f9dc70042e1e9a4ea047533f4b7cd0d5153106e2dd59a2848d0ca576874e9c57f0",
+            "file": "src/app/components/molecules/modal/modal.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-ui-modal",
+            "styleUrls": [],
+            "styles": [
+                "\n    /* --- 1. OVERLAY --- */\n    .modal-overlay {\n      position: fixed;\n      top: 0; left: 0; width: 100%; height: 100%;\n      background-color: rgba(69, 90, 75, 0.45); /* Vert sombre semi-transparent */\n      backdrop-filter: blur(5px);\n      display: flex; justify-content: center; align-items: center;\n      z-index: 9999;\n      padding: 1rem; /* Marge de sécurité mobile */\n      animation: fadeIn 0.3s ease-out;\n    }\n\n    /* --- 2. CARTE MODALE --- */\n    .modal-card {\n      background: white;\n      width: 100%;\n      max-width: 420px; /* Largeur optimale compacte */\n      border-radius: 32px;\n      padding: 2rem 2rem; /* Padding Desktop */\n      position: relative;\n      box-shadow: 0 20px 60px rgba(0,0,0,0.15);\n      text-align: left;\n      display: flex; flex-direction: column;\n      max-height: 90vh; \n      overflow-y: auto; /* Scroll si trop petit écran */\n      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);\n\n      /* RESPONSIVE MOBILE */\n      @media (max-width: 480px) {\n        padding: 1.5rem 1.25rem; /* Padding réduit sur mobile */\n        border-radius: 24px;\n      }\n    }\n\n    /* --- 3. GLOBAL --- */\n    .close-btn {\n      position: absolute; top: 1.5rem; right: 1.5rem;\n      background: transparent; border: none; cursor: pointer;\n      padding: 0.5rem; transition: transform 0.2s;\n    }\n    .close-btn:hover { transform: scale(1.1); }\n\n    .modal-title {\n      font-family: 'DM Sans', sans-serif;\n      font-size: 1.6rem; font-weight: 700; color: #1A2E22;\n      margin: 0.5rem 0 0.8rem 0; line-height: 1.1;\n      \n      @media (max-width: 480px) { font-size: 1.4rem; }\n    }\n\n    .modal-description {\n      color: #5C6B62; font-size: 0.9rem; line-height: 1.5;\n      margin-bottom: 1.2rem;\n    }\n\n    /* --- 4. STYLE EMOTIONAL (BOITE ROSE COMPACTE) --- */\n    .pink-box {\n      background-color: #FFF5F5;\n      border: 1px solid #FFE0E0;\n      border-radius: 16px;\n      padding: 1rem 1.2rem; /* Compact ! */\n      margin-bottom: 1.2rem;\n    }\n\n    .checklist-title {\n      color: #E0AFA0; font-size: 0.65rem; font-weight: 700;\n      letter-spacing: 1.2px; text-transform: uppercase;\n      margin-bottom: 0.8rem;\n    }\n\n    .checklist-list { list-style: none; padding: 0; margin: 0; }\n    .checklist-list li {\n      display: flex; align-items: flex-start; gap: 10px;\n      margin-bottom: 0.6rem; /* Espace réduit entre items */\n      font-size: 0.85rem; /* Police légèrement plus petite */\n      color: #444; line-height: 1.35;\n    }\n    .checklist-list li .icon { font-size: 0.9rem; margin-top: 1px; }\n\n    /* --- 5. STYLE VITAL --- */\n    .vital-list-container { margin-bottom: 1.5rem; }\n    .vital-list { list-style: none; padding: 0; margin: 0; }\n    .vital-list li {\n      display: flex; align-items: center; gap: 10px;\n      margin-bottom: 0.8rem; font-size: 0.95rem; color: #4A5550;\n    }\n\n    /* --- 6. FOOTER --- */\n    .footer-note {\n      font-size: 0.75rem; color: #9AA6A0; font-style: italic;\n      margin-bottom: 1.5rem; line-height: 1.4;\n    }\n\n    .action-area { margin-top: auto; } /* Pousse le bouton en bas */\n\n    .action-btn {\n      width: 100%; padding: 1rem;\n      background-color: #537C60; color: white;\n      font-weight: 700; font-size: 0.85rem; letter-spacing: 1px;\n      text-transform: uppercase; border: none; border-radius: 50px;\n      cursor: pointer; transition: background 0.2s;\n    }\n    .action-btn:hover { background-color: #42634d; }\n\n    /* --- ANIMATIONS --- */\n    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }\n  "
+            ],
+            "template": "<div class=\"modal-overlay\" (click)=\"close.emit()\">\n  <div class=\"modal-card\" (click)=\"$event.stopPropagation()\">\n\n    <button class=\"close-btn\" (click)=\"close.emit()\">\n      <svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n        <path d=\"M1 13L13 1M1 1L13 13\" stroke=\"#B0B0B0\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n      </svg>\n    </button>\n\n    <h2 class=\"modal-title\">{{ content.title }}</h2>\n\n    <p class=\"modal-description\">{{ content.description }}</p>\n\n    <div *ngIf=\"content.type === 'emotional'\" class=\"pink-box\">\n      <h3 class=\"checklist-title\" *ngIf=\"content.checklistTitle\">{{ content.checklistTitle }}</h3>\n      <ul class=\"checklist-list\">\n        <li *ngFor=\"let item of content.items\">\n          <span class=\"icon\">✨</span>\n          <span class=\"text\">{{ item }}</span>\n        </li>\n      </ul>\n    </div>\n\n    <div *ngIf=\"content.type === 'vital'\" class=\"vital-list-container\">\n      <ul class=\"vital-list\">\n        <li *ngFor=\"let item of content.items\">\n          <span class=\"icon\" *ngIf=\"item.includes('Logement')\">🏠</span>\n          <span class=\"icon\" *ngIf=\"item.includes('Alimentation')\">🍎</span>\n          <span class=\"icon\" *ngIf=\"item.includes('Santé')\">💊</span>\n          <span class=\"icon\" *ngIf=\"item.includes('Transport')\">🚌</span>\n          <span class=\"text\">{{ item }}</span>\n        </li>\n      </ul>\n    </div>\n\n    <p *ngIf=\"content.footerNote\" class=\"footer-note\">\n      {{ content.footerNote }}\n    </p>\n\n    <div class=\"action-area\">\n      <button class=\"action-btn\" (click)=\"confirm.emit()\">\n        {{ content.buttonText }}\n      </button>\n    </div>\n\n  </div>\n</div>\n",
+            "templateUrl": [],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "content",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 178,
+                    "type": "ModalContent",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "close",
+                    "defaultValue": "new EventEmitter<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 179,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "confirm",
+                    "defaultValue": "new EventEmitter<void>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 180,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, EventEmitter, Input, Output } from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nexport interface ModalContent {\n  type: 'vital' | 'emotional';\n  title: string;\n  description: string;\n  checklistTitle?: string; \n  items: string[]; \n  footerNote?: string;\n  buttonText: string;\n}\n\n@Component({\n  selector: 'app-ui-modal',\n  standalone: true,\n  imports: [CommonModule],\n  template: `\n    <div class=\"modal-overlay\" (click)=\"close.emit()\">\n      <div class=\"modal-card\" (click)=\"$event.stopPropagation()\">\n        \n        <button class=\"close-btn\" (click)=\"close.emit()\">\n          <svg width=\"14\" height=\"14\" viewBox=\"0 0 14 14\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n            <path d=\"M1 13L13 1M1 1L13 13\" stroke=\"#B0B0B0\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n          </svg>\n        </button>\n\n        <h2 class=\"modal-title\">{{ content.title }}</h2>\n\n        <p class=\"modal-description\">{{ content.description }}</p>\n\n        <div *ngIf=\"content.type === 'emotional'\" class=\"pink-box\">\n          <h3 class=\"checklist-title\" *ngIf=\"content.checklistTitle\">{{ content.checklistTitle }}</h3>\n          <ul class=\"checklist-list\">\n            <li *ngFor=\"let item of content.items\">\n              <span class=\"icon\">✨</span>\n              <span class=\"text\">{{ item }}</span>\n            </li>\n          </ul>\n        </div>\n\n        <div *ngIf=\"content.type === 'vital'\" class=\"vital-list-container\">\n          <ul class=\"vital-list\">\n            <li *ngFor=\"let item of content.items\">\n              <span class=\"icon\" *ngIf=\"item.includes('Logement')\">🏠</span>\n              <span class=\"icon\" *ngIf=\"item.includes('Alimentation')\">🍎</span>\n              <span class=\"icon\" *ngIf=\"item.includes('Santé')\">💊</span>\n              <span class=\"icon\" *ngIf=\"item.includes('Transport')\">🚌</span>\n              <span class=\"text\">{{ item }}</span>\n            </li>\n          </ul>\n        </div>\n\n        <p *ngIf=\"content.footerNote\" class=\"footer-note\">\n          {{ content.footerNote }}\n        </p>\n\n        <div class=\"action-area\">\n          <button class=\"action-btn\" (click)=\"confirm.emit()\">\n            {{ content.buttonText }}\n          </button>\n        </div>\n\n      </div>\n    </div>\n  `,\n  styles: [`\n    /* --- 1. OVERLAY --- */\n    .modal-overlay {\n      position: fixed;\n      top: 0; left: 0; width: 100%; height: 100%;\n      background-color: rgba(69, 90, 75, 0.45); /* Vert sombre semi-transparent */\n      backdrop-filter: blur(5px);\n      display: flex; justify-content: center; align-items: center;\n      z-index: 9999;\n      padding: 1rem; /* Marge de sécurité mobile */\n      animation: fadeIn 0.3s ease-out;\n    }\n\n    /* --- 2. CARTE MODALE --- */\n    .modal-card {\n      background: white;\n      width: 100%;\n      max-width: 420px; /* Largeur optimale compacte */\n      border-radius: 32px;\n      padding: 2rem 2rem; /* Padding Desktop */\n      position: relative;\n      box-shadow: 0 20px 60px rgba(0,0,0,0.15);\n      text-align: left;\n      display: flex; flex-direction: column;\n      max-height: 90vh; \n      overflow-y: auto; /* Scroll si trop petit écran */\n      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);\n\n      /* RESPONSIVE MOBILE */\n      @media (max-width: 480px) {\n        padding: 1.5rem 1.25rem; /* Padding réduit sur mobile */\n        border-radius: 24px;\n      }\n    }\n\n    /* --- 3. GLOBAL --- */\n    .close-btn {\n      position: absolute; top: 1.5rem; right: 1.5rem;\n      background: transparent; border: none; cursor: pointer;\n      padding: 0.5rem; transition: transform 0.2s;\n    }\n    .close-btn:hover { transform: scale(1.1); }\n\n    .modal-title {\n      font-family: 'DM Sans', sans-serif;\n      font-size: 1.6rem; font-weight: 700; color: #1A2E22;\n      margin: 0.5rem 0 0.8rem 0; line-height: 1.1;\n      \n      @media (max-width: 480px) { font-size: 1.4rem; }\n    }\n\n    .modal-description {\n      color: #5C6B62; font-size: 0.9rem; line-height: 1.5;\n      margin-bottom: 1.2rem;\n    }\n\n    /* --- 4. STYLE EMOTIONAL (BOITE ROSE COMPACTE) --- */\n    .pink-box {\n      background-color: #FFF5F5;\n      border: 1px solid #FFE0E0;\n      border-radius: 16px;\n      padding: 1rem 1.2rem; /* Compact ! */\n      margin-bottom: 1.2rem;\n    }\n\n    .checklist-title {\n      color: #E0AFA0; font-size: 0.65rem; font-weight: 700;\n      letter-spacing: 1.2px; text-transform: uppercase;\n      margin-bottom: 0.8rem;\n    }\n\n    .checklist-list { list-style: none; padding: 0; margin: 0; }\n    .checklist-list li {\n      display: flex; align-items: flex-start; gap: 10px;\n      margin-bottom: 0.6rem; /* Espace réduit entre items */\n      font-size: 0.85rem; /* Police légèrement plus petite */\n      color: #444; line-height: 1.35;\n    }\n    .checklist-list li .icon { font-size: 0.9rem; margin-top: 1px; }\n\n    /* --- 5. STYLE VITAL --- */\n    .vital-list-container { margin-bottom: 1.5rem; }\n    .vital-list { list-style: none; padding: 0; margin: 0; }\n    .vital-list li {\n      display: flex; align-items: center; gap: 10px;\n      margin-bottom: 0.8rem; font-size: 0.95rem; color: #4A5550;\n    }\n\n    /* --- 6. FOOTER --- */\n    .footer-note {\n      font-size: 0.75rem; color: #9AA6A0; font-style: italic;\n      margin-bottom: 1.5rem; line-height: 1.4;\n    }\n\n    .action-area { margin-top: auto; } /* Pousse le bouton en bas */\n\n    .action-btn {\n      width: 100%; padding: 1rem;\n      background-color: #537C60; color: white;\n      font-weight: 700; font-size: 0.85rem; letter-spacing: 1px;\n      text-transform: uppercase; border: none; border-radius: 50px;\n      cursor: pointer; transition: background 0.2s;\n    }\n    .action-btn:hover { background-color: #42634d; }\n\n    /* --- ANIMATIONS --- */\n    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }\n  `]\n})\nexport class UiModalComponent {\n  @Input() content!: ModalContent;\n  @Output() close = new EventEmitter<void>();\n  @Output() confirm = new EventEmitter<void>();\n}",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "\n    /* --- 1. OVERLAY --- */\n    .modal-overlay {\n      position: fixed;\n      top: 0; left: 0; width: 100%; height: 100%;\n      background-color: rgba(69, 90, 75, 0.45); /* Vert sombre semi-transparent */\n      backdrop-filter: blur(5px);\n      display: flex; justify-content: center; align-items: center;\n      z-index: 9999;\n      padding: 1rem; /* Marge de sécurité mobile */\n      animation: fadeIn 0.3s ease-out;\n    }\n\n    /* --- 2. CARTE MODALE --- */\n    .modal-card {\n      background: white;\n      width: 100%;\n      max-width: 420px; /* Largeur optimale compacte */\n      border-radius: 32px;\n      padding: 2rem 2rem; /* Padding Desktop */\n      position: relative;\n      box-shadow: 0 20px 60px rgba(0,0,0,0.15);\n      text-align: left;\n      display: flex; flex-direction: column;\n      max-height: 90vh; \n      overflow-y: auto; /* Scroll si trop petit écran */\n      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);\n\n      /* RESPONSIVE MOBILE */\n      @media (max-width: 480px) {\n        padding: 1.5rem 1.25rem; /* Padding réduit sur mobile */\n        border-radius: 24px;\n      }\n    }\n\n    /* --- 3. GLOBAL --- */\n    .close-btn {\n      position: absolute; top: 1.5rem; right: 1.5rem;\n      background: transparent; border: none; cursor: pointer;\n      padding: 0.5rem; transition: transform 0.2s;\n    }\n    .close-btn:hover { transform: scale(1.1); }\n\n    .modal-title {\n      font-family: 'DM Sans', sans-serif;\n      font-size: 1.6rem; font-weight: 700; color: #1A2E22;\n      margin: 0.5rem 0 0.8rem 0; line-height: 1.1;\n      \n      @media (max-width: 480px) { font-size: 1.4rem; }\n    }\n\n    .modal-description {\n      color: #5C6B62; font-size: 0.9rem; line-height: 1.5;\n      margin-bottom: 1.2rem;\n    }\n\n    /* --- 4. STYLE EMOTIONAL (BOITE ROSE COMPACTE) --- */\n    .pink-box {\n      background-color: #FFF5F5;\n      border: 1px solid #FFE0E0;\n      border-radius: 16px;\n      padding: 1rem 1.2rem; /* Compact ! */\n      margin-bottom: 1.2rem;\n    }\n\n    .checklist-title {\n      color: #E0AFA0; font-size: 0.65rem; font-weight: 700;\n      letter-spacing: 1.2px; text-transform: uppercase;\n      margin-bottom: 0.8rem;\n    }\n\n    .checklist-list { list-style: none; padding: 0; margin: 0; }\n    .checklist-list li {\n      display: flex; align-items: flex-start; gap: 10px;\n      margin-bottom: 0.6rem; /* Espace réduit entre items */\n      font-size: 0.85rem; /* Police légèrement plus petite */\n      color: #444; line-height: 1.35;\n    }\n    .checklist-list li .icon { font-size: 0.9rem; margin-top: 1px; }\n\n    /* --- 5. STYLE VITAL --- */\n    .vital-list-container { margin-bottom: 1.5rem; }\n    .vital-list { list-style: none; padding: 0; margin: 0; }\n    .vital-list li {\n      display: flex; align-items: center; gap: 10px;\n      margin-bottom: 0.8rem; font-size: 0.95rem; color: #4A5550;\n    }\n\n    /* --- 6. FOOTER --- */\n    .footer-note {\n      font-size: 0.75rem; color: #9AA6A0; font-style: italic;\n      margin-bottom: 1.5rem; line-height: 1.4;\n    }\n\n    .action-area { margin-top: auto; } /* Pousse le bouton en bas */\n\n    .action-btn {\n      width: 100%; padding: 1rem;\n      background-color: #537C60; color: white;\n      font-weight: 700; font-size: 0.85rem; letter-spacing: 1px;\n      text-transform: uppercase; border: none; border-radius: 50px;\n      cursor: pointer; transition: background 0.2s;\n    }\n    .action-btn:hover { background-color: #42634d; }\n\n    /* --- ANIMATIONS --- */\n    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }\n  \n",
+            "extends": []
+        },
+        {
+            "name": "UiSelectComponent",
+            "id": "component-UiSelectComponent-1e96e6de54bc225da1de2b61d86919433f2a1bc59f7f7f213dc02ee394a9d0ee0c7e418149aa8e3f65d7b387055c2230039fa668d6ee3da618b7f4fa622d693f",
+            "file": "src/app/components/atoms/select/select.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-select",
+            "styleUrls": [
+                "./select.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./select.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "disabled",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 37,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "error",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nError message (below). If set => aria-invalid + error styles",
+                    "description": "<p>Error message (below). If set =&gt; aria-invalid + error styles</p>\n",
+                    "line": 28,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "hint",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nOptional helper text (below)",
+                    "description": "<p>Optional helper text (below)</p>\n",
+                    "line": 25,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "id",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nNative select props",
+                    "description": "<p>Native select props</p>\n",
+                    "line": 34,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "label",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nVisible label above the select",
+                    "description": "<p>Visible label above the select</p>\n",
+                    "line": 22,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "name",
+                    "defaultValue": "''",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 35,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "options",
+                    "defaultValue": "[]",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nOptions list",
+                    "description": "<p>Options list</p>\n",
+                    "line": 44,
+                    "type": "Array<literal type>",
+                    "decorators": []
+                },
+                {
+                    "name": "placeholder",
+                    "defaultValue": "'Sélectionner...'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nPlaceholder shown as first option",
+                    "description": "<p>Placeholder shown as first option</p>\n",
+                    "line": 41,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "required",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 38,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "value",
+                    "defaultValue": "null",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 36,
+                    "type": "string | null",
+                    "decorators": []
+                },
+                {
+                    "name": "variant",
+                    "defaultValue": "'neutral'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nVisual variant",
+                    "description": "<p>Visual variant</p>\n",
+                    "line": 31,
+                    "type": "UiSelectVariant",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [
+                {
+                    "name": "changed",
+                    "defaultValue": "new EventEmitter<Event>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nEmits native change event if needed",
+                    "description": "<p>Emits native change event if needed</p>\n",
+                    "line": 50,
+                    "type": "EventEmitter"
+                },
+                {
+                    "name": "valueChange",
+                    "defaultValue": "new EventEmitter<string>()",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nEmits selected value",
+                    "description": "<p>Emits selected value</p>\n",
+                    "line": 47,
+                    "type": "EventEmitter"
+                }
+            ],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "onChange",
+                    "args": [
+                        {
+                            "name": "e",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 72,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "e",
+                            "type": "Event",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import {\n  ChangeDetectionStrategy,\n  Component,\n  EventEmitter,\n  Input,\n  Output,\n} from '@angular/core';\nimport { CommonModule } from '@angular/common';\n\nexport type UiSelectVariant = 'neutral' | 'emotion';\n\n@Component({\n  selector: 'ui-select',\n  standalone: true,\n  imports: [CommonModule],\n  templateUrl: './select.component.html',\n  styleUrls: ['./select.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class UiSelectComponent {\n  /** Visible label above the select */\n  @Input() label = '';\n\n  /** Optional helper text (below) */\n  @Input() hint = '';\n\n  /** Error message (below). If set => aria-invalid + error styles */\n  @Input() error = '';\n\n  /** Visual variant */\n  @Input() variant: UiSelectVariant = 'neutral';\n\n  /** Native select props */\n  @Input() id = '';\n  @Input() name = '';\n  @Input() value: string | null = null;\n  @Input() disabled = false;\n  @Input() required = false;\n\n  /** Placeholder shown as first option */\n  @Input() placeholder = 'Sélectionner...';\n\n  /** Options list */\n  @Input() options: Array<{ value: string; label: string }> = [];\n\n  /** Emits selected value */\n  @Output() valueChange = new EventEmitter<string>();\n\n  /** Emits native change event if needed */\n  @Output() changed = new EventEmitter<Event>();\n\n  get selectId(): string {\n    return this.id || this.name || 'ui-select';\n  }\n\n  get describedBy(): string | null {\n    const ids: string[] = [];\n    if (this.hint) ids.push(`${this.selectId}-hint`);\n    if (this.error) ids.push(`${this.selectId}-error`);\n    return ids.length ? ids.join(' ') : null;\n  }\n\n  get rootClasses(): string[] {\n    return [\n      'ui-select',\n      `ui-select--${this.variant}`,\n      this.error ? 'ui-select--error' : '',\n      this.disabled ? 'ui-select--disabled' : '',\n    ].filter(Boolean);\n  }\n\n  onChange(e: Event) {\n    const target = e.target as HTMLSelectElement;\n    this.valueChange.emit(target.value);\n    this.changed.emit(e);\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "/* Global Container */\n.ui-select {\n  display: flex;\n  flex-direction: column;\n  gap: 8px; /* Airy spacing */\n  width: 100%;\n  position: relative;\n  opacity: 1;\n  transition: opacity 0.2s;\n\n  /* Global Disabled State */\n  &.is-disabled {\n    opacity: 0.6;\n    pointer-events: none;\n    \n    .ui-select__native {\n      background-color: #F2F4F7; /* Neutral Grey */\n      border-color: #EAECF0;\n      color: #98A2B3;\n    }\n  }\n}\n\n/* Label: BalanceMe Style using Design System Token */\n.ui-select__label {\n  font-family: var(--font-family-base, sans-serif);\n  font-size: 11px; /* Legible size */\n  font-weight: 800;\n  text-transform: uppercase;\n  letter-spacing: 0.08em;\n  /* Using the emotional color token instead of hardcoded red */\n  color: var(--color-emotional, #D48C9D); \n  margin-left: 12px;\n}\n\n/* Relative Wrapper */\n.ui-select__control {\n  position: relative;\n  width: 100%;\n  height: 48px; /* Restored comfortable standard height */\n}\n\n/* Native Select */\n.ui-select__native {\n  appearance: none;\n  -webkit-appearance: none;\n  width: 100%;\n  height: 100%;\n  padding: 0 40px 0 20px; /* Generous padding */\n  \n  border-radius: 999px; /* Pill shape (Full rounding) */\n  border: 1px solid transparent;\n  \n  font-family: var(--font-family-base, sans-serif);\n  font-size: 15px;\n  font-weight: 600;\n  line-height: 48px; /* Text centering */\n  \n  /* --- COLORS --- */\n  background-color: #FFF5F7; /* Powder Pink Background */\n  border-color: #FCE7EB;     /* Soft Rose Border */\n  color: #344054;            /* Dark Grey Text (Legible) */\n\n  cursor: pointer;\n  transition: all 0.2s ease;\n\n  &:focus {\n    outline: none;\n    /* Focus ring using emotional color */\n    border-color: var(--color-emotional, #F472B6); \n    box-shadow: 0 0 0 4px rgba(244, 114, 182, 0.15); /* Pink Halo */\n    background-color: #FFFFFF;\n  }\n\n  /* Placeholder (Empty value) */\n  &.placeholder-shown {\n    color: #98A2B3; /* Light Grey */\n    font-weight: 500;\n  }\n}\n\n/* --- ERROR VARIANT: POWDER PINK (Softness over Alert) --- */\n.ui-select.is-error {\n  .ui-select__label { \n    /* Label stays linked to emotional color */\n    color: var(--color-emotional, #9F1239); \n  }\n  \n  .ui-select__native {\n    border-color: #FDA4AF;     /* Soft Rose Border */\n    background-color: #FFF1F2; /* Powder Pink Background */\n    color: #9F1239;            /* Deep Rose Text (Not bright red) */\n    \n    &:focus {\n      border-color: var(--color-emotional, #F43F5E);\n      box-shadow: 0 0 0 4px rgba(253, 164, 175, 0.25);\n    }\n  }\n}\n\n/* Error Message */\n.ui-select__error-msg {\n  font-size: 12px;\n  /* Deep Rose for legibility, softer than alert red */\n  color: #9F1239; \n  margin-left: 16px;\n  margin-top: 4px;\n  font-weight: 500;\n}\n\n/* Chevron SVG */\n.ui-select__chevron {\n  position: absolute;\n  right: 20px; /* Positioned to match pill shape */\n  top: 50%;\n  transform: translateY(-50%);\n  width: 18px;\n  height: 18px;\n  pointer-events: none;\n  /* Chevron takes the Design System color */\n  color: var(--color-emotional, #D48C9D); \n  opacity: 0.7;\n}",
+                    "styleUrl": "./select.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "accessors": {
+                "selectId": {
+                    "name": "selectId",
+                    "getSignature": {
+                        "name": "selectId",
+                        "type": "string",
+                        "returnType": "string",
+                        "line": 52
+                    }
+                },
+                "describedBy": {
+                    "name": "describedBy",
+                    "getSignature": {
+                        "name": "describedBy",
+                        "type": "unknown",
+                        "returnType": "string | null",
+                        "line": 56
+                    }
+                },
+                "rootClasses": {
+                    "name": "rootClasses",
+                    "getSignature": {
+                        "name": "rootClasses",
+                        "type": "[]",
+                        "returnType": "string[]",
+                        "line": 63
+                    }
+                }
+            },
+            "templateData": "<div [class]=\"rootClasses.join(' ')\">\n  \n  <label *ngIf=\"label\" class=\"ui-select__label\" [attr.for]=\"selectId\">\n    {{ label }}\n  </label>\n\n  <div class=\"ui-select__control\">\n    <div style=\"color: inherit\"> \n      <select\n        class=\"ui-select__native\"\n        [id]=\"selectId\"\n        [disabled]=\"disabled\"\n        [value]=\"value ?? ''\"\n        (change)=\"onChange($event)\"\n        [class.placeholder-shown]=\"!value\"\n        required\n      >\n        <option value=\"\" disabled selected hidden>{{ placeholder }}</option>\n\n        <option *ngFor=\"let opt of options\" [value]=\"opt.value\">\n          {{ opt.label }}\n        </option>\n      </select>\n\n      <svg class=\"ui-select__chevron\" viewBox=\"0 0 20 20\" fill=\"none\" stroke=\"currentColor\">\n        <path d=\"M5 7.5L10 12.5L15 7.5\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n      </svg>\n    </div>\n  </div>\n\n  <div *ngIf=\"error\" class=\"ui-select__error\">\n    {{ error }}\n  </div>\n</div>"
+        },
+        {
+            "name": "UiTagComponent",
+            "id": "component-UiTagComponent-8e1845ddf37c31d20d92cddf5a54a291fe7ca4be0e4c8a1dba082387cddc21dfcffb96961253536f673c4614b00cbf55f0fff906b4e57db60517ccf88ddc5ee5",
+            "file": "src/app/components/atoms/tag/tag.component.ts",
+            "changeDetection": "ChangeDetectionStrategy.OnPush",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "ui-tag",
+            "styleUrls": [
+                "./tag.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./tag.component.html"
+            ],
+            "viewProviders": [],
+            "hostDirectives": [],
+            "inputsClass": [
+                {
+                    "name": "dot",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nOptional leading dot (like your \"• ÉNERGIE FINANCIÈRE\")",
+                    "description": "<p>Optional leading dot (like your &quot;• ÉNERGIE FINANCIÈRE&quot;)</p>\n",
+                    "line": 26,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "ghost",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nIf true, renders as a pill with border (like \"BESOIN ?\")",
+                    "description": "<p>If true, renders as a pill with border (like &quot;BESOIN ?&quot;)</p>\n",
+                    "line": 23,
+                    "type": "boolean",
+                    "decorators": []
+                },
+                {
+                    "name": "icon",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nOptional emoji/icon",
+                    "description": "<p>Optional emoji/icon</p>\n",
+                    "line": 29,
+                    "type": "string",
+                    "decorators": []
+                },
+                {
+                    "name": "size",
+                    "defaultValue": "'sm'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nSize",
+                    "description": "<p>Size</p>\n",
+                    "line": 20,
+                    "type": "UiTagSize",
+                    "decorators": []
+                },
+                {
+                    "name": "tone",
+                    "defaultValue": "'neutral'",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "rawdescription": "\nVisual tone mapped to design tokens",
+                    "description": "<p>Visual tone mapped to design tokens</p>\n",
+                    "line": 17,
+                    "type": "UiTagTone",
+                    "decorators": []
+                }
+            ],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "standalone": true,
+            "imports": [
+                {
+                    "name": "CommonModule",
+                    "type": "module"
+                }
+            ],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { CommonModule } from '@angular/common';\nimport { ChangeDetectionStrategy, Component, Input } from '@angular/core';\n\nexport type UiTagTone = 'neutral' | 'primary' | 'secondary' | 'emotional' | 'insight' | 'brown';\nexport type UiTagSize = 'sm' | 'md';\n\n@Component({\n  selector: 'ui-tag',\n  standalone: true,\n  imports: [CommonModule],\n  templateUrl: './tag.component.html',\n  styleUrls: ['./tag.component.scss'],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class UiTagComponent {\n  /** Visual tone mapped to design tokens */\n  @Input() tone: UiTagTone = 'neutral';\n\n  /** Size */\n  @Input() size: UiTagSize = 'sm';\n\n  /** If true, renders as a pill with border (like \"BESOIN ?\") */\n  @Input() ghost = false;\n\n  /** Optional leading dot (like your \"• ÉNERGIE FINANCIÈRE\") */\n  @Input() dot = false;\n\n  /** Optional emoji/icon */\n  @Input() icon?: string;\n\n  get hostClasses(): string[] {\n    return [\n      'ui-tag',\n      `ui-tag--${this.tone}`,\n      `ui-tag--${this.size}`,\n      this.ghost ? 'ui-tag--ghost' : '',\n      this.dot ? 'ui-tag--dot' : '',\n      this.icon ? 'ui-tag--icon' : '',\n    ].filter(Boolean);\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "/* =====================================================\n   UI TAG / PILL – Atom\n   Used for micro labels: \"ÉNERGIE FINANCIÈRE\", \"BESOIN ?\", etc.\n   ===================================================== */\n\n.ui-tag {\n  display: inline-flex;\n  align-items: center;\n  gap: 10px;\n\n  padding: 10px 14px;\n  border-radius: 999px;\n\n  font-weight: 800;\n  text-transform: uppercase;\n  letter-spacing: 0.18em;\n  font-size: 11px;\n\n  user-select: none;\n  white-space: nowrap;\n\n  background: rgba(16, 24, 40, 0.04);\n  color: rgba(16, 24, 40, 0.55);\n  border: 1px solid transparent;\n}\n\n/* Sizes */\n.ui-tag--sm { padding: 8px 12px; font-size: 10px; }\n.ui-tag--md { padding: 10px 16px; font-size: 11px; }\n\n/* Dot (like \"•\") */\n.ui-tag__dot {\n  width: 8px;\n  height: 8px;\n  border-radius: 999px;\n  opacity: 0.55;\n  background: currentColor;\n}\n\n/* Emoji/icon */\n.ui-tag__icon {\n  font-size: 14px;\n  line-height: 1;\n  opacity: 0.9;\n}\n\n/* Ghost pill (like BESOIN ? / ENVIE ?) */\n.ui-tag--ghost {\n  background: transparent;\n  border-color: rgba(16, 24, 40, 0.10);\n  color: rgba(16, 24, 40, 0.45);\n}\n\n/* Tones */\n.ui-tag--primary { color: var(--color-primary); background: rgba(62, 127, 90, 0.10); }\n.ui-tag--secondary { color: var(--color-secondary); background: rgba(79, 166, 166, 0.10); }\n.ui-tag--emotional { color: var(--color-danger); background: rgba(192, 88, 114, 0.10); }\n.ui-tag--insight { color: rgba(242, 208, 124, 1); background: rgba(242, 208, 124, 0.20); }\n\n/* Brown (from moodboard) – requires token */\n.ui-tag--brown { color: var(--color-brown); background: rgba(122, 90, 74, 0.12); }\n",
+                    "styleUrl": "./tag.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "extends": [],
+            "accessors": {
+                "hostClasses": {
+                    "name": "hostClasses",
+                    "getSignature": {
+                        "name": "hostClasses",
+                        "type": "[]",
+                        "returnType": "string[]",
+                        "line": 31
+                    }
+                }
+            },
+            "templateData": "<span [class]=\"hostClasses.join(' ')\">\n  <span *ngIf=\"dot\" class=\"ui-tag__dot\" aria-hidden=\"true\"></span>\n\n  <span *ngIf=\"icon\" class=\"ui-tag__icon\" aria-hidden=\"true\">{{ icon }}</span>\n\n  <ng-content></ng-content>\n</span>\n"
         }
     ],
     "modules": [],
@@ -937,17 +2087,105 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Routes",
-                "defaultValue": "[]"
+                "defaultValue": "[\n     {\n    path: '', \n    component: HomeComponent\n  },\n   \n]"
             }
         ],
         "functions": [],
         "typealiases": [
             {
-                "name": "ResultStatus",
+                "name": "ExpenseCategory",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "\"positive\" | \"warning\" | \"negative\" | \"neutral\"",
-                "file": "src/app/components/molecules/result-card/result-card.ts",
+                "rawtype": "\"VITAL\" | \"EMOTIONAL\"",
+                "file": "src/app/models/expense.model.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "<p>DOMAIN MODEL: EXPENSE\nDefinition of the core data structures for the BalanceMe application.</p>\n",
+                "kind": 193
+            },
+            {
+                "name": "UiButtonSize",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"sm\" | \"md\" | \"lg\"",
+                "file": "src/app/components/atoms/button/button.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "UiButtonVariant",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"primary\" | \"secondary\" | \"emotional\" | \"insight\" | \"brown\" | \"ghost\"",
+                "file": "src/app/components/atoms/button/button.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "UiCardElevation",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"sm\" | \"md\" | \"lg\"",
+                "file": "src/app/components/atoms/card/card.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "UiCardPadding",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"md\" | \"lg\"",
+                "file": "src/app/components/atoms/card/card.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "UiCardVariant",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"neutral\" | \"positive\" | \"danger\" | \"info\" | \"soft\"",
+                "file": "src/app/components/atoms/card/card.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "UiSelectVariant",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"neutral\" | \"emotion\"",
+                "file": "src/app/components/atoms/select/select.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "UiTagSize",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"sm\" | \"md\"",
+                "file": "src/app/components/atoms/tag/tag.component.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "description": "",
+                "kind": 193
+            },
+            {
+                "name": "UiTagTone",
+                "ctype": "miscellaneous",
+                "subtype": "typealias",
+                "rawtype": "\"neutral\" | \"primary\" | \"secondary\" | \"emotional\" | \"insight\" | \"brown\"",
+                "file": "src/app/components/atoms/tag/tag.component.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "description": "",
@@ -977,20 +2215,116 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "Routes",
-                    "defaultValue": "[]"
+                    "defaultValue": "[\n     {\n    path: '', \n    component: HomeComponent\n  },\n   \n]"
                 }
             ]
         },
         "groupedFunctions": {},
         "groupedEnumerations": {},
         "groupedTypeAliases": {
-            "src/app/components/molecules/result-card/result-card.ts": [
+            "src/app/models/expense.model.ts": [
                 {
-                    "name": "ResultStatus",
+                    "name": "ExpenseCategory",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "\"positive\" | \"warning\" | \"negative\" | \"neutral\"",
-                    "file": "src/app/components/molecules/result-card/result-card.ts",
+                    "rawtype": "\"VITAL\" | \"EMOTIONAL\"",
+                    "file": "src/app/models/expense.model.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "<p>DOMAIN MODEL: EXPENSE\nDefinition of the core data structures for the BalanceMe application.</p>\n",
+                    "kind": 193
+                }
+            ],
+            "src/app/components/atoms/button/button.component.ts": [
+                {
+                    "name": "UiButtonSize",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"sm\" | \"md\" | \"lg\"",
+                    "file": "src/app/components/atoms/button/button.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "UiButtonVariant",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"primary\" | \"secondary\" | \"emotional\" | \"insight\" | \"brown\" | \"ghost\"",
+                    "file": "src/app/components/atoms/button/button.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/app/components/atoms/card/card.component.ts": [
+                {
+                    "name": "UiCardElevation",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"sm\" | \"md\" | \"lg\"",
+                    "file": "src/app/components/atoms/card/card.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "UiCardPadding",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"md\" | \"lg\"",
+                    "file": "src/app/components/atoms/card/card.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "UiCardVariant",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"neutral\" | \"positive\" | \"danger\" | \"info\" | \"soft\"",
+                    "file": "src/app/components/atoms/card/card.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/app/components/atoms/select/select.component.ts": [
+                {
+                    "name": "UiSelectVariant",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"neutral\" | \"emotion\"",
+                    "file": "src/app/components/atoms/select/select.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                }
+            ],
+            "src/app/components/atoms/tag/tag.component.ts": [
+                {
+                    "name": "UiTagSize",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"sm\" | \"md\"",
+                    "file": "src/app/components/atoms/tag/tag.component.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "description": "",
+                    "kind": 193
+                },
+                {
+                    "name": "UiTagTone",
+                    "ctype": "miscellaneous",
+                    "subtype": "typealias",
+                    "rawtype": "\"neutral\" | \"primary\" | \"secondary\" | \"emotional\" | \"insight\" | \"brown\"",
+                    "file": "src/app/components/atoms/tag/tag.component.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "description": "",
@@ -1002,10 +2336,17 @@
     "routes": {
         "name": "<root>",
         "kind": "module",
-        "children": []
+        "children": [
+            {
+                "name": "HomeComponent",
+                "kind": "component",
+                "path": "",
+                "filename": "src/app/app.routes.ts"
+            }
+        ]
     },
     "coverage": {
-        "count": 5,
+        "count": 18,
         "status": "low",
         "files": [
             {
@@ -1038,85 +2379,201 @@
                 "status": "low"
             },
             {
-                "filePath": "src/app/components/atoms/button/button.ts",
+                "filePath": "src/app/components/atoms/button/button.component.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "Button",
+                "name": "UiButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/4",
+                "coverageCount": "0/10",
                 "status": "low"
             },
             {
-                "filePath": "src/app/components/atoms/input/input.ts",
+                "filePath": "src/app/components/atoms/button/button.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "UiButtonSize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/atoms/button/button.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "UiButtonVariant",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/atoms/card/card.component.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "InputComponent",
+                "name": "UiCardComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/5",
                 "status": "low"
             },
             {
-                "filePath": "src/app/components/atoms/plus-icon/plus-icon.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "PlusIcon",
+                "filePath": "src/app/components/atoms/card/card.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "UiCardElevation",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
+            },
+            {
+                "filePath": "src/app/components/atoms/card/card.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "UiCardPadding",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/atoms/card/card.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "UiCardVariant",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/atoms/input/input.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UiInputComponent",
+                "coveragePercent": 38,
+                "coverageCount": "5/13",
+                "status": "medium"
             },
             {
                 "filePath": "src/app/components/atoms/radio/radio.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "Radio",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coveragePercent": 14,
+                "coverageCount": "1/7",
                 "status": "low"
             },
             {
-                "filePath": "src/app/components/atoms/tag/tag.ts",
+                "filePath": "src/app/components/atoms/select/select.component.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "Tag",
-                "coveragePercent": 0,
-                "coverageCount": "0/3",
-                "status": "low"
+                "name": "UiSelectComponent",
+                "coveragePercent": 60,
+                "coverageCount": "9/15",
+                "status": "good"
             },
             {
-                "filePath": "src/app/components/molecules/info-card/info-card.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "InfoCard",
-                "coveragePercent": 0,
-                "coverageCount": "0/3",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/components/molecules/remaining-amount-card/remaining-amount-card.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "RemainingAmountCard",
-                "coveragePercent": 0,
-                "coverageCount": "0/2",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/components/molecules/result-card/result-card.ts",
-                "type": "component",
-                "linktype": "component",
-                "name": "ResultCard",
-                "coveragePercent": 0,
-                "coverageCount": "0/5",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/components/molecules/result-card/result-card.ts",
+                "filePath": "src/app/components/atoms/select/select.component.ts",
                 "type": "type alias",
                 "linktype": "miscellaneous",
                 "linksubtype": "typealias",
-                "name": "ResultStatus",
+                "name": "UiSelectVariant",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/atoms/tag/tag.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UiTagComponent",
+                "coveragePercent": 83,
+                "coverageCount": "5/6",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/components/atoms/tag/tag.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "UiTagSize",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/atoms/tag/tag.component.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "UiTagTone",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/molecules/modal/modal.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "UiModalComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/molecules/modal/modal.component.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ModalContent",
+                "coveragePercent": 0,
+                "coverageCount": "0/8",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/components/molecules/transaction-item/transaction-item.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TransactionItemComponent",
+                "coveragePercent": 83,
+                "coverageCount": "5/6",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/models/expense.model.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "Expense",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/models/expense.model.ts",
+                "type": "type alias",
+                "linktype": "miscellaneous",
+                "linksubtype": "typealias",
+                "name": "ExpenseCategory",
+                "coveragePercent": 100,
+                "coverageCount": "1/1",
+                "status": "very-good"
+            },
+            {
+                "filePath": "src/app/pages/home/home.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "HomeComponent",
+                "coveragePercent": 30,
+                "coverageCount": "3/10",
+                "status": "medium"
+            },
+            {
+                "filePath": "src/app/services/budget.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "BudgetService",
+                "coveragePercent": 14,
+                "coverageCount": "1/7",
                 "status": "low"
             },
             {
