@@ -69,13 +69,13 @@ Les rayons larges renforcent l'aspect bienveillant et sécurisant de l'interface
 [cite_start]L'application suit la méthodologie **Atomic Design** pour construire un système évolutif et maintenable. [cite: 325]
 
 ### ⚪ 2.1 Atomes
-[cite_start]Éléments de base indivisibles : [cite: 320]
+Éléments de base indivisibles : 
 - **Boutons :** Primaires et secondaires.
 - **Inputs :** Champs de saisie montant et titre.
 - **Tags :** Badges de catégories (Vital / Emotional).
 
 ### 🧬 2.2 Molécules
-[cite_start]Combinaisons simples d'atomes : [cite: 322]
+- Combinaisons simples d'atomes : 
 - **Transaction Item :** Ligne d'historique (icône + texte + montant).
 - **Card Budget :** Bloc de solde avec variante dynamique (Positive/Danger).
 
@@ -83,11 +83,11 @@ Les rayons larges renforcent l'aspect bienveillant et sécurisant de l'interface
 
 ## 🧠 3. Choix UX & Accessibilité
 
-[cite_start]BalanceMe adopte une approche **centrée utilisateur** et bienveillante de la finance. [cite: 228]
+BalanceMe adopte une approche **centrée utilisateur** et bienveillante de la finance. 
 
-- [cite_start]**♿ Accessibilité :** Utilisation de balises sémantiques et gestion rigoureuse du focus clavier via le token `color-insight` (contour orange de 3px). [cite: 158, 207]
+- **♿ Accessibilité :** Utilisation de balises sémantiques et gestion rigoureuse du focus clavier via le token `color-insight` (contour orange de 3px). 
 - **Sémantique :** Le vert rassure, tandis que le rose émotionnel invite à la réflexion sans culpabilisation.
-- [cite_start]**🌱 Éco-conception :** Optimisation des performances via les **Signals Angular**, limitant les cycles de détection de changement pour réduire la consommation énergétique. [cite: 208, 216]
+-  **🌱 Éco-conception :** Optimisation des performances via les **Signals Angular**, limitant les cycles de détection de changement pour réduire la consommation énergétique. 
 
 ---
 
