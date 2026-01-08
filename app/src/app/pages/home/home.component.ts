@@ -1,7 +1,6 @@
 import { Component, inject, signal, computed, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// --- UI ATOMS & MOLECULES ---
 import { UiCardComponent, UiCardVariant } from '../../components/atoms/card/card.component';
 import { UiButtonComponent } from '../../components/atoms/button/button.component';
 import { UiInputComponent } from '../../components/atoms/input/input.component';
@@ -10,7 +9,6 @@ import { UiSelectComponent } from '../../components/atoms/select/select.componen
 import { UiModalComponent, ModalContent } from '../../components/molecules/modal/modal.component';
 import { TransactionItemComponent } from '../../components/molecules/transaction-item/transaction-item.component';
 
-// --- LOGIC & STRATEGY ---
 import { BudgetService } from '../../services/budget.service';
 import { ExpenseStrategy, VitalNeedStrategy, EmotionalDesireStrategy } from '../../core/strategies/expense.strategy';
 import { OnboardingComponent } from '../../components/features/onboarding/onboarding.component';
@@ -45,8 +43,6 @@ export class HomeComponent implements OnInit {
 
   budgetVariant = computed<UiCardVariant>(() => this.remainingBudget() < 0 ? 'danger' : 'positive');
   visibleTransactions = computed(() => this.showAllHistory() ? this.transactions() : this.transactions().slice(0, 3));
-  
-  // Correction 1 : Initialisation explicite sur Vital
   currentStrategy = signal<ExpenseStrategy>(new VitalNeedStrategy());
 
   emotionOptions = [
@@ -56,15 +52,10 @@ export class HomeComponent implements OnInit {
     { value: 'Besoin de réconfort', label: 'Besoin de réconfort' }
   ];
 
-  ngOnInit() { console.log('🏗️ BalanceMe Home Initialized'); }
+  ngOnInit() { console.log('🏗️ BalanceMe Ready'); }
 
   handleReset() {
-    this.currentModalContent = {
-      type: 'vital',
-      title: "Remise à zéro",
-      description: "Voulez-vous vraiment réinitialiser toutes vos données ?",
-      buttonText: "OUI, RÉINITIALISER"
-    };
+    this.currentModalContent = { type: 'vital', title: "Remise à zéro", description: "Voulez-vous vraiment tout réinitialiser ?", buttonText: "OUI, RÉINITIALISER" };
     this.isModalOpen = true;
   }
 
@@ -85,10 +76,9 @@ export class HomeComponent implements OnInit {
 
   openVitalInfo() {
     this.currentModalContent = {
-      type: 'vital',
-      title: "Qu'est-ce qu'un Besoin Vital ?",
-      description: "Un Besoin Vital est une dépense non-négociable pour votre sécurité et votre santé.",
-      items: ["Logement & Énergie", "Alimentation de base", "Santé & Assurances", "Transport essentiel"],
+      type: 'vital', title: "Besoin Vital",
+      description: "Dépense indispensable pour votre sécurité et votre santé.",
+      items: ["Logement & Énergie", "Alimentation de base", "Santé", "Transport"],
       buttonText: "J'AI COMPRIS"
     };
     this.isModalOpen = true;
@@ -96,11 +86,10 @@ export class HomeComponent implements OnInit {
 
   openEmotionalInfo() {
     this.currentModalContent = {
-      type: 'emotional',
-      title: "L'Envie Émotionnelle",
-      description: "Une envie naît souvent d'un besoin de combler un vide. Faites une pause consciente :",
+      type: 'emotional', title: "Envie Émotionnelle",
+      description: "Faites une pause consciente : l'envie comble souvent un vide émotionnel.",
       checklistTitle: "CHECKLIST DE CONSCIENCE",
-      items: ["Serais-je heureux dans 3 jours ?", "Fuite d'émotion ?", "Budget permis ?"],
+      items: ["Heureux dans 3 jours ?", "Fuite d'émotion ?", "Budget permis ?"],
       footerNote: "Astuce : Attendez 24h avant d'agir.",
       buttonText: "J'AI COMPRIS"
     };
@@ -109,10 +98,7 @@ export class HomeComponent implements OnInit {
 
   closeModal() {
     this.isModalOpen = false;
-    // Si l'utilisateur ferme la modale d'information émotionnelle, on affiche le select d'humeur
-    if (this.isEmotionalActive()) {
-      this.showEmotionSelect = true; 
-    }
+    if (this.isEmotionalActive()) this.showEmotionSelect = true; 
   }
 
   onPreSubmit() {
@@ -134,32 +120,21 @@ export class HomeComponent implements OnInit {
       this.budgetService.resetAll();
       this.isModalOpen = false;
     } else if (this.currentModalContent.title.includes('Accordée')) {
-      this.budgetService.addExpense(
-        this.formTitle, 
-        this.formAmount!, 
-        this.isEmotionalActive() ? 'EMOTIONAL' : 'VITAL', 
-        this.isEmotionalActive() ? this.formEmotion : 'Serein'
-      );
-      // Correction 2 : Reset complet après succès
+      this.budgetService.addExpense(this.formTitle, this.formAmount!, this.isEmotionalActive() ? 'EMOTIONAL' : 'VITAL', this.isEmotionalActive() ? this.formEmotion : 'Serein');
       this.resetFormFields();
       this.isModalOpen = false;
     } else {
-        // Pour les modales d'information "J'AI COMPRIS"
-        this.closeModal();
+      this.closeModal();
     }
   }
 
   private resetFormFields() { 
-    this.formTitle = ''; 
-    this.formAmount = null; 
-    this.formEmotion = ''; 
-    this.showErrors = false;
-    // Correction 3 : Retour à l'état initial par défaut
+    this.formTitle = ''; this.formAmount = null; this.formEmotion = ''; this.showErrors = false; 
     this.showEmotionSelect = false;
     this.currentStrategy.set(new VitalNeedStrategy());
   }
 
+  toggleHistory() { this.showAllHistory.update(v => !v); }
   isVitalActive() { return this.currentStrategy() instanceof VitalNeedStrategy; }
   isEmotionalActive() { return this.currentStrategy() instanceof EmotionalDesireStrategy; }
-  toggleHistory() { this.showAllHistory.update(v => !v); }
 }

@@ -1,13 +1,7 @@
-/* =====================================================
-   FICHIER : home.component.scss
-   Logiciel : BalanceMe - Architecture Modulaire
-   Normes : Accessibilité WCAG & Éco-conception
-   ===================================================== */
-
 :host {
   display: block;
   min-height: 100vh;
-  background-color: #FBF6EE; /* Fond beige zen pour une interface sereine */
+  background-color: #FBF6EE;
 }
 
 .page-container {
@@ -17,225 +11,70 @@
   padding: 16px;
 }
 
-/* --- GRILLE PRINCIPALE (Responsive Desktop/Mobile) --- */
+/* --- GRILLE RESPONSIVE --- */
 .dashboard-grid {
-  display: flex;
-  flex-direction: column; 
-  gap: 30px; 
-  margin-top: 14px;
+  display: flex; flex-direction: column; gap: 30px; margin-top: 14px;
+  .col-right { order: 1; }
+  .col-left { order: 2; display: flex; flex-direction: column; gap: 12px; }
 
-  /* Mobile First : L'intention est prioritaire pour l'utilisateur */
-  .col-right {
-    order: 1; 
-  }
-
-  /* Budget et Historique passent en dessous sur mobile */
-  .col-left {
-    order: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 12px; 
-  }
-
-  /* Mise en œuvre du Design Moderne : Grid Desktop [cite: 8, 178] */
   @media (min-width: 900px) {
-    display: grid;
-    grid-template-columns: 0.9fr 1.1fr; 
-    align-items: start;
-    gap: 48px;
-
-    .col-left { 
-      order: 1; 
-      gap: 24px; 
-    }
-    .col-right { 
-      order: 2; 
-      position: sticky; 
-      top: 24px; 
-    }
+    display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 48px;
+    .col-left { order: 1; gap: 24px; }
+    .col-right { order: 2; position: sticky; top: 24px; }
   }
 }
 
-/* --- COMPOSANTS DE BUDGET (Carte Énergie Financière) --- */
+/* --- CARTE BUDGET --- */
 .budget-content {
-  color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-
-  .label-sm {
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    opacity: 0.9;
-    text-transform: uppercase;
-  }
-
-  .big-amount {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 800;
-    line-height: 1;
-    small { 
-      font-size: 0.5em; 
-      opacity: 0.8; 
-    }
-  }
+  color: white; display: flex; flex-direction: column; gap: 16px;
+  .label-sm { font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+  .big-amount { font-size: clamp(32px, 5vw, 48px); font-weight: 800; line-height: 1; }
 }
+.budget-separator { width: 100%; height: 1px; background: rgba(255, 255, 255, 0.2); }
+.quote { display: flex; gap: 12px; p { margin: 0; font-size: 14px; font-style: italic; } }
 
-.budget-separator {
-  width: 100%;
-  height: 1px;
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.quote {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  p { 
-    margin: 0; 
-    font-size: 14px; 
-    font-style: italic; 
-    line-height: 1.4; 
-    font-weight: 500; 
-  }
-}
-
-/* --- SECTION INTENTION & FORMULAIRE --- */
+/* --- FORMULAIRE & TAGS --- */
 .intention-card {
-  background: white;
-  border-radius: 32px;
-  padding: 32px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.03);
-
-  h2 { 
-    font-size: 26px; 
-    font-weight: 800; 
-    margin-bottom: 8px; 
-    color: #1A2E22; 
-  }
-  .subtitle { 
-    color: #667085; 
-    font-size: 14px; 
-    margin-bottom: 32px; 
-    line-height: 1.5; 
-  }
+  background: white; border-radius: 32px; padding: 32px; box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+  h2 { font-size: 26px; font-weight: 800; margin-bottom: 8px; color: #1A2E22; }
+  .subtitle { color: #667085; font-size: 14px; margin-bottom: 32px; }
 }
 
-/* ALIGNEMENT DES TAGS : BESOIN ? / ENVIE ? [cite: 63, 212] */
 .intention-tag-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-
-  label {
-    margin-bottom: 0; /* Aligné sur la même ligne que les tags */
-  }
-
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;
+  label { margin-bottom: 0; }
   .tag-trigger-group {
-    display: flex;
-    gap: 8px;
-
-    /* Style "Soft" pour les déclencheurs de modale */
-    ui-tag {
-      cursor: help;
-      transition: all 0.2s ease;
-      font-weight: 500; /* Moins gras pour plus de douceur */
-      letter-spacing: 0.05em;
-      opacity: 0.8;
-      
-      &:hover { 
-        opacity: 1;
-        transform: translateY(-1px);
-      }
-    }
+    display: flex; gap: 8px;
+    ui-tag { cursor: help; opacity: 0.8; transition: opacity 0.2s; &:hover { opacity: 1; } }
   }
 }
 
-/* --- FORMULAIRE ATOMIQUE [cite: 9, 63] --- */
-.form-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  margin-bottom: 32px;
+.form-grid { display: flex; flex-direction: column; gap: 24px; margin-bottom: 32px; }
+.input-group { display: flex; flex-direction: column; gap: 8px; 
+  label { font-size: 10px; font-weight: 800; color: #98A2B3; text-transform: uppercase; }
 }
 
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  label { 
-    font-size: 10px; 
-    font-weight: 800; 
-    color: #98A2B3; 
-    text-transform: uppercase; 
-  }
-}
-
-/* BOUTONS PILULES (BESOIN VITAL / ENVIE ÉMOTIONNELLE) */
 .pill-group {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-
+  display: flex; gap: 12px; margin-bottom: 24px;
   .pill {
-    flex: 1;
-    padding: 16px 8px;
-    border-radius: 100px;
-    border: 1px solid #EAECF0;
+    flex: 1; padding: 16px 8px; border-radius: 100px; border: 1px solid #EAECF0;
+    font-weight: 700; cursor: pointer; transition: all 0.2s;
     background: white;
-    font-weight: 700;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.2s;
-
-    &.active {
-      background: #1A2E22 !important;
-      color: white !important;
-      border-color: #1A2E22;
-    }
-
-    /* Accessibilité : Focus visible pour navigation clavier [cite: 158, 207] */
-    &:focus-visible {
-      outline: 3px solid #ff6f00;
-      outline-offset: 2px;
-    }
+    &.active { background: #1A2E22 !important; color: white !important; }
+    &:focus-visible { outline: 3px solid #ff6f00; }
   }
 }
 
-/* --- SECTION HISTORIQUE --- */
-.history-card {
-  h3 { 
-    font-size: 22px; 
-    font-weight: 800; 
-    margin-bottom: 20px; 
-    color: #1A2E22; 
-  }
+/* --- HISTORIQUE --- */
+.history-card h3 { font-size: 22px; font-weight: 800; margin-bottom: 20px; }
+.transaction-list { list-style: none; padding: 0; margin: 0; }
+.history-actions { display: flex; justify-content: center; margin-top: 1.5rem; border-top: 1px solid #EAECF0; padding-top: 1rem; }
+
+.btn-toggle-history {
+  background: transparent; border: none; color: #98A2B3; font-size: 11px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  .icon { width: 24px; height: 24px; border: 1px solid #EAECF0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  &:hover { color: #537C60; .icon { border-color: #537C60; } }
 }
 
-.transaction-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.empty-state {
-  text-align: center;
-  color: #98A2B3;
-  padding: 40px;
-  font-style: italic;
-}
-
-/* UTILITAIRE ACCESSIBILITÉ : Masquage pour lecteurs d'écran [cite: 188] */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }

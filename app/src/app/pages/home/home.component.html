@@ -35,7 +35,7 @@
 
         <ui-card variant="neutral" padding="lg" class="history-card">
           <h3>Dernières réflexions</h3>
-          <ul class="transaction-list" style="list-style: none; padding: 0;">
+          <ul class="transaction-list">
             <p *ngIf="transactions().length === 0" class="empty-state">Aucun flux enregistré.</p>
             @for (item of visibleTransactions(); track item.id) {
               <li>
@@ -49,6 +49,13 @@
               </li>
             }
           </ul>
+
+          <div class="history-actions" *ngIf="transactions().length > 3">
+            <button type="button" class="btn-toggle-history" (click)="toggleHistory()">
+              <span class="icon" aria-hidden="true">{{ showAllHistory() ? '−' : '+' }}</span>
+              {{ showAllHistory() ? 'VOIR MOINS' : 'VOIR TOUT L\'HISTORIQUE' }}
+            </button>
+          </div>
         </ui-card>
       </div>
 
@@ -72,8 +79,8 @@
             <div class="intention-tag-header">
               <label class="label-xs">L'INTENTION DERRIÈRE L'ACTE</label>
               <div class="tag-trigger-group">
-                <ui-tag tone="secondary" size="sm" [ghost]="true" (click)="openVitalInfo()" role="button">BESOIN ?</ui-tag>
-                <ui-tag tone="emotional" size="sm" [ghost]="true" (click)="openEmotionalInfo()" role="button">ENVIE ?</ui-tag>
+                <ui-tag tone="secondary" size="sm" [ghost]="true" (click)="openVitalInfo()" role="button" aria-label="Aide Besoin" tabindex="0" (keydown.enter)="openVitalInfo()">BESOIN ?</ui-tag>
+                <ui-tag tone="emotional" size="sm" [ghost]="true" (click)="openEmotionalInfo()" role="button" aria-label="Aide Envie" tabindex="0" (keydown.enter)="openEmotionalInfo()">ENVIE ?</ui-tag>
               </div>
             </div>
 
@@ -86,7 +93,9 @@
               </button>
             </div>
 
-            <div *ngIf="isEmotionalActive() && showEmotionSelect" style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+            <div *ngIf="isEmotionalActive() && showEmotionSelect" 
+                 style="margin-top: 1.5rem; margin-bottom: 1.5rem;"
+                 (keydown.enter)="onPreSubmit()">
               <ui-select 
                 label="HUMEUR AU MOMENT DU CHOIX" 
                 [options]="emotionOptions" 
