@@ -1,21 +1,11 @@
 /* =====================================================
-   HOME PAGE STYLES
-   Uses Global Design System Tokens
+   HOME PAGE STYLES - RESTAURATION COMPLÈTE
    ===================================================== */
 
 :host {
   display: block;
   min-height: 100vh;
-  /* Use the cream background from your Design System */
-  background-color: var(--color-bg); 
-  
-  /* Optional: Add the waves background if you have the asset */
-  background-image: url('/assets/waves-bg.svg'); 
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  background-position: top center;
-
-  /* Font inheritance */
+  background-color: var(--color-bg, #FBF6EE); 
   font-family: var(--font-family-base);
 }
 
@@ -24,13 +14,8 @@
   width: 100%;
   max-width: 1040px;
   margin-inline: auto;
-  padding: var(--space-lg);
-}
-
-/* --- HEADER --- */
-app-ui-header {
-  display: block;
-  margin-bottom: var(--space-xl);
+  /* Padding ajusté pour laisser le Header respirer sans trop d'écart */
+  padding: 0 var(--space-lg) var(--space-xl); 
 }
 
 /* --- MAIN GRID LAYOUT --- */
@@ -38,6 +23,7 @@ app-ui-header {
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
+  margin-top: 2rem; /* Espace sous la barre d'action du header */
 
   @media (min-width: 900px) {
     display: grid;
@@ -59,10 +45,9 @@ app-ui-header {
 
 .budget-content {
   color: var(--color-white);
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 12px;
 }
 
 .label-sm {
@@ -71,14 +56,12 @@ app-ui-header {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.85;
-  margin-bottom: var(--space-xs);
 }
 
 .big-amount {
   font-size: clamp(36px, 4vw, 56px); 
   font-weight: 800;
   line-height: 1;
-  margin-bottom: var(--space-md);
   
   small {
     font-size: 0.5em;
@@ -91,14 +74,13 @@ app-ui-header {
   width: 100%;
   height: 1px;
   background-color: rgba(255, 255, 255, 0.16); 
-  margin: var(--space-md) 0;
+  margin: 8px 0;
 }
 
 .quote {
   display: flex;
   gap: var(--space-sm);
   align-items: flex-start;
-  opacity: 0.95;
   
   .icon { font-size: 1.2rem; }
   
@@ -111,56 +93,8 @@ app-ui-header {
   }
 }
 
-.history-section {
-  padding-bottom: var(--space-xl);
-  
-  .history-header {
-    margin-bottom: var(--space-md);
-    h3 {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--color-black);
-    }
-  }
-}
-
-.transaction-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-}
-
-.empty-state {
-  text-align: center;
-  color: #666;
-  font-style: italic;
-  padding: var(--space-lg);
-  background: white;
-  border-radius: var(--radius-md);
-}
-
-.btn-show-more {
-  width: 100%;
-  margin-top: var(--space-md);
-  padding: var(--space-sm);
-  background: transparent;
-  border: 1px dashed rgba(16, 24, 40, 0.2);
-  border-radius: var(--radius-md);
-  color: #666;
-  font-weight: 600;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s;
-
-  &:hover {
-    background: rgba(16, 24, 40, 0.05);
-    border-color: var(--color-black);
-    color: var(--color-black);
-  }
-}
-
 /* =====================================================
-   RIGHT COLUMN: INTENTION FORM
+   RIGHT COLUMN: INTENTION CARD
    ===================================================== */
 
 .col-right {
@@ -171,26 +105,27 @@ app-ui-header {
 }
 
 .intention-card {
-  background: var(--color-surface);
-  border-radius: var(--radius-xl); 
-  padding: var(--space-xl); 
-  box-shadow: var(--shadow-lg);
+  background: white;
+  border-radius: var(--radius-xl, 32px); 
+  padding: var(--space-xl, 32px); 
+  box-shadow: var(--shadow-lg, 0 20px 40px rgba(0,0,0,0.04));
   
   h2 {
     font-size: 28px;
     font-weight: 800;
-    margin-bottom: var(--space-xs);
+    margin-bottom: 8px;
     color: var(--color-black);
   }
 
   .subtitle {
     color: #667085;
-    font-size: 16px;
+    font-size: 15px;
     margin-bottom: 32px;
     line-height: 1.5;
   }
 }
 
+/* --- FORM GRID (Montant & Objet) --- */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -209,74 +144,90 @@ app-ui-header {
 
   label {
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
     color: #98A2B3;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 }
 
-.intention-actions {
-  margin-bottom: 32px;
+/* --- ZONE D'INTENTION (RESTAURÉE ET NON TASSÉE) --- */
+.intention-selection {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #F2F4F7; /* Ligne de séparation */
 }
 
-.labels-row {
+.selection-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-}
+  margin-bottom: 16px;
+  width: 100%;
 
-.action-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: #98A2B3;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
+  .label-xs {
+    font-size: 10px;
+    font-weight: 800;
+    color: #98A2B3;
+    letter-spacing: 0.05em;
+  }
 
-.help-tags {
-  display: flex;
-  gap: 8px;
-
-  .clickable-tag {
-    cursor: pointer;
-    transition: transform 0.15s;
-    &:hover { transform: translateY(-1px); opacity: 0.8; }
+  .help-labels {
+    display: flex;
+    gap: 12px;
+    
+    .text-link {
+      font-size: 10px;
+      font-weight: 800;
+      color: #E7B6C2; /* Ton rose signature */
+      cursor: pointer;
+      text-transform: uppercase;
+      
+      &:hover { text-decoration: underline; }
+    }
   }
 }
 
-/* --- PILL BUTTONS CORRECTION --- */
+/* --- PILL BUTTONS (GÉLULES) --- */
 .pill-group {
   display: flex;
-  gap: var(--space-md);
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 24px;
 
   .pill {
-    flex: 1;
+    flex: 1; /* Garantit que les boutons ne se tassent pas */
     padding: 14px;
     border-radius: 50px;
-    border: 1px solid var(--color-border);
-    background: var(--color-surface);
+    border: 1px solid var(--color-border, #EAECF0);
+    background: white;
     color: var(--color-black);
     font-weight: 700;
     font-size: 13px;
-    letter-spacing: 0.05em;
     text-transform: uppercase;
     cursor: pointer;
     transition: all 0.2s ease;
 
     &:hover { border-color: #98A2B3; }
     
-    /* MODIFICATION ICI : !important ajouté pour garantir la couleur sombre */
     &.active {
-      background-color: #1A2E22 !important; 
-      color: var(--color-white) !important;
+      background-color: #1A2E22 !important; /* Ton vert/noir profond */
+      color: white !important;
       border-color: #1A2E22 !important;
       box-shadow: 0 4px 12px rgba(26, 46, 34, 0.15);
     }
   }
 }
 
-.submit-btn {
-  width: 100%;
+/* --- HISTORIQUE --- */
+.history-card {
+  margin-top: 2rem;
+  h3 { margin-bottom: 1.5rem; font-weight: 800; }
+}
+
+.empty-state {
+  text-align: center;
+  color: #98A2B3;
+  padding: var(--space-lg);
+  font-style: italic;
 }
