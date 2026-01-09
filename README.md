@@ -23,7 +23,7 @@ Le projet utilise un **Design System atomique** rigoureux pour garantir une coh�
 * **Atomic Design** : 
     * **Atomes** : `UiButton`, `UiInputAmount`, `UiTagIntent`.
     * **Molécules** : `TransactionItem`, `MoodSelector`.
-* **Storybook** : Mis en place via `npx storybook@latest init`, il sert de documentation vivante pour valider les états (Focus, Hover, Error) et l'accessibilité de manière isolée.
+* **Storybook** : Initialisé via `npx storybook@latest init`, il sert de documentation vivante pour valider les états (Focus, Hover, Error) et l'accessibilité de manière isolée.
 
 ---
 
@@ -45,16 +45,28 @@ Développé avec **Angular 17+**, le projet respecte les standards de qualité i
 * Node.js (v18+)
 * Angular CLI (`npm install -g @angular/cli`)
 
-### 2. Initialisation du projet
-Si vous repartez de zéro ou installez l'environnement :
+### 2. Initialisation & Installation
+Si vous clonez le projet pour la première fois :
 ```bash
-# Installation d'Angular
+# Installation de l'Angular CLI globalement (si nécessaire)
 npm install -g @angular/cli
 
-# Initialisation de Storybook dans le projet
-npx storybook@latest init
+# Clonage du dépôt
+git clone https://github.com/Marjo14/Balance-Me.git
+cd Balance-Me
 
-### 4. Exécution
-Pour lancer l'application en mode développement :
-```bash
-npm start
+# Installation des dépendances
+npm install
+
+### 3. Exécution
+Lancer l'application en mode développement : npm start
+
+Accès via : http://localhost:4200/
+
+Lancer l'environnement de documentation des composants (Storybook) :npm run storybook
+
+Accès via : http://localhost:6006/
+
+
+
+
