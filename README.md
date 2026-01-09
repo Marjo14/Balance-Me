@@ -23,25 +23,33 @@ Le projet utilise un **Design System atomique** rigoureux pour garantir une coh�
 * **Atomic Design** : 
     * **Atomes** : `UiButton`, `UiInputAmount`, `UiTagIntent`.
     * **Molécules** : `TransactionItem`, `MoodSelector`.
-    * **Organismes** : `BudgetCard` (cœur réactif de l'application).
-* **Storybook** : Documentation vivante de la librairie de composants, permettant de tester les états (Focus, Hover, Error) et l'accessibilité de manière isolée.
+* **Storybook** : Mis en place via `npx storybook@latest init`, il sert de documentation vivante pour valider les états (Focus, Hover, Error) et l'accessibilité de manière isolée.
 
 ---
 
 ## 🛠️ Architecture Technique & Patterns
 
-Développé avec **Angular 17+**, le projet respecte les standards de qualité industrielle et les principes **SOLID** :
+Développé avec **Angular 17+**, le projet respecte les standards de qualité industrielle :
 
 * **Architecture Modulaire** : Découplage strict entre la couche UI (Shared), la logique métier (Core) et les fonctionnalités applicatives (Features).
 * **Design Patterns** :
     * **Strategy Pattern** : Gestion dynamique de la logique de calcul de risque selon l'intention de dépense (Vital vs Émotionnel).
     * **Observer (Signals)** : Implémentation des Angular Signals pour une gestion d'état granulaire et ultra-performante.
-* **Éco-conception (Green IT)** : Optimisation de la détection de changement pour réduire la charge CPU et la consommation de batterie sur mobile.
+* **Éco-conception (Green IT)** : Optimisation de la détection de changement pour réduire la charge CPU.
 
 ---
 
 ## 📦 Installation & Lancement
 
-1. **Cloner le projet** :
-   ```bash
-   git clone [https://github.com/Marjo14/Balance-Me.git](https://github.com/Marjo14/Balance-Me.git)
+### 1. Pré-requis
+* Node.js (v18+)
+* Angular CLI (`npm install -g @angular/cli`)
+
+### 2. Initialisation du projet
+Si vous repartez de zéro ou installez l'environnement :
+```bash
+# Installation d'Angular
+npm install -g @angular/cli
+
+# Initialisation de Storybook dans le projet
+npx storybook@latest init
