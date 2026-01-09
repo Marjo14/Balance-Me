@@ -7,8 +7,7 @@ Balance-Me n'est pas qu'une simple application de gestion de compte. C'est un ou
 ---
 
 > ## 📄 Livrable du projet
-[![View PDF](https://img.shields.io/badge/Consulter%20le%20Livrable-PDF-3E7F5A?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](./Balance-Me.pdf)
-
+[![View PDF](https://img.shields.io/badge/Consulter%20le%20Livrable-PDF-3E7F5A?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](Livrable-Balance-Me.pdf)
 
 ## 🚀 Vision & Stratégie UX
 
