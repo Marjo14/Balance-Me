@@ -53,3 +53,8 @@ npm install -g @angular/cli
 
 # Initialisation de Storybook dans le projet
 npx storybook@latest init
+
+### 4. Exécution
+Pour lancer l'application en mode développement :
+```bash
+npm start
