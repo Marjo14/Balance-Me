@@ -1,6 +1,8 @@
 # ⚖️ Balance-Me : Ma Sérénité Financière
 
 > **Le compagnon budgétaire qui allie psychologie positive et ingénierie logicielle.**
+> ## 📄 Livrable du projet
+[![View PDF](https://img.shields.io/badge/Consulter%20le%20Livrable-PDF-3E7F5A?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](./Balance-Me.pdf)
 
 Balance-Me n'est pas qu'une simple application de gestion de compte. C'est un outil conçu pour désamorcer l'anxiété financière des jeunes actifs en introduisant la **"Pause Intentionnelle"** : un mécanisme qui sépare le besoin vital de l'impulsion émotionnelle avant chaque dépense.
 
@@ -67,6 +69,7 @@ Lancer l'environnement de documentation des composants (Storybook) :npm run stor
 
 Accès via : http://localhost:6006/
 
-
+## 📄 Livrable du projet
+[![View PDF](https://img.shields.io/badge/Consulter%20le%20Livrable-PDF-3E7F5A?style=for-the-badge&logo=adobeacrobatreader&logoColor=white)](./Balance-Me.pdf)
 
 
